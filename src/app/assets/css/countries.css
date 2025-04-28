@@ -1,0 +1,63 @@
+/* Main container */
+.tour-section {
+    width: 90%;
+    max-width: 1200px;
+    margin: 50px auto 0; /* Added top margin */
+    border: 2px solid #ff6600;
+    border-radius: 15px;
+    padding: 30px;
+    position: relative;
+    background: white;
+}
+
+/* Centered inner box */
+.tour-content {
+    max-width: 800px;
+    margin: auto;
+    text-align: left;
+}
+
+/* Title & Subtitle */
+.tour-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.tour-subtitle {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Country List Container */
+.tour-list-container {
+    max-height: 160px;  /* Limit height */
+    overflow-y: auto;   /* Enable scrolling */
+    padding-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+/* Grid layout for countries */
+.tour-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);  /* 4 columns */
+    gap: 10px;
+}
+
+/* Individual country links */
+.tour-list a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    padding: 5px;
+    display: block;
+    border-bottom: 1px solid transparent;
+    transition: 0.3s;
+}
+
+.tour-list a:hover {
+    border-bottom: 1px solid #007bff;
+}

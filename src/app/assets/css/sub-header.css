@@ -1,0 +1,77 @@
+/* sub-header.css */
+.sub-header {
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px 0;
+}
+
+.sub-header .container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.sub-header ul {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sub-header li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    position: relative;
+    transition: transform 0.4s ease-in-out;
+}
+
+/* Icon Styling */
+.sub-header li img {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 5px;
+    transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
+}
+
+/* Text Styling */
+.sub-header li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    transition: color 0.4s ease-in-out;
+    display: contents;
+}
+
+/* Hover Effects */
+.sub-header li:hover {
+    transform: translateY(-8px);
+}
+
+.sub-header li:hover img {
+    /* transform: rotate(10deg) scale(1.1); */
+    /* filter: drop-shadow(0px 0px 8px rgba(255, 102, 0, 0.7));  */
+}
+
+.sub-header li:hover a {
+    color: #ff4500; /* Bright orange for strong impact */
+}
+
+/* Additional bounce effect */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.sub-header li:hover {
+    animation: bounce 0.6s ease-in-out;
+}

@@ -1,0 +1,310 @@
+.footer-section {
+    width: 100%;
+    height: 607px;
+    position: relative;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.footer-background {
+    background-color: var(--color-grey-88-90, rgba(224, 224, 224, 0.9));
+    width: 100%;
+    height: 435px;
+    position: absolute;
+    bottom: 0;
+    box-sizing: border-box;
+}
+
+/* Shadow container for the two boxes */
+.shadow-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    flex-wrap: wrap; /* Allow wrapping of boxes on smaller screens */
+    margin: 20px;
+}
+
+/* Background border shadow box styling */
+.background-border-shadow {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #e0e0e0;
+    width: 100%;
+    max-width: 488px;
+    height: 365px;
+    position: relative;
+    box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.14);
+    overflow: hidden;
+    margin-top: -110px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Menu and Quick Links Container */
+.menus {
+    margin-top: 58px;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    flex-wrap: wrap; /* Allow wrapping for mobile */
+}
+
+/* Links Section */
+.links {
+    display: flex;
+    flex-direction: column;
+}
+
+.links h4 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Menu Links */
+.menu-links ul,
+.quick-links ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menu-links li,
+.quick-links li {
+    margin-bottom: 10px;
+}
+
+/* Menu Links - Black Color */
+.menu-links a {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+.menu-links a:hover {
+    color: #333;
+}
+
+/* Quick Links - Blue Color */
+.quick-links a {
+    text-decoration: none;
+    color: #0389c6;
+    font-size: 14px;
+}
+
+.quick-links a:hover {
+    color: #0056b3;
+}
+
+/* Remove underline on hover */
+.menu-links a:hover,
+.quick-links a:hover {
+    text-decoration: none;
+}
+
+/* Partition (Vertical Divider) */
+.partition {
+    width: 1px;
+    background-color: #e0e0e0;
+    margin: 0 20px;
+}
+
+/* Social Media Links Section */
+.social-media {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.social-media ul {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    list-style-type: none;
+}
+
+.social-media li {
+    margin: 0 10px;
+}
+
+.social-media img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+.social-media a {
+    text-decoration: none;
+}
+
+.social-media a:hover {
+    opacity: 0.8;
+}
+
+/* Gallery Section */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns in a row */
+    gap: 5px; /* Add a gap between images */
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.gallery-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Title on the Image */
+.gallery-item .image-title {
+    position: absolute;
+    bottom: 29px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 14px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 90%;
+    text-align: center;
+}
+
+/* Gallery Images */
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect on Image */
+.gallery-item:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Show Title on Hover */
+.gallery-item:hover .image-title {
+    opacity: 1;
+}
+
+/* Background Border Shadow Box */
+.background-border-shadow-1 {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #e0e0e0;
+    width: 100%;
+    max-width: 488px;
+    height: 365px;
+    position: relative;
+    box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.14);
+    overflow: hidden;
+    margin-top: -110px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Footer Logo and Copyright Section */
+.footer-logo-copyright {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+/* Footer Logo */
+.footer-logo img {
+    width: 150px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+/* Footer Copyright Text */
+.footer-copyright p {
+    font-size: 14px;
+    color: #9d9c9c;
+    margin: 0;
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 768px) {
+    .background-border-shadow {
+        max-width: 100%;
+        margin-top: -181px; 
+    }
+
+    .menus {
+        display: flex; 
+        justify-content: space-between; 
+       
+        margin-top: 20px; 
+        width: 100%;
+    }
+
+    .partition {
+        width: 1px;
+        background-color: #e0e0e0; 
+        margin: 0 20px; 
+    }
+
+    .links {
+        text-align: left; 
+        margin-bottom: 20px;
+        flex: 1; 
+    }
+
+    .links h4 {
+        font-size: 18px; 
+    }
+
+    .menu-links a,
+    .quick-links a {
+        font-size: 16px; 
+    }
+
+    .background-border-shadow-1 {
+        display: none; 
+    }
+
+    .social-media {
+        display: none;
+    }
+
+    .gallery {
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 10px; 
+    }
+
+    .footer-logo img {
+        width: 120px; 
+    }
+
+    .footer-copyright p {
+        font-size: 12px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery {
+        grid-template-columns: 1fr; 
+        gap: 5px;
+    }
+
+    .footer-logo img {
+        width: 100px; 
+    }
+}
+
+.footer-section {
+    margin-top: 30px;
+}

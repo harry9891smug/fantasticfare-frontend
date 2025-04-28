@@ -1,0 +1,173 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    padding-top: 50px;
+  }
+  
+  .card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  /* Title and Price Styling */
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .fw-bold {
+    font-weight: 600;
+  }
+  
+  .text-primary {
+    color: #0389d0;
+  }
+  
+  .text-success {
+    color: #28a745;
+  }
+  
+  .text-muted {
+    color: #6c757d;
+  }
+  
+  .del {
+    text-decoration: line-through;
+  }
+  
+  /* Form Styles */
+  form {
+    margin-top: 20px;
+  }
+  
+  .input-group {
+    margin-bottom: 1.25rem;
+  }
+  
+  .form-control, .form-select {
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1rem;
+  }
+  
+  .is-invalid {
+    border-color: #dc3545;
+  }
+  
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875rem;
+  }
+  
+  /* Form Input Specific Styling */
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  textarea {
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+  }
+  
+  textarea {
+    height: 120px;
+  }
+  
+  button {
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  button.btn-primary {
+    background-color: #0389d0;
+    border: none;
+  }
+  
+  button.btn-primary:hover {
+    background-color: #d87f10;
+  }
+  
+  button.btn-warning {
+    background-color: #d87f10;
+    border: none;
+  }
+  
+  button.btn-warning:hover {
+    background-color: #e0a800;
+  }
+  
+  /* Card for Assistance Section */
+  .card-body.text-center {
+    background-color: #f1f1f1;
+    text-align: center;
+  }
+  
+  .card-body.text-center i {
+    color: #0389d0;
+  }
+  
+  .card-body.text-center h6 {
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  
+  .card-body.text-center p {
+    font-size: 0.95rem;
+    color: #6c757d;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .col-lg-4 {
+      max-width: 100%;
+      margin-bottom: 20px;
+    }
+  
+    .form-control, .form-select {
+      font-size: 0.875rem;
+    }
+  
+    .input-group {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    button {
+      padding: 10px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .card-body {
+      padding: 15px;
+    }
+    
+    .card-title {
+      font-size: 1.1rem;
+    }
+  
+    .invalid-feedback {
+      font-size: 0.75rem;
+    }
+  }
+  

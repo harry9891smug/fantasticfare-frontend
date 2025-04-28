@@ -1,0 +1,553 @@
+/* General Styling */
+.custom-input {
+    width: 283px; /* Increase width as needed */
+    max-width: 100%;
+}
+
+/* Adjusting Input Group (Icon + Input Alignment) */
+.custom-input .input-group-text {
+    padding: 12px;
+}
+
+/* Ensure the Swap Icon Stays Aligned */
+.swap-icon-circle {
+    min-width: 50px;
+    min-height: 50px;
+}
+
+.custom-input .form-control, 
+.custom-input .input-group-text {
+    border: none;
+    border-bottom: 2px solid #0e87c8;
+    border-radius: 0;
+    padding: 10px;
+    font-size: 16px;
+    background: transparent;
+}
+
+/* Form Container - Ensures Everything Stays in a Single Row */
+.form-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    max-width: 1200px; /* Prevents stretching too wide */
+    margin: auto; /* Centers the form */
+    padding: 10px;
+}
+
+/* Swap Icon Inside Circle */
+.swap-icon-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #0e87c8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+.swap-icon-circle:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
+}
+
+/* Traveler Dropdown */
+.traveler-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+/* Traveler Item */
+.traveler-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+/* Traveler Controls */
+.traveler-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.traveler-controls .count {
+    font-size: 16px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* One Way, Round Trip, Multi-City Navigation */
+.trip-type {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-bottom: 10px;
+    flex-direction: row;
+}
+
+/* Links Styling */
+.trip-type a {
+    text-decoration: none;
+    position: relative;
+    font-size: 14px; /* Smaller text */
+    font-weight: 500;
+    color: #333; /* Default text color */
+    padding-bottom: 3px;
+}
+
+/* Underline effect */
+.trip-type a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: transparent;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Hover & Active (Selected) State */
+.trip-type a:hover,
+.trip-type a.active {
+    color: #0e87c8; /* Change text color */
+}
+
+.trip-type a:hover::after,
+.trip-type a.active::after {
+    background-color: #0e87c8; /* Show underline on hover & when selected */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .form-container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .custom-input {
+        width: 100%;
+    }
+
+    .swap-icon-circle {
+        width: 45px;
+        height: 45px;
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+    }
+
+    .custom-input .form-control {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .swap-icon-circle {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .traveler-dropdown {
+        width: 100%;
+        min-width: 200px;
+    }
+
+    .trip-type {
+        justify-content: center; /* Center on smaller screens */
+        gap: 10px;
+    }
+
+    .trip-type a {
+        font-size: 13px;
+    }
+}
+
+.destination-card {
+    overflow: hidden;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.destination-card img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.destination-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Flight Icon */
+.flight-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+    font-size: 1.2rem;
+    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.flight-icon:hover {
+    background: #0e87c8;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Text Styling */
+.country-name {
+    font-size: 1.5rem;
+    color: #0e87c8;
+    font-weight: 400;
+}
+
+.city-name {
+    font-size: 1.3rem;
+    color: black;
+    font-weight: 300;
+}
+
+.price-text {
+    font-size: 1rem;
+    color: black;
+    font-weight: 400;
+    margin-top: 2px;
+}
+
+.section-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 14px 20px;
+    position: relative;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+  }
+  
+  .text-container {
+    width: 70%;
+    padding-right: 40px;
+  }
+  
+  .title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  
+  .description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+  }
+  
+  .ultimate-btn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: #0e87c8;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .ultimate-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .image-container {
+    width: 30%;
+    position: relative;
+    height: 500px;
+  }
+  
+  .border-wrapper {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  .border-image {
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    overflow: hidden;
+  }
+  
+  .main-image {
+    border-radius: 181px 181px 0 0;
+    width: 100%;
+    height: auto;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 21px;
+    left: 9px;
+    z-index: 2;
+  }
+  
+  /* SLIDER */
+  .slider-container {
+    position: absolute;
+    top: 73%;
+    z-index: 4;
+    width: 100%;
+    max-width: 953px;
+    overflow: hidden;
+  }
+  
+  .slick-slide {
+    flex: 0 0 300px !important;
+    max-width: 235px !important;
+  }
+  
+  .image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    width: 217px;
+    height: 217px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .slider-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+  
+  .country-name {
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+    color: white;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+  
+  /* ============ RESPONSIVE BREAKPOINTS ============ */
+  
+  @media (max-width: 1024px) {
+    .section-container {
+      flex-direction: column;
+      align-items: center;
+      flex-direction: row-reverse;
+    }
+  
+    .text-container {
+      width: 100%;
+      padding-right: 0;
+      text-align: center;
+    }
+  
+    .image-container {
+      width: 100%;
+      height: auto;
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+  
+    .slider-container {
+      position: relative;
+      top: auto;
+      left: auto;
+      z-index: auto;
+      margin-top: 20px;
+      width: 100%;
+      overflow-x: auto;
+      display: flex;
+      gap: 15px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+  
+    .slick-slide {
+      flex: 0 0 auto !important;
+      min-width: 200px !important;
+      scroll-snap-align: start;
+    }
+  
+    .border-wrapper {
+      display: none; /* HIDE ON TABLETS AND BELOW */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .section-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+    }
+  
+    .image-container {
+        order: -1;
+        margin-top: -97px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 127px;
+    }
+    
+  
+    .border-wrapper {
+      position: relative;
+      width: auto;
+      height: auto;
+      display: flex
+;
+    }
+  
+    /* .main-image {
+      position: relative;
+      width: 100%;
+      height: auto;
+    } */
+  
+    .text-container {
+      width: 100%;
+      text-align: center;
+      padding: 0 10px;
+    }
+  
+    .slider-container {
+        display: flex !important;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-wrap: nowrap;
+        gap: 15px;
+        width: 100%;
+        padding: 15px 0;
+        margin-top: 20px;
+        scroll-snap-type: x mandatory;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    
+      .slider-container::-webkit-scrollbar {
+        display: none;
+      }
+    
+      .slick-list {
+        display: contents; /* 👈 this is what ensures the slider works */
+        overflow-x: scroll;
+        overflow-y: hidden;
+        padding: 10px 0;
+      }
+    
+      .image-wrapper {
+        width: 170px;
+        height: 170px;
+        position: relative;
+      }
+    
+      .slider-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+      }
+    
+      .country-name {
+        font-size: 12px;
+        padding: 4px 8px;
+        display: block;
+        text-align: center;
+      }
+  
+    .ultimate-btn {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 300px;
+      font-size: 16px;
+      padding: 12px 24px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    /* .slider-container {
+      padding-left: 10px;
+    } */
+  
+    .text-container {
+      text-align: center;
+    }
+  }
+  
+
+.discount-banner {
+    position: relative;
+    height: 250px; 
+    margin: 200px auto 40px auto; 
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+
+.discount-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.discount-text {
+    position: absolute;
+    top: 55%;
+    left: 5%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 43px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+.discount-text span {
+    color: #ffcc00; /* Highlight 30% in a different color */
+    font-size: 48px;
+}
+

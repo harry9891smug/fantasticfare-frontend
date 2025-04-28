@@ -39,7 +39,7 @@ const travelTips: TravelTip[] = [
 ];
 
 const Packages: React.FC = () => {
-  
+
   const [packages, setPackages] = useState<Package[]>([]);
   const [selectedTip, setSelectedTip] = useState<TravelTip>(travelTips[0]);
   const [loading, setLoading] = useState(true);
@@ -50,7 +50,7 @@ const Packages: React.FC = () => {
       setLoading(true);
       const response = await fetch("http://localhost:8000/api/list-package");
       if (!response.ok) throw new Error("Failed to fetch packages.");
-      
+
       const data = await response.json();
       if (data.status && data.data) {
         setPackages(data.data);
@@ -82,7 +82,7 @@ const Packages: React.FC = () => {
 
   useEffect(() => {
     fetchPackages();
-    
+
   }, []);
   useEffect(() => {
     const handleRouteChange = () => {
@@ -91,7 +91,7 @@ const Packages: React.FC = () => {
         window.dispatchEvent(new Event('resize'));
       }
     };
-  
+
     window.addEventListener('popstate', handleRouteChange);
     return () => window.removeEventListener('popstate', handleRouteChange);
   }, []);
@@ -104,7 +104,7 @@ const Packages: React.FC = () => {
         {[...Array(3)].map((_, i) => (
           <div className="col-md-4 mb-4" key={i}>
             <div className="card shadow-sm h-100 placeholder-glow">
-              <div className="card-img-top placeholder" style={{height: "200px"}}></div>
+              <div className="card-img-top placeholder" style={{ height: "200px" }}></div>
               <div className="card-body">
                 <h5 className="card-title placeholder-glow">
                   <span className="placeholder col-6"></span>
@@ -126,7 +126,7 @@ const Packages: React.FC = () => {
       <div className="alert alert-danger">
         <h4>Error loading packages</h4>
         <p>{error}</p>
-        <button 
+        <button
           className="btn btn-primary"
           onClick={fetchPackages}
         >
@@ -158,15 +158,15 @@ const Packages: React.FC = () => {
                 <div className="card-img-container">
                   {pkg.package_image?.length > 0 ? (
                     <Swiper
-                    modules={[Pagination, Autoplay]}
-                    pagination={{ clickable: true }}
-                    spaceBetween={10}
-                    slidesPerView={1}
-                    autoplay={{ delay: 2500, disableOnInteraction: false }}
-                    observer={true}  // Add this
-                    observeParents={true}  // Add this
-                    key={pkg._id}  // Add unique key
-                  >
+                      modules={[Pagination, Autoplay]}
+                      pagination={{ clickable: true }}
+                      spaceBetween={10}
+                      slidesPerView={1}
+                      autoplay={{ delay: 2500, disableOnInteraction: false }}
+                      observer={true}  // Add this
+                      observeParents={true}  // Add this
+                      key={pkg._id}  // Add unique key
+                    >
                       {pkg.package_image.map((img, idx) => (
                         <SwiperSlide key={idx}>
                           <Image
@@ -175,8 +175,8 @@ const Packages: React.FC = () => {
                             width={400}
                             height={250}
                             className="card-img-top"
-                            style={{ 
-                              objectFit: "cover", 
+                            style={{
+                              objectFit: "cover",
                               borderRadius: "8px",
                               width: '100%',
                               height: 'auto'
@@ -217,9 +217,15 @@ const Packages: React.FC = () => {
                     )}
                   </div>
                   <div className="buttons">
-                  <button className="phone-button">📞</button>
-                  <button className="callback-button">Request Callback</button>
-                </div>
+                    <a href="tel:+18334227770">
+                      <button className="phone-button">📞</button>
+                    </a>
+                      <button className="callback-button">
+                        <a href="tel:+18334227770" style={{color:"#fff"}}>
+                            Request Callback
+                        </a>
+                        </button>
+                  </div>
                 </div>
               </div>
             </div>

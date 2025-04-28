@@ -19,14 +19,28 @@ import "react-toastify/dist/ReactToastify.css";
 import "../../assets/css/articledetails.css"
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
+
+
+interface Packages {
+  _id: string;
+  package_name: string;
+  package_image: string[];
+  package_heading: string;
+  from_country: string;
+  to_country: string;
+  total_price: string;
+  discounted_price: string;
+  days?: string;
+}
 interface Package {
   _id: string;
   package_name: string;
   package_url: string;
   package_image: string[];
   package_heading: string;
-  from_country: string;
-  to_country: string;
+  region: string;
+  continent: string;
+  country: string;
   total_price: string;
   discounted_price: string;
   itineraries: Array<{
@@ -90,6 +104,9 @@ interface Package {
   meta_name: string;
   meta_description: string;
   status: number;
+  country_name:{
+    name:string,
+  };
   created_by: string;
   createdAt: string;
   updatedAt: string;
@@ -119,6 +136,8 @@ const schema = yup.object().shape({
 const PackageDetails: React.FC = () => {
   const params = useParams();
   const { id } = params;
+
+  const [packages, setPackages] = useState<Packages[]>([]);
   const [packageData, setPackageData] = useState<Package | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -134,7 +153,22 @@ const PackageDetails: React.FC = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const fetchPackages = async (country) => {
+    try {
+      setLoading(true);
+      const response = await fetch(`http://localhost:8000/api/list-package?country=${country}`);
+      if (!response.ok) throw new Error("Failed to fetch packages.");
 
+      const data = await response.json();
+      if (data.status && data.data) {
+        setPackages(data.data);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     const fetchPackage = async () => {
       try {
@@ -149,6 +183,7 @@ const PackageDetails: React.FC = () => {
             setExpandedDay(data.data.itineraries[0].days[0].day_name);
           }
         }
+        fetchPackages(data?.data?.country);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An unknown error occurred");
       } finally {
@@ -725,7 +760,7 @@ const PackageDetails: React.FC = () => {
       </div>
 
       <div className="container-1">
-        <h1 style={{ marginTop: "28px" }}>Hidden Gems In {packageData.to_country}</h1>
+        <h1 style={{ marginTop: "28px" }}>Hidden Gems In {packageData.country_name.name}</h1>
         <div className="cards">
           {[1, 2, 3].map((item) => (
             <div className="card" key={item}>
@@ -739,7 +774,7 @@ const PackageDetails: React.FC = () => {
                 />
                 <div className="heading-2-dubai">Hidden Gem {item}</div>
                 <div className="comp-text">
-                  Discover amazing places in {packageData.to_country}
+                  Discover amazing places in {packageData.country_name.name}
                   <br />
                   {`that most tourists don't know about`}
                 </div>

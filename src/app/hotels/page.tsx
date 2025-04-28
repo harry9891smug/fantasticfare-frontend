@@ -22,6 +22,7 @@ type Suggestion = {
   name: string;
   type: 'city' | 'country' | 'region';
   country?: string;
+  country_name?:string;
 };
 
 const HotelSearch = () => {
@@ -33,6 +34,7 @@ const HotelSearch = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<Suggestion | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [suggestion_type,setSuggestionType] = useState(String);
   const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -53,6 +55,7 @@ const HotelSearch = () => {
       if (!response.ok) throw new Error('Failed to fetch suggestions');
       
       const result = await response.json();
+      setSuggestionType(result?.data?.type);
       setSuggestions(result?.data?.data || []);
     } catch (error) {
       console.error("Error fetching suggestions:", error);
@@ -171,10 +174,11 @@ const HotelSearch = () => {
                     <div className="suggestion-content">
                       <div className="suggestion-text">
                         <strong>{suggestion.name}</strong>
-                        {suggestion.country && <span className="country">{`, ${suggestion.country}`}</span>}
+                        {suggestion.country_name && <span className="country">{`, ${suggestion.country_name}`}</span>}
                       </div>
                       <div className="suggestion-type-badge">
-                        {suggestion.type?.charAt(0).toUpperCase() + suggestion.type?.slice(1)}
+                        {/* {suggestion.type?.charAt(0).toUpperCase() + suggestion.type?.slice(1)} */}
+                        {suggestion_type}
                       </div>
                     </div>
                   </div>

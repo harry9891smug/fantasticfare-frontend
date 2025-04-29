@@ -126,7 +126,7 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
         rateKey: selectedRoom.rates[0].rateKey
       };
 
-      const response = await fetch(`http://localhost:8000/api/bookHotel/${params.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/bookHotel/${params.id}`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

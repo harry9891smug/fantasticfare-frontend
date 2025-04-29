@@ -46,7 +46,7 @@ const HotelSearch = () => {
 
     try {
       setIsLoading(true);
-      const response = await fetch('http://localhost:8000/api/hotels/search_city', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/search_city`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ city_name: query }),

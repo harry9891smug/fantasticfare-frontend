@@ -83,7 +83,7 @@ export default function HotelResultsPage() {
   const hotelsPerPage = 10;
   const fetchHotelImages = async (hotelCode: number) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/hotels/${hotelCode}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/${hotelCode}`);
       const data = await response.json();
   
       if (data?.status && data.data?.images) {
@@ -130,7 +130,7 @@ export default function HotelResultsPage() {
   
         console.log('Sending request:', requestBody);
   
-        const response = await fetch("http://localhost:8000/api/hotels/searchHotelsByArea", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/searchHotelsByArea`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(requestBody),
@@ -224,7 +224,7 @@ export default function HotelResultsPage() {
         console.log('Request body:', JSON.stringify(requestBody, null, 2));
   
         // Make API call
-        const response = await fetch("http://localhost:8000/api/hotels/searchHotelsByArea", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/searchHotelsByArea`, {
           method: "POST",
           headers: { 
             "Content-Type": "application/json",

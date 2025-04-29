@@ -14,7 +14,7 @@ export default function Home() {
 
   const fetchHotels = async () => {
     if (!location) return;
-    const res =fetch('http://localhost:8000/api/search-hotels', {
+    const res =fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/search-hotels`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

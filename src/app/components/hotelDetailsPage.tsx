@@ -188,7 +188,7 @@ const HotelDetails = () => {
   
 
         // Fetch hotel details
-        const hotelRes = await fetch("http://localhost:8000/api/hotels/hotel-details", {
+        const hotelRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/hotel-details`, {
           method: "POST",
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ hotel_id: hotelId }),
@@ -217,7 +217,7 @@ const HotelDetails = () => {
   
           if (validRateKeys.length > 0) {
             try {
-              const ratesRes = await fetch('http://localhost:8000/api/hotels/checkFare', {
+              const ratesRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/checkFare`, {
                 method: 'POST',
                 headers: { 
                   'Content-Type': 'application/json',

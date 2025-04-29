@@ -326,7 +326,7 @@ const TravelOfferPage = () => {
           </div>
         )}
 
-        <div className="input-group mb-2">
+        <div className="input-group mb-2 custom-input-wrap">
         <Controller
   name="country_code"
   control={control}

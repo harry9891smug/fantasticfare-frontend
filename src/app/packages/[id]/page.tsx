@@ -1,8 +1,9 @@
 
+
 "use client";
+import { useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
 import Head from "next/head";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -19,6 +20,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "../../assets/css/articledetails.css"
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 
 interface Packages {
@@ -84,6 +87,10 @@ interface Package {
     createdAt: string;
     updatedAt: string;
     __v: number;
+  }>;
+  addons:Array<{
+  addon_name:string;
+  addon_icon:string;
   }>;
   inclusion?: Array<{
     type: string;
@@ -203,7 +210,7 @@ const PackageDetails: React.FC = () => {
  useEffect(() => {
     const fetchCountryCodes = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}`/country-code``);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/country-code`);
         const data = await res.json();
         if (data.status && Array.isArray(data.countryCodes)) {
           const formatted = data.countryCodes.map((code: string) => ({
@@ -306,18 +313,25 @@ const PackageDetails: React.FC = () => {
             <span>{packageData.itineraries?.[0]?.days?.length || 0}N/{(packageData.itineraries?.[0]?.days?.length || 0) - 1}D</span>
           </div>
           <div className="package-inclusions">
-            <div className="inclusion">
+            {/* <div className="inclusion">
               <Image src="/images/images/car.svg" alt="Transfer" width={20} height={20} />
               <span>Transfer Included</span>
+            </div> */}
+            {Array.isArray(packageData.addons) && 
+            packageData.addons.map((addon, index) => (
+              <div className="inclusion">
+              <i className={addon.addon_icon}>{}</i>
+              <span>{addon.addon_name}</span>
             </div>
-            <div className="inclusion">
+            ))}
+            {/* <div className="inclusion">
               <Image src="/images/images/home.svg" alt="Stay" width={20} height={20} />
               <span>Stay Included</span>
-            </div>
-            <div className="inclusion">
+            </div> */}
+            {/* <div className="inclusion">
               <Image src="/images/images/hot-air-balloon.svg" alt="Sightseeing" width={20} height={20} />
               <span>Sightseeing Included</span>
-            </div>
+            </div> */}
           </div>
           <div className="package-price-container">
             <div className="package-price">
@@ -435,10 +449,10 @@ const PackageDetails: React.FC = () => {
         onClick={() => toggleAccordion(day.day_name)}
         aria-expanded={expandedDay === day.day_name}
       >
-        <span className="day-title">{day.day_name}</span>
-        <span className="accordion-tab-title">Itinerary Details</span>
+        <span className="day-title">Day {index +1}</span>
+        <span className="accordion-tab-title">{day.day_name}</span>
         <span className={`accordion-arrow ${expandedDay === day.day_name ? 'expanded' : ''}`}>
-          {expandedDay === day.day_name ? '▼' : '►'}
+          {/* {expandedDay === day.day_name ? '▼' : '►'} */}
         </span>
       </button>
       <div
@@ -464,7 +478,7 @@ const PackageDetails: React.FC = () => {
         )}
         <div className="day-title-section">
           <div className="day-capsule">{day.day_name}</div>
-          <h3 className="accordion-title">Itinerary Details</h3>
+          {/* <h3 className="accordion-title">Itinerary Details</h3> */}
         </div>
         <div className="content">
           <p>{day.day_description}</p>
@@ -518,7 +532,7 @@ const PackageDetails: React.FC = () => {
                     {stayGroup.days.map((day, dayIndex) => (
                       <div className="itinerary-card" key={dayIndex}>
                         <div className="day-header">
-                          <span className="day-badge">DAY {dayIndex + 1}</span>
+                          <span className="day-badge">Stay {dayIndex + 1}</span>
                           <h3>{day.hotel_name}</h3>
                         </div>
                         <p>{day.hotel_description}</p>
@@ -637,7 +651,7 @@ const PackageDetails: React.FC = () => {
     <Select
       {...field}
       options={countryOptions}
-      placeholder="+91"
+      placeholder="+1"
       classNamePrefix="react-select"
       className={`${errors.country_code ? "is-invalid" : ""}`}
       value={countryOptions.find((option) => option.value === field.value)}

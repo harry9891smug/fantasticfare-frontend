@@ -48,7 +48,7 @@ const Packages: React.FC = () => {
   const fetchPackages = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:8000/api/list-package");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/list-package`);
       if (!response.ok) throw new Error("Failed to fetch packages.");
 
       const data = await response.json();

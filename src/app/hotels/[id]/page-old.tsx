@@ -104,7 +104,7 @@ const HotelDetails = () => {
   useEffect(() => {
     const fetchHotelData = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/hotels/${hotelId}/details`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/${hotelId}/details`);
         if (!response.ok) {
           throw new Error('Failed to fetch hotel data');
         }

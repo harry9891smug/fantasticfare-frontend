@@ -27,7 +27,7 @@ const TipsArticlesSection = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/frontend/articles");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/frontend/articles`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch articles");

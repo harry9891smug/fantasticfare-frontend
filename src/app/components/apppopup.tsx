@@ -89,12 +89,12 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose,  onSuccess, error}) => {
         try {
            let response;
       if (isLogin) {
-        response = await axios.post("http://localhost:8000/api/login", {
+        response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
           email: formData.email,
           password: formData.password,
         });
       } else {
-        response = await axios.post("http://localhost:8000/api/register", {
+        response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
           name: formData.fullName,
           email: formData.email,
           mobile_number: formData.phone,

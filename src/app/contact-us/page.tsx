@@ -46,7 +46,7 @@ const ContactUs: React.FC = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch("http://localhost:8000/api/contact-us", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/contact-us`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +79,7 @@ const ContactUs: React.FC = () => {
   useEffect(() => {
     const fetchCountryCodes = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/country-code");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/country-code`);
         const data = await res.json();
         if (data.status && Array.isArray(data.countryCodes)) {
           const formatted = data.countryCodes.map((code: string) => ({

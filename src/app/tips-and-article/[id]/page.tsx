@@ -93,7 +93,7 @@ const TravelOfferPage = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://localhost:8000/api/frontend/article/${articleId}`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/frontend/article/${articleId}`
         );
 
         if (!response.ok) {
@@ -120,7 +120,7 @@ const TravelOfferPage = () => {
   useEffect(() => {
     const fetchCountryCodes = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/country-code");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/country-code`);
         const data = await res.json();
         if (data.status && Array.isArray(data.countryCodes)) {
           const formatted = data.countryCodes.map((code: string) => ({
@@ -142,7 +142,7 @@ const TravelOfferPage = () => {
   const onSubmit = async (data: EnquiryFormData) => {
     setFormSubmitting(true);
     try {
-      const response = await fetch("http://localhost:8000/api/contact-us", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/contact-us`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

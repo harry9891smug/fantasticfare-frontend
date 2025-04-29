@@ -153,10 +153,10 @@ const PackageDetails: React.FC = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const fetchPackages = async (country) => {
+  const fetchPackages = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8000/api/list-package?country=${country}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/list-package?country=${101}`);
       if (!response.ok) throw new Error("Failed to fetch packages.");
 
       const data = await response.json();
@@ -172,7 +172,7 @@ const PackageDetails: React.FC = () => {
   useEffect(() => {
     const fetchPackage = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/package_view/${id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/package_view/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch package");
         }
@@ -183,7 +183,8 @@ const PackageDetails: React.FC = () => {
             setExpandedDay(data.data.itineraries[0].days[0].day_name);
           }
         }
-        fetchPackages(data?.data?.country);
+        // data?.data?.country
+        fetchPackages();
       } catch (err) {
         setError(err instanceof Error ? err.message : "An unknown error occurred");
       } finally {
@@ -202,7 +203,7 @@ const PackageDetails: React.FC = () => {
  useEffect(() => {
     const fetchCountryCodes = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/country-code");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}`/country-code``);
         const data = await res.json();
         if (data.status && Array.isArray(data.countryCodes)) {
           const formatted = data.countryCodes.map((code: string) => ({
@@ -222,7 +223,7 @@ const PackageDetails: React.FC = () => {
   const onSubmit = async (data: any) => {
     setFormSubmitting(true);
     try {
-      const response = await fetch("http://localhost:8000/api/package-enquiry", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/package-enquiry`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

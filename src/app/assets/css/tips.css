@@ -138,4 +138,13 @@
     color: #555;
     line-height: 1.5;
   }
+  @media (max-width: 576px) {
+    .custom-input-wrap {
+      flex-direction: column;
+      align-items: stretch;
+    }
   
+    .custom-input-wrap > * {
+      width: 100%;
+    }
+  }

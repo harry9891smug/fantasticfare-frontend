@@ -1952,3 +1952,6 @@ h2 {
 .Toastify__toast-container {
   z-index: 9999;
 }
+.accordion-button {
+  color:#000;
+}

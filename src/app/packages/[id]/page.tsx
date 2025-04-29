@@ -10,7 +10,7 @@ import * as yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../assets/css/package_details.css";
-import 'bootstrap/dist/js/bootstrap.bundle.min'; 
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -88,9 +88,9 @@ interface Package {
     updatedAt: string;
     __v: number;
   }>;
-  addons:Array<{
-  addon_name:string;
-  addon_icon:string;
+  addons: Array<{
+    addon_name: string;
+    addon_icon: string;
   }>;
   inclusion?: Array<{
     type: string;
@@ -111,8 +111,8 @@ interface Package {
   meta_name: string;
   meta_description: string;
   status: number;
-  country_name:{
-    name:string,
+  country_name: {
+    name: string,
   };
   created_by: string;
   createdAt: string;
@@ -154,7 +154,7 @@ const PackageDetails: React.FC = () => {
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const {
     register,
-    handleSubmit,control,
+    handleSubmit, control,
     formState: { errors },
     reset,
   } = useForm({
@@ -207,7 +207,7 @@ const PackageDetails: React.FC = () => {
   const toggleAccordion = (dayName: string) => {
     setExpandedDay(expandedDay === dayName ? null : dayName);
   };
- useEffect(() => {
+  useEffect(() => {
     const fetchCountryCodes = async () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/country-code`);
@@ -285,17 +285,17 @@ const PackageDetails: React.FC = () => {
       <ToastContainer position="top-right" autoClose={5000} />
       <div className="paris-package">
         <div className="package-image">
-        <Swiper
+          <Swiper
             modules={[Pagination, Autoplay]}
             pagination={{ clickable: true }}
             spaceBetween={10}
             slidesPerView={1}
             autoplay={{ delay: 2500 }}
           >
-            {Array.isArray(packageData.package_image) && 
+            {Array.isArray(packageData.package_image) &&
               packageData.package_image.map((img, index) => (
                 <SwiperSlide key={index}>
-                  <Image 
+                  <Image
                     src={img}
                     alt={`Package image ${index + 1}`}
                     width={400}
@@ -317,13 +317,13 @@ const PackageDetails: React.FC = () => {
               <Image src="/images/images/car.svg" alt="Transfer" width={20} height={20} />
               <span>Transfer Included</span>
             </div> */}
-            {Array.isArray(packageData.addons) && 
-            packageData.addons.map((addon, index) => (
-              <div className="inclusion">
-              <i className={addon.addon_icon}>{}</i>
-              <span>{addon.addon_name}</span>
-            </div>
-            ))}
+            {Array.isArray(packageData.addons) &&
+              packageData.addons.map((addon, index) => (
+                <div className="inclusion">
+                  <i className={addon.addon_icon}>{ }</i>
+                  <span>{addon.addon_name}</span>
+                </div>
+              ))}
             {/* <div className="inclusion">
               <Image src="/images/images/home.svg" alt="Stay" width={20} height={20} />
               <span>Stay Included</span>
@@ -440,53 +440,53 @@ const PackageDetails: React.FC = () => {
                   </div>
 
                   {/* Accordions */}
-      
-<div className="accordions">
-  {packageData.itineraries[0].days.map((day, index) => (
-    <div className={`accordion ${expandedDay === day.day_name ? 'active' : ''}`} key={index}>
-      <button
-        className="accordion-button"
-        onClick={() => toggleAccordion(day.day_name)}
-        aria-expanded={expandedDay === day.day_name}
-      >
-        <span className="day-title">Day {index +1}</span>
-        <span className="accordion-tab-title">{day.day_name}</span>
-        <span className={`accordion-arrow ${expandedDay === day.day_name ? 'expanded' : ''}`}>
-          {/* {expandedDay === day.day_name ? '▼' : '►'} */}
-        </span>
-      </button>
-      <div
-        className={`accordion-content ${expandedDay === day.day_name ? 'expanded' : ''}`}
-        style={{
-          display: expandedDay === day.day_name ? 'block' : 'none'
-        }}
-      >
-        {/* Rest of your accordion content remains the same */}
-        {day.day_images?.length > 0 && (
-          <div className="image-row">
-            {day.day_images.slice(0, 3).map((img, imgIndex) => (
-              
-              <Image
-                key={imgIndex}
-                src={img}
-                alt={`${day.day_name} Image ${imgIndex + 1}`}
-                width={200}
-                height={150}
-              />
-            ))}
-          </div>
-        )}
-        <div className="day-title-section">
-          <div className="day-capsule">{day.day_name}</div>
-          {/* <h3 className="accordion-title">Itinerary Details</h3> */}
-        </div>
-        <div className="content">
-          <p>{day.day_description}</p>
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
+
+                  <div className="accordions">
+                    {packageData.itineraries[0].days.map((day, index) => (
+                      <div className={`accordion ${expandedDay === day.day_name ? 'active' : ''}`} key={index}>
+                        <button
+                          className="accordion-button"
+                          onClick={() => toggleAccordion(day.day_name)}
+                          aria-expanded={expandedDay === day.day_name}
+                        >
+                          <span className="day-title">Day {index + 1}</span>
+                          <span className="accordion-tab-title">{day.day_name}</span>
+                          <span className={`accordion-arrow ${expandedDay === day.day_name ? 'expanded' : ''}`}>
+                            {/* {expandedDay === day.day_name ? '▼' : '►'} */}
+                          </span>
+                        </button>
+                        <div
+                          className={`accordion-content ${expandedDay === day.day_name ? 'expanded' : ''}`}
+                          style={{
+                            display: expandedDay === day.day_name ? 'block' : 'none'
+                          }}
+                        >
+                          {/* Rest of your accordion content remains the same */}
+                          {day.day_images?.length > 0 && (
+                            <div className="image-row">
+                              {day.day_images.slice(0, 3).map((img, imgIndex) => (
+
+                                <Image
+                                  key={imgIndex}
+                                  src={img}
+                                  alt={`${day.day_name} Image ${imgIndex + 1}`}
+                                  width={200}
+                                  height={150}
+                                />
+                              ))}
+                            </div>
+                          )}
+                          <div className="day-title-section">
+                            <div className="day-capsule">{day.day_name}</div>
+                            {/* <h3 className="accordion-title">Itinerary Details</h3> */}
+                          </div>
+                          <div className="content">
+                            <p>{day.day_description}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </>
               ) : (
                 <p>No itinerary available for this package.</p>
@@ -601,144 +601,144 @@ const PackageDetails: React.FC = () => {
 
           {/* Enquiry Form */}
           <div className="enquiry-form">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="form-group">
-              <input 
-                type="text" 
-                id="full-name" 
-                placeholder="Enter your full name" 
-                {...register("first_name")}
-                className={errors.first_name ? "error" : ""}
-              />
-              {errors.first_name && (
-                <p className="error-message">{errors.first_name.message}</p>
-              )}
-            </div>
-            
-            <div className="form-group">
-              <input 
-                type="text" 
-                id="last-name" 
-                placeholder="Enter your last name" 
-                {...register("last_name")}
-                className={errors.last_name ? "error" : ""}
-              />
-              {errors.last_name && (
-                <p className="error-message">{errors.last_name.message}</p>
-              )}
-            </div>
-            
-            <div className="form-group">
-              <input 
-                type="email" 
-                id="email" 
-                placeholder="Enter your email" 
-                {...register("email")}
-                className={errors.email ? "error" : ""}
-              />
-              {errors.email && (
-                <p className="error-message">{errors.email.message}</p>
-              )}
-            </div>
-            
-            <div className="form-group phone-group">
-              <div className="phone-input">
-              <Controller
-  name="country_code"
-  control={control}
-  rules={{ required: "Country code is required" }}
-  render={({ field }) => (
-    <Select
-      {...field}
-      options={countryOptions}
-      placeholder="+1"
-      classNamePrefix="react-select"
-      className={`${errors.country_code ? "is-invalid" : ""}`}
-      value={countryOptions.find((option) => option.value === field.value)}
-      onChange={(selectedOption) => field.onChange(selectedOption?.value)}
-      styles={{
-        control: (base, state) => ({
-          ...base,
-          width: "90px",        // Set width here
-          height: "35px",        // Set height here
-          borderColor: errors.country_code ? "#dc3545" : "#ced4da",
-          minHeight: "40px",     // Makes sure height isn't overridden
-        }),
-        menu: (base) => ({
-          ...base,
-          zIndex: 9999,
-        }),
-      }}
-    />
-  )}
-/>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="form-group">
+                <input
+                  type="text"
+                  id="full-name"
+                  placeholder="Enter your full name"
+                  {...register("first_name")}
+                  className={errors.first_name ? "error" : ""}
+                />
+                {errors.first_name && (
+                  <p className="error-message">{errors.first_name.message}</p>
+                )}
+              </div>
 
-            {errors.country_code && (
-              <div className="invalid-feedback d-block">
-                {errors.country_code.message}
-              </div>
-            )}
-                <input 
-                  type="tel" 
-                  id="phone" 
-                  placeholder="Enter your phone number" 
-                  {...register("mobile_number")}
-                  className={errors.mobile_number ? "error" : ""}
-                />
-              </div>
-              {errors.mobile_number && (
-                <p className="error-message">{errors.mobile_number.message}</p>
-              )}
-            </div>
-            
-            <div className="form-group date-traveller-group">
               <div className="form-group">
-                <input 
-                  type="date" 
-                  id="travel-date" 
-                  {...register("travel_date")}
-                  className={errors.travel_date ? "error" : ""}
+                <input
+                  type="text"
+                  id="last-name"
+                  placeholder="Enter your last name"
+                  {...register("last_name")}
+                  className={errors.last_name ? "error" : ""}
                 />
-                {errors.travel_date && (
-                  <p className="error-message">{errors.travel_date.message}</p>
+                {errors.last_name && (
+                  <p className="error-message">{errors.last_name.message}</p>
                 )}
               </div>
+
               <div className="form-group">
-                <input 
-                  type="number" 
-                  id="traveller-count" 
-                  placeholder="Number of travellers" 
-                  {...register("traveller_count")}
-                  className={errors.traveller_count ? "error" : ""}
-                  min="1"
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  {...register("email")}
+                  className={errors.email ? "error" : ""}
                 />
-                {errors.traveller_count && (
-                  <p className="error-message">{errors.traveller_count.message}</p>
+                {errors.email && (
+                  <p className="error-message">{errors.email.message}</p>
                 )}
               </div>
-            </div>
-            
-            <div className="form-group">
-              <textarea 
-                id="message" 
-                placeholder="Enter your message..." 
-                {...register("message")}
-                className={errors.message ? "error" : ""}
-              ></textarea>
-              {errors.message && (
-                <p className="error-message">{errors.message.message}</p>
-              )}
-            </div>
-            
-            <button 
-              type="submit" 
-              className="submit-button"
-              disabled={formSubmitting}
-            >
-              {formSubmitting ? "Sending..." : "Send Enquiry"}
-            </button>
-          </form>
-        </div>
+
+              <div className="form-group phone-group">
+                <div className="phone-input">
+                  <Controller
+                    name="country_code"
+                    control={control}
+                    rules={{ required: "Country code is required" }}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={countryOptions}
+                        placeholder="+1"
+                        classNamePrefix="react-select"
+                        className={`${errors.country_code ? "is-invalid" : ""}`}
+                        value={countryOptions.find((option) => option.value === field.value)}
+                        onChange={(selectedOption) => field.onChange(selectedOption?.value)}
+                        styles={{
+                          control: (base, state) => ({
+                            ...base,
+                            width: "90px",        // Set width here
+                            height: "35px",        // Set height here
+                            borderColor: errors.country_code ? "#dc3545" : "#ced4da",
+                            minHeight: "40px",     // Makes sure height isn't overridden
+                          }),
+                          menu: (base) => ({
+                            ...base,
+                            zIndex: 9999,
+                          }),
+                        }}
+                      />
+                    )}
+                  />
+
+                  {errors.country_code && (
+                    <div className="invalid-feedback d-block">
+                      {errors.country_code.message}
+                    </div>
+                  )}
+                  <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Enter your phone number"
+                    {...register("mobile_number")}
+                    className={errors.mobile_number ? "error" : ""}
+                  />
+                </div>
+                {errors.mobile_number && (
+                  <p className="error-message">{errors.mobile_number.message}</p>
+                )}
+              </div>
+
+              <div className="form-group date-traveller-group">
+                <div className="form-group">
+                  <input
+                    type="date"
+                    id="travel-date"
+                    {...register("travel_date")}
+                    className={errors.travel_date ? "error" : ""}
+                  />
+                  {errors.travel_date && (
+                    <p className="error-message">{errors.travel_date.message}</p>
+                  )}
+                </div>
+                <div className="form-group">
+                  <input
+                    type="number"
+                    id="traveller-count"
+                    placeholder="Number of travellers"
+                    {...register("traveller_count")}
+                    className={errors.traveller_count ? "error" : ""}
+                    min="1"
+                  />
+                  {errors.traveller_count && (
+                    <p className="error-message">{errors.traveller_count.message}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="form-group">
+                <textarea
+                  id="message"
+                  placeholder="Enter your message..."
+                  {...register("message")}
+                  className={errors.message ? "error" : ""}
+                ></textarea>
+                {errors.message && (
+                  <p className="error-message">{errors.message.message}</p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                className="submit-button"
+                disabled={formSubmitting}
+              >
+                {formSubmitting ? "Sending..." : "Send Enquiry"}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
 
@@ -774,7 +774,7 @@ const PackageDetails: React.FC = () => {
         </div>
       </div>
 
-      <div className="container-1">
+      {/* <div className="container-1">
         <h1 style={{ marginTop: "28px" }}>Hidden Gems In {packageData.country_name.name}</h1>
         <div className="cards">
           {[1, 2, 3].map((item) => (
@@ -809,6 +809,36 @@ const PackageDetails: React.FC = () => {
             </div>
           ))}
         </div>
+      </div> */}
+      <div className="package-section">
+        {packageData.faq[0].questions?.length > 0 && (
+          <div className="mt-5">
+            <h5 className="fw-bold mb-4">Frequently Asked Questions</h5>
+            <div className="accordion" id="faqAccordion">
+              {packageData.faq[0].questions.map((faq, index) => (
+                <div key={faq._id} className="accordion-item">
+                  <h6 className="accordion-header">
+                    <button
+                      className="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target={`#faq-${index}`}
+                    >
+                      {faq.question}
+                    </button>
+                  </h6>
+                  <div
+                    id={`faq-${index}`}
+                    className="accordion-collapse collapse"
+                    data-bs-parent="#faqAccordion"
+                  >
+                    <div className="accordion-body">{faq.answer}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

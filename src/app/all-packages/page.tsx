@@ -29,6 +29,7 @@ const AllPackagesPage = () => {
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [displayCount, setDisplayCount] = useState(9); // Initial load of 9 packages
+  const [totalCount, settotalCount] = useState(0); // Initial load of 9 packages
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [showEnquiryModal, setShowEnquiryModal] = useState(false);
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
@@ -64,15 +65,17 @@ const AllPackagesPage = () => {
     setShowEnquiryModal(false);
     setSelectedPackage(null);
   };
-
-  useEffect(() => {
-    const fetchPackages = async () => {
+const fetchPackages = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/list-package`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/list-package?limit=${20}`);
         const data = await response.json();
         if (data.status) {
           setPackages(data.data);
+          console.log(data.data)
+        }
+        if(data.count){
+          settotalCount(data.count);
         }
       } catch (error) {
         console.error('Error fetching packages:', error);
@@ -81,9 +84,9 @@ const AllPackagesPage = () => {
         setLoading(false);
       }
     };
-
+  useEffect(() => {
     fetchPackages();
-  }, []);
+  }, [displayCount]);
 
   const loadMore = () => {
     setDisplayCount(prev => prev + 9); // Load 9 more packages
@@ -118,7 +121,7 @@ const AllPackagesPage = () => {
       )}
 
       {/* Show Load More button only if there are more packages to load */}
-      {displayCount < packages.length && (
+      {displayCount < totalCount && (
         <div className="text-center mt-4">
           <button 
             className=" custom-btn-main"
@@ -128,13 +131,13 @@ const AllPackagesPage = () => {
             {loading ? 'Loading...' : 'Load More Packages'}
           </button>
           <div className="mt-2 text-muted">
-            Showing {Math.min(displayCount, packages.length)} of {packages.length} packages
+            Showing {Math.min(displayCount)} of {totalCount} packages
           </div>
         </div>
       )}
 
       {/* Show message when all packages are loaded */}
-      {displayCount >= packages.length && packages.length > 0 && (
+      {displayCount >= totalCount && totalCount > 0 && (
         <div className="text-center mt-4">
           <p className="text-success">All packages loaded</p>
         </div>

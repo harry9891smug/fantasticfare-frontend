@@ -1,0 +1,173 @@
+/* Flight Search Form - Exact Match to Image */
+.flight-search-form {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.trip-type-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+.trip-type-tabs .tab {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: #666;
+  margin-right: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.trip-type-tabs .tab.active {
+  color: #fff;
+  background-color: #1a73e8;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  align-items: flex-end;
+}
+
+.form-group {
+  flex: 1;
+}
+
+.form-label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group .react-select__control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #1a73e8;
+}
+
+.cabin-class .react-select__control {
+  min-height: 40px;
+}
+
+.date-display,
+.travelers-display {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 14px;
+  color: #333;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.extras-row {
+  margin-top: 10px;
+}
+
+.extra-btn {
+  background: none;
+  border: 1px dashed #ddd;
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: #666;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+
+.extra-btn:hover {
+  border-color: #bbb;
+}
+
+.contact-row {
+  margin-top: 20px;
+}
+
+.phone-input-container {
+  display: flex;
+  gap: 8px;
+}
+
+.phone-input-container .country-select {
+  min-width: 100px;
+}
+
+.phone-input-container input {
+  flex: 1;
+}
+
+.search-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.search-btn:hover {
+  background-color: #0d62c9;
+}
+
+/* React Select Customization */
+.react-select__control {
+  border-radius: 4px !important;
+  min-height: 40px !important;
+}
+
+.react-select__value-container {
+  padding: 0 8px !important;
+}
+
+.react-select__indicator {
+  padding: 4px !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .form-row {
+    flex-wrap: wrap;
+  }
+  
+  .form-group {
+    min-width: calc(50% - 8px);
+  }
+}
+
+@media (max-width: 480px) {
+  .form-group {
+    min-width: 100%;
+  }
+  
+  .trip-type-tabs .tab {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}

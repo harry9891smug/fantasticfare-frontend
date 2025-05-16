@@ -235,7 +235,7 @@ const TravelOfferPage = () => {
       <ToastContainer position="top-right" autoClose={5000} />
       <div className="row">
         <div className="col-lg-8">
-          <h2 className="fw-bold mb-4">{article.article_heading}</h2>
+          <h2 className="fw-bold mb-4 ">{article.article_heading}</h2>
           
           {imageUrls[0] && (
             <Image
@@ -335,7 +335,7 @@ const TravelOfferPage = () => {
     <Select
       {...field}
       options={countryOptions}
-      placeholder="+91"
+      placeholder="+1"
       classNamePrefix="react-select"
       className={`${errors.country_code ? "is-invalid" : ""}`}
       value={countryOptions.find((option) => option.value === field.value)}

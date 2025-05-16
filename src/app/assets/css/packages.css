@@ -28,7 +28,9 @@
   border-radius: 10px;
   overflow: hidden;
 }
-
+.card-title{
+  color : #0389c6;
+}
 .package-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
@@ -95,8 +97,8 @@
 /* Call Button */
 .phone-button {
   background: transparent; 
-  color: #007bff; 
-  border: 2px solid #007bff; 
+  color: #0389c6; 
+  border: 2px solid #0389c6; 
   padding: 8px 16px;
   border-radius: 5px; 
   cursor: pointer; 
@@ -104,19 +106,19 @@
 }
 
 .phone-button:hover {
-  background: #007bff; 
+  background: #0389c6; 
   color: white;
 }
 
 /* Request Callback Button */
 .callback-button {
-  background: #1d86e7;
+  background: #0389c6;
   color: white;
   flex: 3;
 }
 
 .callback-button:hover {
-  background: #1e7e34;
+  background: #d68005;
 }
 
 
@@ -285,4 +287,243 @@
     padding: 5px 15px;
     font-size: 13px;
   }
+}
+/* packages.css or your main CSS file */
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1040;
+  padding: 1rem;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Modal Content */
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: translateY(0);
+  transition: all 0.3s ease;
+  padding: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Modal Close Button */
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.modal-close:hover {
+  color: #333;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Price Section */
+.price-section {
+  border-bottom: 1px solid #eee;
+}
+
+.package-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.price-details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.current-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0389c6;
+}
+
+.original-price {
+  font-size: 1.25rem;
+  color: #666;
+  text-decoration: line-through;
+}
+
+.save-badge {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.save-text {
+  font-size: 0.75rem;
+}
+
+/* Form Styles */
+.enquiry-form {
+  margin-top: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 0.55rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group .react-select__control {
+  width: 100%;
+  padding: 0.55rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #0389c6;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.error-message {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form-group.error input,
+.form-group.error textarea,
+.form-group.error .react-select__control {
+  border-color: #dc2626;
+}
+
+/* Phone Input Group */
+.phone-group {
+  margin-bottom: 0.55rem;
+}
+
+.phone-input {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.phone-input .react-select__control {
+  min-width: 100px;
+}
+
+/* Date and Traveller Group */
+.date-traveller-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Submit Button */
+.submit-button {
+  width: 100%;
+  padding: 0.875rem;
+  background-color: #0389c6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.submit-button:hover {
+  background-color: #0389c6;
+}
+
+.submit-button:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  .modal-content {
+    padding: 1.5rem;
+  }
+
+  .date-traveller-group {
+    grid-template-columns: 1fr;
+  }
+
+  .phone-input {
+    flex-direction: column;
+  }
+
+  .phone-input .react-select__control {
+    width: 100%;
+  }
+}
+
+/* React Select Customization */
+.react-select__control {
+  min-height: 48px;
+  border-radius: 8px !important;
+}
+
+.react-select__menu {
+  z-index: 1001 !important;
 }

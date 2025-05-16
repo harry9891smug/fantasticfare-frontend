@@ -102,10 +102,10 @@ const ContactUs: React.FC = () => {
       <ToastContainer />
       <div className="text-center my-5 px-4">
         <h5 className="fw-bold text-dark w-75 mx-auto">
-          Feel free to reach out by filling out the contact form below.
+        We’re Here to Help You Fly Smarter!
         </h5>
         <h6 className="fw-bold text-dark w-75 mx-auto mt-2">
-          Our team will respond promptly to your inquiry.
+        At FantasticFare, we know that great travel begins with great service. Whether {`you're `} booking your next adventure, making changes to your itinerary, or just have a few questions, our friendly team is always here to assist.
         </h6>
       </div>
 
@@ -186,7 +186,7 @@ const ContactUs: React.FC = () => {
     <Select
       {...field}
       options={countryOptions}
-      placeholder="+91"
+      placeholder="+1"
       classNamePrefix="react-select"
       value={countryOptions.find((option) => option.value === field.value)}
       onChange={(selectedOption) => field.onChange(selectedOption?.value)}

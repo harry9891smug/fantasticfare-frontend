@@ -6,13 +6,19 @@
     /* background-color: #f4f4f4; */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-  
+
+.title-links{
+  text-decoration: none;
+  color: #0389cf;
+}
+
   /* Headings */
   .tips-articles-section h2 {
     text-align: center;
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 30px;
+    color: #0389cf;
   }
   
   .tips-articles-section h3 {
@@ -20,12 +26,14 @@
     font-weight: 600;
     margin-top: 20px;
     margin-bottom: 10px;
+    color: #0389cf;
   }
   
   .tips-articles-section h4 {
     font-size: 16px;
     font-weight: 600;
     margin: 10px 0 5px;
+    color: #0389cf;
   }
   
   /* Grid Layout */
@@ -68,7 +76,7 @@
   .read-more-btn {
     display: inline-block;
     padding: 10px 30px;
-    background-color: #2563eb;
+    background-color: #d4831c;
     color: #fff;
     font-size: 16px;
     border: none;
@@ -78,7 +86,7 @@
   }
   
   .read-more-btn:hover {
-    background-color: #1e40af;
+    background-color: #0389cf;
   }
   
   /* In-depth Section */
@@ -87,6 +95,7 @@
     font-size: 26px;
     font-weight: bold;
     margin: 60px 0 30px;
+    
   }
   
   .in-depth-layout {

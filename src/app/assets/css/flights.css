@@ -14,17 +14,28 @@
   min-width: 50px;
   min-height: 50px;
 }
-
+.input-group-text{
+  color:#0e87c8;
+}
 .custom-input .form-control, 
 .custom-input .input-group-text {
   border: none;
-  border-bottom: 2px solid #007bff;
+  border-bottom: 2px solid #0e87c8;
   border-radius: 0;
   padding: 10px;
   font-size: 16px;
   background: transparent;
 }
+.btn-search{
+  background-color:#0e87c8;
+  border-color: #0e87c8;
 
+}
+.btn-search:hover{
+  background-color:#cf8701;
+  border-color: #cf8701;
+
+}
 /* Form Container - Ensures Everything Stays in a Single Row */
 .form-container {
   display: flex;
@@ -41,7 +52,7 @@
 .swap-icon-circle {
   width: 50px;
   height: 50px;
-  background-color: #007bff;
+  background-color: #0e87c8;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -53,7 +64,7 @@
 }
 
 .swap-icon-circle:hover {
-  background-color: #0056b3;
+  background-color: #cf8701;
   transform: scale(1.1);
 }
 
@@ -126,12 +137,12 @@
 /* Hover & Active (Selected) State */
 .trip-type a:hover,
 .trip-type a.active {
-  color: #007bff; /* Change text color */
+  color: #0e87c8; /* Change text color */
 }
 
 .trip-type a:hover::after,
 .trip-type a.active::after {
-  background-color: #007bff; /* Show underline on hover & when selected */
+  background-color: #0e87c8; /* Show underline on hover & when selected */
 }
 
 /* Responsive Adjustments */
@@ -185,4 +196,136 @@
   .trip-type a {
       font-size: 13px;
   }
+}
+/* Trip Type Container */
+
+
+.trip-type {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+.trip-type button {
+  padding: 1px 7px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 300;
+  color: #666;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+
+.trip-type button.active {
+  border: none;
+  border-bottom: 2px solid #0e87c8;
+  border-radius: 0;
+
+}
+
+/* Cabin Class Dropdown */
+.cabin-dropdown-container {
+  position: relative;
+  margin-left: 10px;
+    border-radius: 10px;
+    color:#fff;
+}
+.cabin-dropdown-container:hover {
+ 
+  background-color: #0e87c8;
+    border-radius: 10px;
+    color:#fff;
+}
+.cabin-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #0e87c8;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.cabin-dropdown-trigger:hover {
+  background: #0e87c8;
+  color: #fff;
+  border-radius:10px;
+}
+
+.cabin-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 200px;
+  z-index: 10;
+  margin-top: 5px;
+}
+
+.cabin-dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cabin-dropdown-menu li button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cabin-dropdown-menu li button:hover {
+  background-color: #f5f5f5;
+}
+
+.cabin-dropdown-menu li button.selected {
+  font-weight: 600;
+  color: #1a73e8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .trip-type {
+    gap: 8px;
+  }
+  
+  .trip-type button,
+  .cabin-dropdown-trigger {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  
+  .cabin-dropdown-container {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+}
+
+.btn-add-more{
+  background-color:#0e87c8;
+  border-color: #0e87c8;
+
+}
+.btn-add-more{
+  color:#fff;
+
+}
+.btn-add-more:hover{
+  background-color:#cf8701;
+  border-color: #cf8701;
+
 }

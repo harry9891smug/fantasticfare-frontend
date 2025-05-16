@@ -1,62 +1,57 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import "../assets/css/package.css";
-import Img2 from "../assets/images/destinations/2.svg";
-import Img3 from "../assets/images/destinations/4.svg";
-import Img1 from "../assets/images/destinations/1.svg";
-import Img4 from "../assets/images/destinations/4.svg";
-import Img5 from "../assets/images/destinations/5.svg";
-import Img6 from "../assets/images/destinations/3.svg";
-
-// Define type for the package object
+import Link from "next/link";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 type Package = {
-  id: number;
-  img: any;
-  title: string;
-  days: string;
-  rating: number;
-  reviews: number;
-  mainPrice: string;
-  offerPrice: string;
-  savedAmount: string;
+  _id: string;
+  package_heading: string;
+  package_image: string[];
+  total_price: string;
+  discounted_price: string;
 };
-
-// Define valid tabs based on packagesData keys
-type ValidTabs = 'honeymoon' | 'adventure' | 'travel';
-
-const packagesData: Record<ValidTabs, Package[]> = {
-  honeymoon: [
-    { id: 1, img: Img5, title: "Glimpse Of Switzerland | FREE FIFA Museum Tickets", days: "10 Days / 9 Nights", rating: 4.7, reviews: 75, mainPrice: "$1,500", offerPrice: "$1,200", savedAmount: "$300" },
-    { id: 2, img: Img1, title: "Amsterdam, Paris & Lucerne Tour with FREE Paris Pass", days: "5 Days / 4 Nights", rating: 4.8, reviews: 120, mainPrice: "$1,800", offerPrice: "$1,500", savedAmount: "$300" },
-    { id: 3, img: Img2, title: "Glimpse Of Switzerland | FREE FIFA Museum Tickets", days: "7 Days / 6 Nights", rating: 4.9, reviews: 90, mainPrice: "$2,500", offerPrice: "$2,000", savedAmount: "$500" },
-  ],
-  adventure: [
-    { id: 4, img: Img6, title: "Glimpse Of Switzerland | FREE FIFA Museum Tickets", days: "6 Days / 5 Nights", rating: 4.6, reviews: 85, mainPrice: "$2,000", offerPrice: "$1,800", savedAmount: "$200" },
-    { id: 5, img: Img3, title: "Amsterdam, Paris & Lucerne Tour with FREE Paris Pass", days: "10 Days / 9 Nights", rating: 4.7, reviews: 75, mainPrice: "$1,500", offerPrice: "$1,200", savedAmount: "$300" },
-    { id: 6, img: Img4, title: "Glimpse Of Switzerland | FREE FIFA Museum Tickets", days: "6 Days / 5 Nights", rating: 4.6, reviews: 85, mainPrice: "$2,200", offerPrice: "$1,800", savedAmount: "$400" },
-  ],
-  travel: [
-    { id: 7, img: Img5, title: "Glimpse Of Switzerland | FREE FIFA Museum Tickets", days: "10 Days / 9 Nights", rating: 4.7, reviews: 75, mainPrice: "$1,500", offerPrice: "$1,200", savedAmount: "$300" },
-    { id: 8, img: Img6, title: "Amsterdam, Paris & Lucerne Tour with FREE Paris Pass", days: "6 Days / 5 Nights", rating: 4.6, reviews: 85, mainPrice: "$2,000", offerPrice: "$1,800", savedAmount: "$200" },
-    { id: 9, img: Img5, title: "Glimpse Of Switzerland | FREE FIFA Museum Tickets", days: "10 Days / 9 Nights", rating: 4.7, reviews: 75, mainPrice: "$1,500", offerPrice: "$1,200", savedAmount: "$300" },
-  ],
-};
-
-const tabs = ["honeymoon", "adventure", "travel", "yatra", "family", "luxury"];
 
 const PackageSection = () => {
+  const [packages, setPackages] = useState<Package[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const [visiblePackages, setVisiblePackages] = useState(6);
+  const tabs = ["honeymoon", "adventure", "travel", "yatra", "family", "luxury"];
+  const fetchPackages = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/list-package`
+      );
+      if (!response.ok) throw new Error("Failed to fetch packages.");
+      const data = await response.json();
+      if (data.status && data.data) {
+        setPackages(data.data);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const [activeTab, setActiveTab] = useState<string>("honeymoon");
 
-  const validPackages = packagesData[activeTab as ValidTabs];
+  useEffect(() => {
+    fetchPackages();
+  }, []);
 
   return (
     <div className="package-section">
       <h2 className="package-title">Our Special Packages</h2>
       <hr className="full-width-line" />
-
-      {/* Tabs */}
       <div className="tabs">
         {tabs.map((tab) => (
           <button
@@ -67,51 +62,88 @@ const PackageSection = () => {
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
           </button>
         ))}
+        
       </div>
+  
+        <a className="view-all text-decoration-none" href="packages">View All</a>
+     
       <hr className="full-width-line" />
+      
 
-      <div className="view-all">
-        <a href="/all-packages">View All</a>
-      </div>
+      {loading && <p>Loading packages...</p>}
+      {error && <p className="error-message">{error}</p>}
 
       <div className="package-container">
-        {validPackages ? (
-          validPackages.map((pkg) => (
-            <div key={pkg.id} className="package-card">
-              <Image
-                src={pkg.img}
-                alt={pkg.title}
-                width={300}
-                height={200}
-                className="package-image"
-              />
-              <div className="package-info">
-                <div className="info-top">
-                  <span className="days">{pkg.days}</span>
-                  <span className="rating">
-                    ⭐ {pkg.rating} ({pkg.reviews} Reviews)
-                  </span>
-                </div>
-                <h3 className="package-name">{pkg.title}</h3>
-                <div className="price-container">
-                  <span className="main-price">
-                    <s>{pkg.mainPrice}</s>
-                  </span>
-                  <span className="offer-price">USD {pkg.offerPrice}</span>
-                  <span className="saved-price">
-                    You Save {pkg.savedAmount}
-                  </span>
-                </div>
-                <div className="buttons">
-                  <button className="phone-button">📞</button>
-                  <button className="callback-button">Request Callback</button>
-                </div>
-              </div>
-            </div>
-          ))
+      {!loading && packages.length > 0 ? (
+  <>
+    {/* Show only the first 'visiblePackages' items */}
+    {packages.slice(0, visiblePackages).map((pkg) => (
+      <div key={pkg._id} className="package-card">
+        {pkg.package_image?.length > 0 ? (
+          <Swiper
+            modules={[Pagination, Autoplay]}
+            pagination={{ clickable: true }}
+            spaceBetween={10}
+            slidesPerView={1}
+            autoplay={{ delay: 2500, disableOnInteraction: false }}
+            observer={true}
+            observeParents={true}
+            key={pkg._id}
+          >
+            {pkg.package_image.map((img, idx) => (
+              <SwiperSlide key={idx}>
+                <Image
+                  src={img}
+                  alt={`${pkg.package_heading}-${idx}`}
+                  width={400}
+                  height={250}
+                  className="card-img-top"
+                  style={{
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                    width: '100%',
+                    height: 'auto'
+                  }}
+                  priority={idx === 0}
+                  onLoadingComplete={() => window.dispatchEvent(new Event('resize'))}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         ) : (
-          <p className="no-packages">No packages available in this category.</p>
+          <div className="placeholder-image">No Image Available</div>
         )}
+        <div className="package-info">
+          <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
+            <h3 className="package-name">{pkg.package_heading}</h3>
+          </Link>
+          <div className="price-container">
+            <span className="main-price">
+              <s>USD {pkg.total_price}</s>
+            </span>
+            <span className="offer-price">
+              USD {pkg.discounted_price}
+            </span>
+            <span className="saved-price">
+              You Save $
+              {(
+                Number(pkg.total_price) - Number(pkg.discounted_price)
+              ).toFixed(2)}
+            </span>
+          </div>
+          <div className="buttons">
+            <button className="phone-button">📞</button>
+            <button className="callback-button">Request Callback</button>
+          </div>
+        </div>
+      </div>
+    ))}
+    
+   
+  </>
+) : (
+  !loading && <p className="no-packages">No packages available.</p>
+)}
       </div>
     </div>
   );

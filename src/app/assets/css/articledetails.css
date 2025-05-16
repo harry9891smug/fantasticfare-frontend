@@ -95,6 +95,7 @@ body {
   button.btn-primary {
     background-color: #0389d0;
     border: none;
+    height: 58px;
   }
   
   button.btn-primary:hover {
@@ -104,6 +105,8 @@ body {
   button.btn-warning {
     background-color: #d87f10;
     border: none;
+    height: 58px;
+    
   }
   
   button.btn-warning:hover {
@@ -134,7 +137,7 @@ body {
   @media (max-width: 768px) {
     .col-lg-4 {
       max-width: 100%;
-      margin-bottom: 20px;
+      margin: 20px 0px 20px 0px;
     }
   
     .form-control, .form-select {
@@ -142,16 +145,17 @@ body {
     }
   
     .input-group {
-      flex-direction: column;
+      flex-direction: inherit;
       align-items: flex-start;
-    }
+      gap: 3px;
+  }
   
     .input-group input,
     .input-group select {
       width: 100%;
       margin-bottom: 10px;
     }
-  
+    
     button {
       padding: 10px;
     }
@@ -161,7 +165,7 @@ body {
     .card-body {
       padding: 15px;
     }
-    
+   
     .card-title {
       font-size: 1.1rem;
     }

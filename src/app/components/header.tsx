@@ -5,7 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/header.css";
-import logo from "../assets/images/fantastic-fare-logo-10.png";
+// import logo from "../assets/images/fantastic-fare-logo-10.png";
+import logo from "../assets/images/logo.png";
 import userIcon from "../assets/images/account.svg";
 import loginIcon from "../assets/images/login.png";
 import logoutIcon from "../assets/images/logout.svg";
@@ -66,7 +67,7 @@ const Header: React.FC = () => {
       <nav className="navbar navbar-expand-lg navbar-light navbar-custom ">
         <div className="container">
           <Link href="/" className="navbar-brand">
-            <Image src={logo} alt="Fantastic Fare Logo" width={150} height={50} priority />
+            <Image src={logo} alt="Fantastic Fare Logo" width={170} height={50} priority />
           </Link>
 
           <button

@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import "../assets/css/tips.css";
 import Link from "next/link";
+import he from "he";
+
 interface Article {
   _id: string;
   article_heading: string;
@@ -81,21 +83,22 @@ const TipsArticlesSection = () => {
                 style={{ objectFit: "cover" }}
               />
             )}
-            <h3><Link href={`/tips-and-article/${article._id}`}>{article.article_heading}</Link></h3>
+            <h3 ><Link className="title-links" href={`/tips-and-article/${article._id}`}>{article.article_heading}</Link></h3>
         
             <p>
-              {article.article_description
-                .replace(/<[^>]*>/g, "") // Remove HTML tags
-                .split(" ")
-                .slice(0, 25)
-                .join(" ")}...
-            </p>
+            {he.decode(
+      (article?.article_description || "").replace(/<[^>]*>/g, "")
+    )
+      .split(" ")
+      .slice(0, 25)
+      .join(" ")}...
+  </p>
           </div>
         ))}
       </div>
 
       {visible < articles.length && (
-        <div className="text-center">
+        <div className="text-center text-link">
           <button 
             onClick={() => setVisible(articles.length)} 
             className="read-more-btn"
@@ -111,7 +114,7 @@ const TipsArticlesSection = () => {
           <h2 className="in-depth-title">Monthly Selections</h2>
           <div className="in-depth-layout">
             <div className="in-depth-left">
-              <h3>{articles[0].article_heading}</h3>
+              <h3><Link className="title-links" href={`/tips-and-article/${articles[0]._id}`}>{articles[0].article_heading}</Link></h3>
               {articles[0].article_image?.length > 0 && (
                 <Image 
                   src={articles[0].article_image[0]} 
@@ -121,20 +124,21 @@ const TipsArticlesSection = () => {
                   style={{ objectFit: "cover" }}
                 />
               )}
-              <p>
-                {articles[0].article_description
-                  .replace(/<[^>]*>/g, "")
-                  .split(" ")
-                  .slice(0, 50)
-                  .join(" ")}...
-              </p>
+               <p>
+            {he.decode(
+      (articles[0]?.article_description || "").replace(/<[^>]*>/g, "")
+    )
+      .split(" ")
+      .slice(0, 80)
+      .join(" ")}...
+  </p>
             </div>
 
             <div className="in-depth-boxes">
               <div className="in-depth-row">
                 {articles.slice(1, 4).map((article) => (
                   <div key={article._id} className="in-depth-box">
-                    <h4>{article.article_heading}</h4>
+                    <h4><Link className="title-links" href={`/tips-and-article/${article._id}`}>{article.article_heading}</Link></h4>
                     {article.article_image?.length > 0 && (
                       <Image 
                         src={article.article_image[0]} 
@@ -144,13 +148,14 @@ const TipsArticlesSection = () => {
                         style={{ objectFit: "cover" }}
                       />
                     )}
-                    <p>
-                      {article.article_description
-                        .replace(/<[^>]*>/g, "")
-                        .split(" ")
-                        .slice(0, 20)
-                        .join(" ")}...
-                    </p>
+                     <p>
+            {he.decode(
+      (article?.article_description || "").replace(/<[^>]*>/g, "")
+    )
+      .split(" ")
+      .slice(0, 10)
+      .join(" ")}...
+  </p>
                   </div>
                 ))}
               </div>
@@ -158,7 +163,7 @@ const TipsArticlesSection = () => {
               <div className="in-depth-row">
                 {articles.slice(4, 7).map((article) => (
                   <div key={article._id} className="in-depth-box">
-                    <h4>{article.article_heading}</h4>
+                    <h4 ><Link className="title-links" href={`/tips-and-article/${articles[0]._id}`}>{article.article_heading}</Link></h4>
                     {article.article_image?.length > 0 && (
                       <Image 
                         src={article.article_image[0]} 
@@ -168,13 +173,14 @@ const TipsArticlesSection = () => {
                         style={{ objectFit: "cover" }}
                       />
                     )}
-                    <p>
-                      {article.article_description
-                        .replace(/<[^>]*>/g, "")
-                        .split(" ")
-                        .slice(0, 20)
-                        .join(" ")}...
-                    </p>
+                       <p>
+            {he.decode(
+      (article?.article_description || "").replace(/<[^>]*>/g, "")
+    )
+      .split(" ")
+      .slice(0, 10)
+      .join(" ")}...
+  </p>
                   </div>
                 ))}
               </div>

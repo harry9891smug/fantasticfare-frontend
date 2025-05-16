@@ -1,9 +1,9 @@
-// app/payment-status/page.tsx
 'use client';
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function PaymentStatus() {
+function PaymentStatusContent() {
   const searchParams = useSearchParams();
   const success = searchParams.get('success');
   const bookingId = searchParams.get('bookingId');
@@ -11,8 +11,6 @@ export default function PaymentStatus() {
   useEffect(() => {
     if (success === 'true' && bookingId) {
       // Payment was successful
-      // You might want to verify payment with your backend here
-      // Then redirect to confirmation
       window.location.href = `/booking-confirmation/${bookingId}`;
     } else {
       // Payment failed or was cancelled
@@ -27,5 +25,13 @@ export default function PaymentStatus() {
         <p>Please wait while we verify your payment.</p>
       </div>
     </div>
+  );
+}
+
+export default function PaymentStatus() {
+  return (
+    <Suspense fallback={<div>Loading Payment Status...</div>}>
+      <PaymentStatusContent />
+    </Suspense>
   );
 }

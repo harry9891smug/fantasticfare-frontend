@@ -3,7 +3,7 @@ import Link from "next/link"; // ✅ Fixed Link Import
 import Image from "next/image"; // ✅ Using Next.js Image Optimization
 import home from "../assets/images/home.png";
 //import about from "../assets/images/about.png";
-// import flights from "../assets/images/flight.png";
+import flights from "../assets/images/flight.png";
 import hotels from "../assets/images/hotels.png";
 import packages from "../assets/images/packages.png";
 import "../assets/css/sub-header.css"; // ✅ Ensure Correct Path
@@ -25,12 +25,12 @@ const SubHeader = () => {
               About Us
             </Link>
           </li> */}
-          {/* <li>
+          <li>
             <Link href="/flights">
               <Image src={flights} alt="Flights" width={20} height={20} />
               Flights
             </Link>
-          </li> */}
+          </li> 
           <li>
           <Link href="/hotels" className="flex items-center gap-2">
             <Image src={hotels} alt="Hotels" width={20} height={20} />

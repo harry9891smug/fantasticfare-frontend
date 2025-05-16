@@ -9,7 +9,11 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import "../assets/css/packages.css";
 import Link from "next/link";
+import TipsSection from "../components/tipsArticle";
 import { usePathname } from 'next/navigation';
+import EnquiryModal from "../components/EnquiryModal";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Package {
   _id: string;
@@ -39,11 +43,46 @@ const travelTips: TravelTip[] = [
 ];
 
 const Packages: React.FC = () => {
-
   const [packages, setPackages] = useState<Package[]>([]);
   const [selectedTip, setSelectedTip] = useState<TravelTip>(travelTips[0]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showEnquiryModal, setShowEnquiryModal] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
+  const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
+  useEffect(() => {
+    const fetchCountryCodes = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/country-code`);
+        const data = await res.json();
+        if (data.status && Array.isArray(data.countryCodes)) {
+          const formatted = data.countryCodes.map((code: string) => ({
+            value: code,
+            label: code,
+          }));
+          setCountryOptions(formatted);
+        }
+      } catch (err) {
+        console.error("Error fetching country codes:", err);
+        toast.error("Failed to load country codes");
+      }
+    };
+
+    fetchCountryCodes();
+  }, []);
+
+   const openEnquiryModal = (pkg: Package) => {
+    setSelectedPackage(pkg);
+    setShowEnquiryModal(true);
+  };
+
+  const closeEnquiryModal = () => {
+    setShowEnquiryModal(false);
+    setSelectedPackage(null);
+  };
+
+  const [displayCount, setDisplayCount] = useState(6);
+const [showAll, setShowAll] = useState(false);
 
   const fetchPackages = async () => {
     try {
@@ -138,6 +177,7 @@ const Packages: React.FC = () => {
 
   return (
     <div className="container mt-5 packages-container">
+      <ToastContainer position="top-right" autoClose={5000} />
       {/* Header */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end p-4 rounded">
         <div className="mb-3 mb-md-0">
@@ -151,10 +191,12 @@ const Packages: React.FC = () => {
 
       {/* Packages */}
       <div className="row">
-        {packages.length > 0 ? (
-          packages.map(pkg => (
+      {packages.length > 0 ? (
+    packages.slice(0, showAll ? packages.length : 6).map(pkg => (
             <div className="col-12 col-sm-6 col-md-4 mb-4" key={pkg._id}>
               <div className="card shadow-sm h-100 package-card">
+
+              <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
                 <div className="card-img-container">
                   {pkg.package_image?.length > 0 ? (
                     <Swiper
@@ -191,7 +233,7 @@ const Packages: React.FC = () => {
                     <div className="placeholder-image">No Image Available</div>
                   )}
                 </div>
-
+            </Link>
                 <div className="card-body d-flex flex-column">
                   <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
                     <h5 className="card-title">{pkg.package_name || 'Package Name'}</h5>
@@ -220,10 +262,11 @@ const Packages: React.FC = () => {
                     <a href="tel:+18334227770">
                       <button className="phone-button">📞</button>
                     </a>
-                      <button className="callback-button">
-                        <a href="tel:+18334227770" style={{color:"#fff"}}>
+                      <button className="callback-button"  onClick={() => openEnquiryModal(pkg)}>
                             Request Callback
-                        </a>
+                      
+
+                     
                         </button>
                   </div>
                 </div>
@@ -237,7 +280,33 @@ const Packages: React.FC = () => {
           </div>
         )}
       </div>
-
+      {packages.length > 6 && (
+  <div className="text-center mt-4">
+    {!showAll ? (
+      <Link href="/all-packages" passHref>
+        <button className="btn btn-primary custom-btn-main">
+          View All Packages ({packages.length})
+        </button>
+      </Link>
+    ) : (
+      <button 
+        className="btn btn-outline-primary"
+        onClick={() => setShowAll(false)}
+      >
+        Show Less
+      </button>
+    )}
+  </div>
+)}
+      {/* Enquiry Modal */}
+      {selectedPackage && (
+        <EnquiryModal
+          packageData={selectedPackage}
+          show={showEnquiryModal}
+          onClose={closeEnquiryModal}
+          countryOptions={countryOptions}
+        />
+      )}
       {/* Advertisement */}
       <div className="ads-container my-5">
         <Image
@@ -251,52 +320,7 @@ const Packages: React.FC = () => {
       </div>
 
       {/* Tips Section */}
-      <div className="tips-section">
-        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end p-4 rounded">
-          <div>
-            <h2 className="mb-2">Tips & Articles</h2>
-            <p className="mb-0">Discover essential travel insights and expert tips.</p>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-12 col-md-4 mb-4 mb-md-0">
-            <div className="scrollable-tips">
-              {travelTips.map(tip => (
-                <div
-                  key={tip.id}
-                  className={`article-box p-3 mb-3 ${selectedTip.id === tip.id ? "active" : ""}`}
-                  onClick={() => setSelectedTip(tip)}
-                  role="button"
-                >
-                  <span className="tip-label">Perfect | Tips</span>
-                  <h5 className="article-title">{tip.title}</h5>
-                  <p className="article-description">{tip.description}</p>
-                  <button className="btn btn-primary btn-sm custom-btn">Read More</button>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="col-12 col-md-8">
-            <div className="article-image-box">
-              <Image
-                src={selectedTip.image}
-                alt={selectedTip.title}
-                width={800}
-                height={400}
-                className="img-fluid w-100"
-                priority
-              />
-              <div className="p-3">
-                <span className="tip-label">Perfect | Tips</span>
-                <h4 className="article-title">{selectedTip.title}</h4>
-                <p className="article-description">{selectedTip.description}</p>
-                <button className="btn btn-primary custom-btn">Read More</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TipsSection />
     </div>
   );
 };

@@ -68,7 +68,7 @@ const AllPackagesPage = () => {
 const fetchPackages = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/list-package?limit=${20}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/list-package?limit=${displayCount}`);
         const data = await response.json();
         if (data.status) {
           setPackages(data.data);
@@ -89,7 +89,12 @@ const fetchPackages = async () => {
   }, [displayCount]);
 
   const loadMore = () => {
-    setDisplayCount(prev => prev + 9); // Load 9 more packages
+    const response = totalCount-displayCount;
+    if( response<9){
+      setDisplayCount(prev => prev + response);
+    }else{
+      setDisplayCount(prev => prev + 9);
+    }
   };
 
   return (

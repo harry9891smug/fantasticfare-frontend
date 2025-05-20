@@ -21,19 +21,19 @@ import WatiWidget from './WatiWidget';
 
 const Footer: React.FC = () => {
   const slugify = (text) =>
-  text.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
+    text.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
 
-const destinations = [
-  { src: SriLanka, title: "Sri Lanka" },
-  { src: thailand, title: "Thailand" },
-  { src: ladakh, title: "Ladakh" },
-  { src: hongkong, title: "Hong Kong" },
-  { src: dubai, title: "Dubai" },
-  { src: singapore, title: "Singapore" },
-  { src: andaman, title: "Andaman" },
-  { src: bali, title: "Bali" },
-  { src: NewYork, title: "New York" }
-];
+  const destinations = [
+    { src: SriLanka, title: "Sri Lanka" },
+    { src: thailand, title: "Thailand" },
+    { src: ladakh, title: "Ladakh" },
+    { src: hongkong, title: "Hong Kong" },
+    { src: dubai, title: "Dubai" },
+    { src: singapore, title: "Singapore" },
+    { src: andaman, title: "Andaman" },
+    { src: bali, title: "Bali" },
+    { src: NewYork, title: "New York" }
+  ];
   return (
     <section className="footer-section">
       <div className="footer-background">
@@ -90,9 +90,9 @@ const destinations = [
                 </li>
                 <li>
                   <a href="https://x.com/fantasticfare" target="_blank" rel="noopener noreferrer">
-                  <svg width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M16.033 0C7.169 0 0 7.169 0 16.033C0 24.897 7.169 32.066 16.033 32.066C24.897 32.066 32.066 24.897 32.066 16.033C32.001 7.169 24.832 0 16.033 0ZM24.5 8.5L18.5 16L24.5 23.5H21.5L16 17.5L10.5 23.5H7.5L13.5 16L7.5 8.5H10.5L16 14.5L21.5 8.5H24.5Z" fill="#B7B7B7"/>
-</svg>
+                    <svg width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16.033 0C7.169 0 0 7.169 0 16.033C0 24.897 7.169 32.066 16.033 32.066C24.897 32.066 32.066 24.897 32.066 16.033C32.001 7.169 24.832 0 16.033 0ZM24.5 8.5L18.5 16L24.5 23.5H21.5L16 17.5L10.5 23.5H7.5L13.5 16L7.5 8.5H10.5L16 14.5L21.5 8.5H24.5Z" fill="#B7B7B7" />
+                    </svg>
                   </a>
                 </li>
                 <li>
@@ -111,14 +111,14 @@ const destinations = [
 
           <div className="background-border-shadow-1">
             <div className="gallery">
-             {destinations.map((item, index) => (
-  <div className="gallery-item" key={index}>
-    <a href={`http://localhost:3000/${slugify(item.title)}`} rel="noopener noreferrer">
-      <Image src={item.src} alt={item.title} width={100} height={100} />
-      <div className="image-title">{item.title}</div>
-    </a>
-  </div>
-))}
+              {destinations.map((item, index) => (
+                <div className="gallery-item" key={index}>
+                  <a href={`/${slugify(item.title)}`} rel="noopener noreferrer">
+                    <Image src={item.src} alt={item.title} width={100} height={100} />
+                    <div className="image-title">{item.title}</div>
+                  </a>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -138,12 +138,12 @@ const destinations = [
           </div>
         </div>
       </div>
-      
+
       <WatiWidget />
-     
+
 
     </section>
-    
+
   );
 };
 

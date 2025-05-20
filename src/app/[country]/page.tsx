@@ -100,8 +100,13 @@ const Packages = ({ params }: CountryPageProps) => {
   const fetchPackages = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/packages-data?country=${country}`);
-      if (!response.ok) throw new Error("Failed to fetch packages.");
+      let result = country;
+      if (country.includes('-')) {
+        result = country.replace(/-/g, ' ');
+      }
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/packages-data?country=${result}`);
+      if (!response.ok) throw new Error("No Package Found in selected country.");
+      // if (!response.ok) throw new Error("Failed to fetch packages.");
       const data = await response.json();
       if (data.status && data.data) {
         setPackages(data.data);
@@ -158,7 +163,7 @@ const Packages = ({ params }: CountryPageProps) => {
         <div className="alert alert-danger">
           <h4>Error loading packages</h4>
           <p>{error}</p>
-          <button className="btn btn-primary" onClick={fetchPackages}>Retry</button>
+          {/* <button className="btn btn-primary" onClick={fetchPackages}>Retry</button> */}
         </div>
       </div>
     );

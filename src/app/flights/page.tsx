@@ -63,6 +63,7 @@ const FlightSearch = () => {
   const [showTravelerDropdown, setShowTravelerDropdown] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
 
+
   const dates: DateItem[] = [
     { day: "Tue, 11 Mar", price: "$4,708" },
     { day: "Wed, 12 Mar", price: "$4,029" },

@@ -362,6 +362,29 @@
     flex-wrap: wrap;
 }
   
+.activiity-image-row {
+  display: flex
+;
+  gap: 7px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+.activity-item{
+
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.activity-item img {
+  border-radius: 10px;
+}
   .accordion-content img {
     width: 100%;
     max-width: 32%; /* Increased width */
@@ -582,6 +605,7 @@
       height: auto; /* Allow images to adjust height */
     }
   
+   
     .enquiry-form {
       padding: 15px;
     }
@@ -596,6 +620,9 @@
       padding: 8px 16px;
       font-size: 18px;
     }
+   
+
+  
   }
   
   @media (max-width: 480px) {
@@ -607,7 +634,13 @@
       max-width: 100%; /* Full width for images on very small screens */
       height: auto; /* Allow images to adjust height */
     }
-  
+    .activity-item img {
+      min-width: -webkit-fill-available;
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+    
     /* .enquiry-form input,
     .enquiry-form textarea {
       padding: 6px;
@@ -618,6 +651,7 @@
       padding: 6px 12px;
       font-size: 12px;
     } */
+     
   }
 
     /* Tour Package Container */
@@ -627,7 +661,7 @@
     padding: 16px;
     max-width: 368px;
     margin: 0 auto;
-    height: 650px; /* Set fixed height for the tour package container */
+    height: 749px; /* Set fixed height for the tour package container */
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Ensure that content is spread out within the fixed height */
@@ -693,6 +727,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    margin-bottom: .55rem;
   }
   
   .form-group label {
@@ -1954,4 +1989,13 @@ h2 {
 }
 .accordion-button {
   color:#000;
+}
+
+@media screen and (max-width: 768px) {
+    .package-section {
+        padding: 15px;
+        margin: 20px;
+        max-width: 100%;
+        border-radius: 6px;
+    }
 }

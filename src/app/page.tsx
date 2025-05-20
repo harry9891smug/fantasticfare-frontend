@@ -20,6 +20,8 @@ import PackageSection from "./components/PackageSection";
 import Destination from "./components/Destinations"; 
 import  TourSection from "./components/TourSection";
 import { usePathname } from 'next/navigation';
+import TipsSection from "./components/tipsArticle";
+import Link from "next/link";
 interface TravelTip {
   id: number;
   image: string;
@@ -276,7 +278,7 @@ export default function FlightSearch() {
       </Slider>
     </div>
 
-    <button className="ultimate-btn">Ultimate Packages</button>
+   <Link href="/packages"> <button className="ultimate-btn">Ultimate Packages</button></Link>
   </div>
 </div>
 
@@ -292,55 +294,10 @@ export default function FlightSearch() {
 
 <Destination/>
  {/* Section Header */}
-      <div className="d-flex justify-content-between align-items-end p-4 rounded mt-5">
-        <div className="w-75">
-          <h2 className="mb-3">Tips & Articles</h2>
-          <p>Discover essential travel insights, money-saving strategies, and expert tips to enhance your journey.</p>
-        </div>
-      </div>
-
+   
       {/* Travel Tips Section */}
-      <div className="row">
-        <div className="col-md-4">
-          <div
-            className="scrollable-tips"
-            id="scroll-tips"
-            onMouseEnter={() => setIsScrolling(true)}
-            onMouseLeave={() => setIsScrolling(false)}
-          >
-            {travelTips.map((tip) => (
-              <div
-                key={tip.id}
-                className={`article-box p-3 mb-3 shadow-sm rounded bg-light ${selectedTip.id === tip.id ? 'active' : ''}`}
-                onClick={() => setSelectedTip(tip)}
-              >
-                <span className="tip-label">Perfect | Tips</span>
-                <h5 className="article-title">{tip.title}</h5>
-                <p className="article-description">{tip.description}</p>
-                <button className="btn btn-primary btn-sm custom-btn">Read More</button>
-              </div>
-            ))}
-          </div>
-        </div>
+      <TipsSection />
 
-        <div className="col-md-8">
-          <div className="article-image-box shadow-sm rounded overflow-hidden">
-            <Image 
-              src={selectedTip.image} 
-              alt={selectedTip.title} 
-              className="img-fluid w-100" 
-              width={800}
-              height={400}
-            />
-            <div className="p-3">
-              <span className="tip-label">Perfect | Tips</span>
-              <h4 className="article-title">{selectedTip.title}</h4>
-              <p className="article-description">{selectedTip.description}</p>
-              <button className="btn btn-primary custom-btn">Read More</button>
-            </div>
-          </div>
-        </div>
-      </div>
         <TourSection/>
  </div>
  

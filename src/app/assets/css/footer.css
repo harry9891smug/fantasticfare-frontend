@@ -276,9 +276,6 @@
         display: none; 
     }
 
-    .social-media {
-        display: none;
-    }
 
     .gallery {
         grid-template-columns: repeat(2, 1fr); 
@@ -307,4 +304,18 @@
 
 .footer-section {
     margin-top: 30px;
+}
+
+@media (max-width: 600px) {
+    .social-media ul {
+        justify-content: center;
+        padding: 8px;
+        gap: 12px;
+    }
+
+    .social-media li {
+        margin: 6px;
+    }
+
+   
 }

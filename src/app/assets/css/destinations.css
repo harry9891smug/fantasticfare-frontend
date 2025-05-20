@@ -146,6 +146,9 @@
         margin-top: 30px; /* Reduced margin for mobile */
     }
 
+    /* .swiper-wrapper {
+        gap :78px
+    } */
     .swiper-button-prev,
     .swiper-button-next {
         display: none !important;

@@ -17,14 +17,15 @@
 }
 .view-all {
     font-size: 14px;
-    color: #0275d8;
-    text-decoration: none;
+    color: #0e87c8;
+    text-decoration: none ;
     font-weight: 500;
     transition: color 0.3s ease;
+    margin-left: auto;
   }
   
   .view-all:hover {
-    color: #025aa5;
+    color: #0e87c8;
   }
 .tab.active {
   background-color: #0e87c8;
@@ -82,7 +83,7 @@
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 10px;
-  color: #0b1e38;
+  color: #0e87c8;
   text-align: center;
 }
 
@@ -157,7 +158,7 @@
 }
 
 .callback-button:hover {
-    background: #1e7e34;
+    background: #e07a0a;
 }
 
 /* Responsive Design */
@@ -193,10 +194,10 @@
 
   .phone-button,
   .callback-button {
-    flex: 1;
+    /* flex: 1; */
     margin: 5px;
     font-size: 14px;
-    padding: 10px;
+    /* padding: 10px; */
   }
 }
 
@@ -237,7 +238,10 @@
       gap: 15px;
       padding-bottom: 10px;
     }
-  
+  .swiper-slide {
+  width: auto !important;
+  margin-right: 15px;
+}
     .package-card {
       flex: 0 0 80%;
       scroll-snap-align: start;
@@ -260,3 +264,4 @@
       padding: 5px 10px;
     }
   }
+  

@@ -35,7 +35,7 @@
 .sub-header li img {
     width: 20px;
     height: 20px;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
     transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
 }
 
@@ -49,29 +49,59 @@
 }
 
 /* Hover Effects */
-.sub-header li:hover {
+/* .sub-header li:hover {
     transform: translateY(-8px);
-}
+} */
 
-.sub-header li:hover img {
-    /* transform: rotate(10deg) scale(1.1); */
-    /* filter: drop-shadow(0px 0px 8px rgba(255, 102, 0, 0.7));  */
-}
+
 
 .sub-header li:hover a {
     color: #ff4500; /* Bright orange for strong impact */
 }
 
 /* Additional bounce effect */
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
-}
 
-.sub-header li:hover {
-    animation: bounce 0.6s ease-in-out;
-}
+/* Phone Button Styles */
+.phone-button-container {
+    margin-left: auto; /* Pushes to the right */
+  }
+  
+  .phone-button {
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 8px 16px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid #dee2e6;
+  }
+  
+  .phone-button:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    color: #000;
+  }
+  
+  .phone-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .phone-button svg {
+    transition: transform 0.3s ease;
+  }
+  
+  .phone-button:hover svg {
+    transform: scale(1.1) rotate(10deg);
+  }
+  @media (max-width: 768px) {
+    .phone-button-container {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+  
+  
+  

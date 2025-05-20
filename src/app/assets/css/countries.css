@@ -38,6 +38,7 @@
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 15px;
+    border: none;
 }
 
 /* Grid layout for countries */
@@ -50,7 +51,7 @@
 /* Individual country links */
 .tour-list a {
     text-decoration: none;
-    color: #007bff;
+    color: #0e87c8;
     font-weight: bold;
     padding: 5px;
     display: block;
@@ -59,5 +60,5 @@
 }
 
 .tour-list a:hover {
-    border-bottom: 1px solid #007bff;
+    border-bottom: 1px solid #0e87c8;
 }

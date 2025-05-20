@@ -1,11 +1,16 @@
-.navbar-custom {
-  background: #ffffff;
-  border-bottom: 1px solid #dddddd;
-  padding: 10px 0;
-}
 
+.navbar-toggler-iconct {
+  display: inline-block;
+  width: 2em;
+  height: 1.5em;
+  vertical-align: middle;
+  background-image: var(--bs-navbar-toggler-icon-bg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+}
 .navbar-custom .navbar-brand img {
-  height: 50px;
+  height: 70px;
 }
 
 .navbar-custom .search-box {
@@ -164,4 +169,62 @@
   font-weight: 500;
   color: #333;
   white-space: nowrap; /* 🛑 Never allow greeting to wrap */
+}
+
+.floating-call-button {
+  padding-left: 102px;
+  display: none;
+}
+
+.floating-call-button a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 39px;
+  height: 39px;
+  background-color: #038bc9;
+  color: #fff;
+  font-size: 20px;
+  border-radius: 20%;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.floating-call-button a:hover {
+  transform: scale(1.1);
+}
+.navbar-custom {
+  display: none;
+}
+@media (max-width: 768px) {
+  .floating-call-button {
+    display: block;
+  }
+  .navbar-custom {
+  background: #ffffff;
+  padding: 4px 2px;
+  display: block;
+}
+}
+.tooltip-text {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 6px 8px;
+  border-radius: 4px;
+  position: absolute;
+  right: 120%;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.floating-call-button a:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }

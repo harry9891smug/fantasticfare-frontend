@@ -3,99 +3,77 @@ import React from "react";
 
 export default function TermsAndConditions() {
   return (
-    <div className="container my-5">
-      <h2 className=" mb-4">Terms and Conditions</h2>
-      <p>
-        {`This web page represents a legal document that serves as the terms of
-        use for our website ("Terms of Use"), www.fantasticfare.com, and any
-        associated mobile application (collectively, "Website"), as owned and
-        operated by FantasticFare ("Company").`}
-      </p>
-      <p>{`Capitalized terms, unless otherwise defined, have the meaning specified within the Definitions section below. These Terms of Use, along with our Privacy Policy and other posted guidelines (collectively "Legal Terms"), constitute the entire and only agreement between you and FantasticFare, superseding all other agreements, representations, warranties, and understandings related to our Website.`}</p>
-      <p>We may amend these Legal Terms at any time without specific notice to you. The latest version will always be posted on our Website, and you should review them periodically to ensure compliance. By using our Website, you agree to fully comply with and be bound by these Legal Terms. If you do not accept these terms, please do not access or use our Website.</p>
-      <h4>Definitions</h4>
-      <ul>
-        <li><strong>Company</strong>: Refers to FantasticFare, the owner of the Website.</li>
-        <li><strong>User</strong>: Any individual who accesses or uses our Website.</li>
-        <li><strong>Member</strong>: A User who registers an account on our Website.</li>
-        <li><strong>Supplier</strong>: A business offering travel services through our Website.</li>
-        <li><strong>Customer</strong>: A User who books services through our Website.</li>
-        <li><strong>Content</strong>: All text, information, graphics, audio, video, and data on our Website.</li>
-      </ul>
-
-      <h4>Limited License</h4>
-      <p>
-        FantasticFare grants you a non-exclusive, non-transferable, revocable
-        license to access and use our Website strictly in accordance with these
-        Legal Terms.
-      </p>
-
-      <h4>Eligibility & Registration</h4>
-      <ul>
-        <li>Users must be at least 18 years old or have parental consent if aged 13-18.</li>
-        <li>By registering, you certify that the information provided is accurate.</li>
-        <li>You are responsible for maintaining the confidentiality of your account credentials.</li>
-      </ul>
-
-      <h4>Supplier & Booking Policies</h4>
-      <ul>
-        <li>FantasticFare provides a platform for booking services but does not operate travel services directly.</li>
-        <li>Suppliers are responsible for fulfilling and maintaining service quality.</li>
-        <li>Customers must comply with supplier policies regarding cancellations, refunds, and rescheduling.</li>
-        <li>FantasticFare is not liable for issues arising from third-party suppliers.</li>
-      </ul>
-
-      <h4>Payment & Refund Policy</h4>
-      <ul>
-        <li>Prices are subject to change.</li>
-        <li>Payment must be made in full at the time of booking unless stated otherwise.</li>
-        <li>{`Refunds, if applicable, are processed per the supplier’s refund policy.`}</li>
-        <li>FantasticFare is not responsible for refund delays due to third-party suppliers.</li>
-      </ul>
-
-      <h4>User Conduct</h4>
-      <ul>
-        <li>Users agree not to post unlawful, abusive, or fraudulent content.</li>
-        <li>Users must not attempt to gain unauthorized access to the Website.</li>
-        <li>Fraudulent activities, including unauthorized chargebacks, are prohibited.</li>
-        <li>Users must comply with all applicable laws and website policies.</li>
-      </ul>
-
-      <h4>Intellectual Property</h4>
-      <p>
-        All content on our Website is protected under copyright, trademark, and
-        intellectual property laws. Users may not copy, reproduce, or modify
-        any content without our written consent.
-      </p>
-
-      <h4>Limitation of Liability</h4>
-      <ul>
-      <li>{`FantasticFare provides the Website "as is" without any warranties.`}</li>
-        <li>We are not liable for losses, damages, or disruptions caused by third-party providers.</li>
-        <li>FantasticFare is not responsible for service failures, missed flights, or cancellations.</li>
-      </ul>
-
-      <h4>Links to Third-Party Websites</h4>
-      <p>
-        Our Website may contain links to external sites. FantasticFare does not
-        endorse or assume responsibility for third-party website content.
-      </p>
-
-      <h4>Termination</h4>
-      <p>
-        FantasticFare reserves the right to terminate or suspend your access if
-        you violate these Legal Terms.
-      </p>
-
-      <h4>Contact Information</h4>
-      <p>
-        For questions regarding these Terms & Conditions, contact us at:<br />
-        <strong>FantasticFare</strong>
-        [Your Address] 
-        [Your Email] 
-        [Your Phone Number]
-      </p>
-    </div>
+    <div className="container py-5">
+    <h2 className="section-title text-primary pb-3 mb-4">Terms & Conditions</h2>
+  
+    <p>
+      Thank you for visiting FantasticFare.com ({`"FantasticFare", "we", "our", "us"`}). Upon accessing or utilizing our website, you consent to be bound by these Terms & Conditions. Please do not access or use our website or services if you disagree with any provision of these terms.
+    </p>
+  
+    <h4 className="mt-4 mb-2">1. Use of the Website</h4>
+    <p>
+      FantasticFare offers this site to help customers acquire travel information, find out about the availability of travel-related services and products, make legitimate bookings, or otherwise conduct business with travel suppliers. You undertake to use the site for legal purposes and in keeping with these Terms & Conditions.
+    </p>
+  
+    <h4 className="mt-4 mb-2">2. Booking Terms</h4>
+    <ul>
+      <li>Eligibility: You should be 18 years or older in order to book.</li>
+      <li>Accuracy: You are responsible for ensuring that all information provided during the booking process is accurate.</li>
+      <li>Payment: Full payment is required at the time of booking unless otherwise specified.</li>
+      <li>Confirmation: All bookings are subject to availability and confirmation by the respective travel supplier.</li>
+    </ul>
+  
+    <h4 className="mt-4 mb-2">3. Travel Suppliers</h4>
+    <p>
+      FantasticFare is a middleman between you and travel service providers such as airlines, hotels, car rental companies, and tour operators ({`"Travel Suppliers"`}). We {`don't`} own or operate these services and {`aren't`} liable for their acts or omissions. Your dealings with any Travel Supplier are at your risk, and any problems that occur from their services should be dealt with directly with them.
+    </p>
+  
+    <h4 className="mt-4 mb-2">4. Cancellations and Refunds</h4>
+    <ul>
+      <li>Policies: Cancellation and refund policies differ with each Travel Supplier. Kindly go through the particular terms and conditions offered during booking.</li>
+      <li>Fees: Non-refundable service fees imposed by FantasticFare.</li>
+      <li>Process: To make a cancellation or refund request, kindly contact our customer care. We will proceed as per the Travel {`Supplier's`} policies.</li>
+    </ul>
+  
+    <h4 className="mt-4 mb-2">5. Pricing and Fees</h4>
+    <p>
+      All prices listed on our website are subject to change without notice. Prices are inclusive of applicable taxes and fees unless otherwise stated. Charges may apply for optional services or special requests.
+    </p>
+  
+    <h4 className="mt-4 mb-2">6. Limitation of Liability</h4>
+    <p>
+      FantasticFare shall not be responsible for any direct, indirect, incidental, consequential, or punitive damages resulting from your use of our services or website. This includes, but is not limited to, loss of profits, data, or other intangible losses.
+    </p>
+  
+    <h4 className="mt-4 mb-2">7. Intellectual Property</h4>
+    <p>
+      All material on this site, including text, graphics, logos, and images, is owned by FantasticFare or its content suppliers and is protected by intellectual property legislation. You are not permitted to use, reproduce, or distribute any material without our advance written consent.
+    </p>
+  
+    <h4 className="mt-4 mb-2">8. Privacy Policy</h4>
+    <p>
+      Your use of this site is also subject to our Privacy Policy, which describes how we collect, use, and store your personal data. You can see more of our Privacy Policy on our website.
+    </p>
+  
+    <h4 className="mt-4 mb-2">9. Changes to Terms & Conditions</h4>
+    <p>
+      We reserve the right to change these Terms & Conditions at any time without notice. Continued use of the site after changes means you accept the new terms. We ask you to return to this page regularly for updates.
+    </p>
+  
+    <h4 className="mt-4 mb-2">10. Governing Law</h4>
+    <p>
+      These Terms & Conditions shall be construed according to the laws of the United States. In case of any disputes arising from these terms or your use of the website, they shall be settled in Delaware courts.
+    </p>
+  
+    <h4 className="mt-4 mb-2">11. Contact Information</h4>
+    <p>
+      If you have questions or concerns regarding these Terms & Conditions, we can be contacted:<br />
+      <strong>Phone (USA):</strong> +1-833-422-7770<br />
+      <strong>Email:</strong> care@fantasticfare.com<br />
+      <strong>Address:</strong> 3524 Silverside Rd, Wilmington, DE 19810, United States
+    </p>
+  </div>
+  
   );
 };
 

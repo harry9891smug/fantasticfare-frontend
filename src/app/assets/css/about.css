@@ -336,3 +336,153 @@
         max-width: 1240px;
     }
 }
+.why-choose-us {
+  max-width: 1140px;
+  margin: auto;
+  background: white;
+  padding: 40px 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.why-choose-us h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.why-choose-us p {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.divider-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 20px 0;
+}
+
+.divider-top {
+  margin-bottom: 30px;
+}
+
+.divider-bottom {
+  margin-top: 30px;
+}
+
+/* Features Grid */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.feature {
+  flex: 1;
+  min-width: 200px;
+  text-align: center;
+}
+
+.feature img {
+  width: 50px;
+  height: 50px;
+  margin-top: 9px;
+}
+
+.feature h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.feature p {
+  font-size: 14px;
+  color: #777;
+}
+
+/* Icon wrappers */
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  height: 55px;
+  width: 55px;
+}
+
+.icon-rating {
+  background: #64b5f6;
+}
+
+.icon-customers {
+  background: #ff9800;
+}
+
+.icon-offers {
+  background: #ff5252;
+}
+
+.icon-support {
+  background: #4caf50;
+}
+
+.icon-wrapper img {
+  width: 30px;
+  height: 30px;
+}
+
+/* Vertical Divider */
+.divider {
+  width: 1px;
+  height: 112px;
+  background: #ddd;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .divider {
+    display: none; /* Hide vertical dividers on small screens */
+  }
+
+  .why-choose-us h2 {
+    font-size: 22px;
+  }
+
+  .why-choose-us p {
+    font-size: 14px;
+  }
+
+  .feature h3 {
+    font-size: 15px;
+  }
+
+  .feature p {
+    font-size: 13px;
+  }
+
+  .icon-wrapper {
+    height: 45px;
+    width: 45px;
+  }
+
+  .icon-wrapper img {
+    width: 26px;
+    height: 26px;
+  }
+}

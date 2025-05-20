@@ -43,11 +43,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
           rel="icon"
-          href="/favicon.png"
+          href="/favicon.ico"
           sizes="16x16 24x24 32x32 48x48 64x64 128x128 256x256"
           type="image/x-icon"
         />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        {/* <link rel="icon" href="/favicon.svg" type="image/svg+xml" /> */}
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>

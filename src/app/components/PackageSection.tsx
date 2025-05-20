@@ -18,6 +18,7 @@ type Package = {
 };
 
 const PackageSection = () => {
+  
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -102,7 +103,8 @@ const PackageSection = () => {
                     objectFit: "cover",
                     borderRadius: "8px",
                     width: '100%',
-                    height: 'auto'
+                    height: 'auto',
+                    maxHeight: '250px'
                   }}
                   priority={idx === 0}
                   onLoadingComplete={() => window.dispatchEvent(new Event('resize'))}

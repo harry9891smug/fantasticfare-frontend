@@ -727,6 +727,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    margin-bottom: .55rem;
   }
   
   .form-group label {
@@ -1988,4 +1989,13 @@ h2 {
 }
 .accordion-button {
   color:#000;
+}
+
+@media screen and (max-width: 768px) {
+    .package-section {
+        padding: 15px;
+        margin: 20px;
+        max-width: 100%;
+        border-radius: 6px;
+    }
 }

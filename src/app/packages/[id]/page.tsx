@@ -22,7 +22,7 @@ import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import he from "he";
-
+import { FaMapMarkedAlt, FaLightbulb, FaBed } from "react-icons/fa";
 
 interface Packages {
   _id: string;
@@ -344,7 +344,13 @@ const PackageDetails: React.FC = () => {
                 </>
               )}
               <div className="enquire-btn">
-                <button>Enquire Now</button>
+                <button onClick={() => {
+  const formSection = document.getElementById('enquiry-form');
+  if (formSection) {
+    formSection.scrollIntoView({ behavior: 'smooth' });
+    formSection.querySelector('input')?.focus();
+  }
+}}>Enquire Now</button>
               </div>
             </div>
             <div className="rating">
@@ -362,21 +368,21 @@ const PackageDetails: React.FC = () => {
                 className={`tab ${activeTab === "itinerary" ? "active" : ""}`}
                 onClick={() => setActiveTab("itinerary")}
               >
-                <Image src="/images/images/place-marker0.png" alt="Activities" width={20} height={20} />
+                <FaMapMarkedAlt size={20} />
                 <div>Itinerary</div>
               </div>
               <div
                 className={`tab ${activeTab === "activities" ? "active" : ""}`}
                 onClick={() => setActiveTab("activities")}
               >
-                <Image src="/images/images/bulb.png" alt="Activities" width={20} height={20} />
+                 <FaLightbulb size={20} />
                 <div>Activities</div>
               </div>
               <div
                 className={`tab ${activeTab === "stay" ? "active" : ""}`}
                 onClick={() => setActiveTab("stay")}
               >
-                <Image src="/images/images/clip-path-group0.svg" alt="Stay" width={20} height={20} />
+                 <FaBed size={20} />
                 <div>Stay</div>
               </div>
             </div>
@@ -481,14 +487,11 @@ const PackageDetails: React.FC = () => {
                             {/* <h3 className="accordion-title">Itinerary Details</h3> */}
                           </div>
                           <div className="content">
-                            <p>
-
-                              {he.decode(
-                                    (day?.day_description || "").replace(/<[^>]*>/g, "")
-                                  )
-                                    .split(" ")
-                                    .join(" ")}...
-                            </p>
+                           <p
+  dangerouslySetInnerHTML={{
+    __html: he.decode(day?.day_description || ""),
+  }}
+></p>
                           </div>
                         </div>
                       </div>
@@ -608,7 +611,7 @@ const PackageDetails: React.FC = () => {
           </div>
 
           {/* Enquiry Form */}
-          <div className="enquiry-form">
+          <div id="enquiry-form" className="enquiry-form">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-group">
                 <input

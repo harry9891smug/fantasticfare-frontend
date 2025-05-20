@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/footer.css"; // Your custom CSS
-
 import logo from "../assets/images/logo.png";
 import fbIcon from "../assets/images/fb.svg";
 import xIcon from "../assets/images/x.svg";
@@ -18,9 +17,23 @@ import andaman from "../assets/images/footer_images/andaman.png";
 import bali from "../assets/images/footer_images/bali.png";
 import NewYork from "../assets/images/footer_images/new-york.png";
 import SriLanka from "../assets/images/footer_images/sri-lanka.png";
-
+import WatiWidget from './WatiWidget';
 
 const Footer: React.FC = () => {
+  const slugify = (text) =>
+  text.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
+
+const destinations = [
+  { src: SriLanka, title: "Sri Lanka" },
+  { src: thailand, title: "Thailand" },
+  { src: ladakh, title: "Ladakh" },
+  { src: hongkong, title: "Hong Kong" },
+  { src: dubai, title: "Dubai" },
+  { src: singapore, title: "Singapore" },
+  { src: andaman, title: "Andaman" },
+  { src: bali, title: "Bali" },
+  { src: NewYork, title: "New York" }
+];
   return (
     <section className="footer-section">
       <div className="footer-background">
@@ -98,20 +111,14 @@ const Footer: React.FC = () => {
 
           <div className="background-border-shadow-1">
             <div className="gallery">
-              {[{ src: SriLanka, title: "Sri Lanka" },
-                { src: thailand, title: "Thailand" },
-                { src: ladakh, title: "Ladakh" },
-                { src: hongkong, title: "Hong Kong" },
-                { src: dubai, title: "Dubai" },
-                { src: singapore, title: "Singapore" },
-                { src: andaman, title: "Andaman" },
-                { src: bali, title: "Bali" },
-                { src: NewYork, title: "New york" }].map((item, index) => (
-                <div className="gallery-item" key={index}>
-                  <Image src={item.src} alt={item.title} width={100} height={100} />
-                  <div className="image-title">{item.title}</div>
-                </div>
-              ))}
+             {destinations.map((item, index) => (
+  <div className="gallery-item" key={index}>
+    <a href={`http://localhost:3000/${slugify(item.title)}`} rel="noopener noreferrer">
+      <Image src={item.src} alt={item.title} width={100} height={100} />
+      <div className="image-title">{item.title}</div>
+    </a>
+  </div>
+))}
             </div>
           </div>
         </div>
@@ -131,7 +138,12 @@ const Footer: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      <WatiWidget />
+     
+
     </section>
+    
   );
 };
 

@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import Happy from "../assets/images/happy.svg"; 
+import Happy from "../assets/images/Happy.svg"; 
 import rating from "../assets/images/star-filled.svg";
 import voucher from "../assets/images/voucher.svg"; 
 import support from "../assets/images/online-support.svg"; 

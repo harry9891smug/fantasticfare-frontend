@@ -1,0 +1,331 @@
+/* General Styling */
+.custom-input {
+  width: 283px; /* Increase width as needed */
+  max-width: 100%;
+}
+
+/* Adjusting Input Group (Icon + Input Alignment) */
+.custom-input .input-group-text {
+  padding: 12px;
+}
+
+/* Ensure the Swap Icon Stays Aligned */
+.swap-icon-circle {
+  min-width: 50px;
+  min-height: 50px;
+}
+.input-group-text{
+  color:#0e87c8;
+}
+.custom-input .form-control, 
+.custom-input .input-group-text {
+  border: none;
+  border-bottom: 2px solid #0e87c8;
+  border-radius: 0;
+  padding: 10px;
+  font-size: 16px;
+  background: transparent;
+}
+.btn-search{
+  background-color:#0e87c8;
+  border-color: #0e87c8;
+
+}
+.btn-search:hover{
+  background-color:#cf8701;
+  border-color: #cf8701;
+
+}
+/* Form Container - Ensures Everything Stays in a Single Row */
+.form-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  max-width: 1200px; /* Prevents stretching too wide */
+  margin: auto; /* Centers the form */
+  padding: 10px;
+}
+
+/* Swap Icon Inside Circle */
+.swap-icon-circle {
+  width: 50px;
+  height: 50px;
+  background-color: #0e87c8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+.swap-icon-circle:hover {
+  background-color: #cf8701;
+  transform: scale(1.1);
+}
+
+/* Traveler Dropdown */
+.traveler-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+/* Traveler Item */
+.traveler-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+/* Traveler Controls */
+.traveler-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.traveler-controls .count {
+  font-size: 16px;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* One Way, Round Trip, Multi-City Navigation */
+.trip-type {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+  margin-bottom: 10px;
+  flex-direction: row;
+}
+
+/* Links Styling */
+.trip-type a {
+  text-decoration: none;
+  position: relative;
+  font-size: 14px; /* Smaller text */
+  font-weight: 500;
+  color: #333; /* Default text color */
+  padding-bottom: 3px;
+}
+
+/* Underline effect */
+.trip-type a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: transparent;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Hover & Active (Selected) State */
+.trip-type a:hover,
+.trip-type a.active {
+  color: #0e87c8; /* Change text color */
+}
+
+.trip-type a:hover::after,
+.trip-type a.active::after {
+  background-color: #0e87c8; /* Show underline on hover & when selected */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .form-container {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+  }
+
+  .custom-input {
+      width: 100%;
+  }
+
+  .swap-icon-circle {
+      width: 45px;
+      height: 45px;
+      font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-container {
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+  }
+
+  .custom-input .form-control {
+      font-size: 14px;
+      padding: 8px;
+  }
+
+  .swap-icon-circle {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+  }
+
+  .traveler-dropdown {
+      width: 100%;
+      min-width: 200px;
+  }
+
+  .trip-type {
+      justify-content: center; /* Center on smaller screens */
+      gap: 10px;
+  }
+
+  .trip-type a {
+      font-size: 13px;
+  }
+}
+/* Trip Type Container */
+
+
+.trip-type {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+.trip-type button {
+  padding: 1px 7px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 300;
+  color: #666;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+
+.trip-type button.active {
+  border: none;
+  border-bottom: 2px solid #0e87c8;
+  border-radius: 0;
+
+}
+
+/* Cabin Class Dropdown */
+.cabin-dropdown-container {
+  position: relative;
+  margin-left: 10px;
+    border-radius: 10px;
+    color:#fff;
+}
+.cabin-dropdown-container:hover {
+ 
+  background-color: #0e87c8;
+    border-radius: 10px;
+    color:#fff;
+}
+.cabin-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #0e87c8;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.cabin-dropdown-trigger:hover {
+  background: #0e87c8;
+  color: #fff;
+  border-radius:10px;
+}
+
+.cabin-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 200px;
+  z-index: 10;
+  margin-top: 5px;
+}
+
+.cabin-dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cabin-dropdown-menu li button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cabin-dropdown-menu li button:hover {
+  background-color: #f5f5f5;
+}
+
+.cabin-dropdown-menu li button.selected {
+  font-weight: 600;
+  color: #1a73e8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .trip-type {
+    gap: 8px;
+  }
+  
+  .trip-type button,
+  .cabin-dropdown-trigger {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  
+  .cabin-dropdown-container {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+}
+
+.btn-add-more{
+  background-color:#0e87c8;
+  border-color: #0e87c8;
+
+}
+.btn-add-more{
+  color:#fff;
+
+}
+.btn-add-more:hover{
+  background-color:#cf8701;
+  border-color: #cf8701;
+
+}

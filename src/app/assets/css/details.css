@@ -1,0 +1,616 @@
+/* Sticky sidebar */
+.sticky-sidebar {
+    position: sticky;
+    top: 100px;
+  }
+  
+  /* Modern Tab Styling */
+  .nav-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-left: 3px solid #e0e0e0;
+  }
+  
+  .nav-tabs .nav-link {
+    display: block;
+    padding: 10px 16px;
+    color: #333;
+    font-weight: 500;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .nav-tabs .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 0;
+    height: 2px;
+    background: transparent;
+    transition: background 0.3s ease;
+  }
+  
+  .nav-tabs .nav-link:hover {
+    color: #007bff;
+    background-color: #f8f9fa;
+    border-left-color: #007bff;
+  }
+  
+  .nav-tabs .nav-link.active {
+    color: #007bff;
+    font-weight: 600;
+    border-left-color: #007bff;
+    background-color: #f0f8ff;
+  }
+  
+  .nav-tabs .nav-link.active::after {
+    background: #007bff;
+  }
+  
+  /* Image grid spacing */
+  .image-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  .image-grid .grid-img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .image-grid .grid-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Left and Right Image Containers */
+  .image-grid .left-imgs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .image-grid .left-imgs img,
+  .image-grid .right-img {
+    width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .image-grid .left-imgs img:hover,
+  .image-grid .right-img:hover {
+    transform: scale(1.01);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* See all photos button */
+  .see-all-btn {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+  }
+  
+  .see-all-btn:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 991px) {
+    .sticky-sidebar {
+      position: static;
+      margin-top: 20px;
+    }
+  
+    .image-grid {
+      flex-direction: column;
+    }
+  
+    .image-grid .left-imgs {
+      flex-direction: row;
+      gap: 10px;
+    }
+  
+    .image-grid .left-imgs img {
+      width: 50%;
+    }
+  }
+  
+  /* Additional mobile responsiveness */
+  @media (max-width: 576px) {
+    .image-grid .left-imgs img {
+      width: 100%;
+    }
+  
+    .see-all-btn {
+      font-size: 12px;
+      padding: 6px 10px;
+    }
+  }
+  
+  /* About Property Section Styles */
+  .about-property-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 0;
+    animation: fadeIn 0.6s ease-in;
+  }
+  
+  .breakfast-info {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  }
+  
+  .amenities-section,
+  .property-rules,
+  .about-property,
+  .explore-area {
+    padding: 20px 0;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .amenities-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  
+  .amenities-list li {
+    padding: 10px 0;
+    border-bottom: 1px dashed #ddd;
+  }
+  
+  .see-all-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: 500;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .see-all-link:hover {
+    text-decoration: underline;
+  }
+  
+  .nearby-places {
+    border-left: 3px solid #007bff;
+    padding-left: 16px;
+  }
+  
+  .place-item {
+    padding: 10px 0;
+  }
+  
+  /* Icons */
+  .fas {
+    width: 20px;
+    text-align: center;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .about-property-container {
+      padding: 0 15px;
+    }
+  
+    .breakfast-info {
+      padding: 16px;
+    }
+  
+    .amenities-section,
+    .property-rules,
+    .about-property,
+    .explore-area {
+      padding: 16px 0;
+    }
+  
+    .nearby-places {
+      padding-left: 12px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .breakfast-info h5 {
+      font-size: 1.1rem;
+    }
+  
+    h5 {
+      font-size: 1.2rem;
+    }
+  
+    .place-item h6 {
+      font-size: 1rem;
+    }
+  }
+  
+  /* Fade-in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  /* Custom Tabs Container */
+.custom-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+    justify-content: flex-start;
+  }
+  
+  /* Tab Link */
+  .custom-tab-link {
+    border: none;
+    background: none;
+    color: #808080;
+    font-size: 16px;
+    padding: 6px 0;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s ease;
+    display: inline-block;
+  }
+  
+  /* Hover Effect */
+  .custom-tab-link:hover {
+    color: #007bff;
+  }
+  
+  /* Underline on Hover */
+  .custom-tab-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 0;
+    height: 2px;
+    background-color: #007bff;
+    transition: width 0.3s ease;
+  }
+  
+  .custom-tab-link:hover::after {
+    width: 100%;
+  }
+  
+  /* Active Tab */
+  .custom-tab-link.active {
+    color: #007bff;
+    font-weight: 600;
+  }
+  
+  .custom-tab-link.active::after {
+    width: 100%;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .custom-tabs {
+      gap: 10px;
+      justify-content: space-between;
+      padding-bottom: 6px;
+    }
+  
+    .custom-tab-link {
+      font-size: 14px;
+      padding: 4px 0;
+    }
+  
+    .custom-tab-link::after {
+      bottom: -6px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .custom-tabs {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+  
+    .custom-tab-link {
+      font-size: 14px;
+      width: 100%;
+      padding: 6px 0;
+    }
+  
+    .custom-tab-link::after {
+      bottom: 0;
+    }
+  }
+  /* Adjust images inside grid */
+.row .img-fluid {
+    max-height: 180px;
+    object-fit: cover;
+  }
+  .row .img-main {
+    max-height: 380px;
+    object-fit: cover;
+  }
+  /* Right image height on desktop */
+  @media (min-width: 768px) {
+    .col-md-6 .img-fluid.h-100 {
+      height: 380px !important; /* reduce height */
+    }
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 767px) {
+    .col-md-6 .img-fluid {
+      max-height: 200px;
+    }
+  
+    .col-md-6 .img-fluid.h-100 {
+      height: 250px !important;
+    }
+  }
+  .custom-btn {
+    background-color: #2e93d2;
+    color: #ffff;
+    padding: 6px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    display: inline-block;
+  }
+  
+  .custom-btn:hover {
+    background-color: #e2e6ea;
+    color: #000;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  /* Reviews Section Styles */
+.reviews-container {
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  
+  .reviews-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    padding: 10px 0;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  
+  .reviews-slider::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+  
+  .review-card {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .review-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .review-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+  
+  .review-rating {
+    color: #ffc107;
+    font-weight: 600;
+  }
+  
+  .review-author {
+    color: #666;
+  }
+  
+  .review-content {
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+  
+  .read-more {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .read-more:hover {
+    text-decoration: underline;
+  }
+  
+  /* Slider Controls */
+  .slider-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .slider-prev,
+  .slider-next {
+    background: none;
+    border: none;
+    color: #0066cc;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+  
+  .slider-dots {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ddd;
+    cursor: pointer;
+  }
+  
+  .dot.active {
+    background: #0066cc;
+  }
+  
+  /* Responsive Styles */
+  @media (min-width: 768px) {
+    .review-card {
+      flex: 0 0 calc(50% - 10px);
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .review-card {
+      flex: 0 0 calc(33.333% - 14px);
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .review-card {
+      padding: 15px;
+    }
+    
+    .review-title {
+      font-size: 15px;
+    }
+    
+    .review-content {
+      font-size: 14px;
+    }
+  }
+  /* Rooms Available Section */
+.rooms-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  
+/* Room Card Styling */
+.room-card {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #eee;
+  }
+  
+  .room-image-container {
+    height: 100%;
+    min-height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .amenities {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .amenities i {
+    color: #0d6efd;
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+  }
+  
+  .plan-card {
+    transition: all 0.2s ease;
+  }
+  
+  .plan-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .room-image-container {
+      margin-bottom: 20px;
+      height: 250px;
+    }
+    
+    .amenities .col-6 {
+      width: 100%;
+    }
+  }
+  /* Filter Dropdown Styles */
+.filter-container {
+    padding-left: 0;
+  }
+  
+  .capsule-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 180px;
+    padding: 8px 35px 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .capsule-select:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 118, 255, 0.2);
+  }
+  
+  .select-arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #666;
+    font-size: 12px;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .filter-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    
+    .capsule-select {
+      width: 160px;
+    }
+  }

@@ -1,0 +1,305 @@
+/* General Styles */
+.contact-us-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 1200px; /* Set a max width */
+    margin: 0 auto; /* Centering */
+    padding: 0 20px; /* Add padding for better responsiveness */
+  }
+ 
+
+  .bg-primary {
+    --bs-bg-opacity: 1;
+    background-color: rgb(3 137 198) !important;
+}
+  /* Top Section */
+  .contact-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 26px;
+    
+  }
+  
+  .contact-subtitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 29px;
+  }
+  
+  .contact-description {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .additional-text h5 {
+    font-size: 1rem;
+    color: #888;
+  }
+  
+  /* Contact Information Section */
+  .contact-info-form {
+    margin-top: 50px;
+    
+  }
+  
+  .contact-info-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: revert;
+  }
+  
+  .contact-info-form ul li {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    padding-top: 20px;
+}
+  
+.customButton {
+  background-color: #0389c6; /* Change to your preferred color */
+  border: none;
+  color: white; /* Text color */
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  float: right;
+}
+
+.customButton:hover {
+  background-color: #56a5d3; /* Darker shade on hover */
+}
+
+  /* Form Styles */
+  .underlined-input {
+    border: none;
+    border-bottom: 2px solid #222121;
+    border-radius: 0;
+    padding: 10px 0;
+    margin-bottom: 20px;
+  }
+  
+  .underlined-input:focus {
+    outline: none;
+    box-shadow: none;
+    border-bottom: 2px solid #222121;
+  }
+  
+  /* Ellipses Images */
+  .ellipses-container {
+    z-index: 1; /* Ensure ellipses are above other content */
+  }
+  
+  /* Big Ellipse */
+  .ellipse-big {
+    width: 150px; /* Adjust size as needed */
+    height: auto;
+    position: relative;
+    bottom: 0;
+    right: 0;
+  }
+  
+  /* Small Ellipse */
+  .ellipse-small {
+    width: 100px;
+    height: auto;
+    position: absolute;
+    bottom: 65px;
+    right: 71px;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .contact-title {
+      font-size: 2rem;
+    }
+  
+    .contact-subtitle {
+      font-size: 1.25rem;
+    }
+  
+    .contact-description {
+      font-size: 0.9rem;
+    }
+  
+    .additional-text h5 {
+      font-size: 0.9rem;
+    }
+  
+    .ellipse-big {
+        width: 120px; /* Smaller size for tablets */
+      }
+    
+      .ellipse-small {
+        width: 80px; /* Smaller size for tablets */
+        bottom: 15px;
+        right: 15px;
+      }
+  }
+  
+  @media (max-width: 576px) {
+    .contact-title {
+      font-size: 1.75rem;
+    }
+    .contact-info-title {
+        font-size: 1.5rem;
+      }    
+    .contact-subtitle {
+      font-size: 1rem;
+    }
+  
+    .contact-description {
+      font-size: 0.8rem;
+    }
+  
+    .additional-text h5 {
+      font-size: 0.8rem;
+    }
+  
+    .ellipse-big {
+        width: 100px; /* Smaller size for mobile */
+      }
+    
+      .ellipse-small {
+        width: 60px; /* Smaller size for mobile */
+        bottom: 42px;
+        right: 53px;
+      }
+  }
+
+ 
+  /* Card Design for Contact Form */
+.contact-info-form {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    overflow: hidden;
+  }
+  
+  /* Rounded Corners for Left and Right Partitions */
+  .rounded-start {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+  }
+  
+  .rounded-end {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+  
+  /* Remove Default Padding for Container Fluid */
+  .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .rounded-start {
+      border-radius: 15px 15px 0 0;
+    }
+  
+    .rounded-end {
+      border-radius: 0 0 15px 15px;
+    }
+  }
+  .contact-us-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .contact-info-form {
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .contact-info-title {
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  .contact-info-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: white;
+  }
+  
+  .underlined-input {
+    border: none;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    padding: 10px 5px;
+    background: transparent;
+  }
+  
+  .underlined-input:focus {
+    box-shadow: none;
+    border-bottom-color: #007bff;
+  }
+  
+  .customButton {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+  }
+  
+  .customButton:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+  }
+  
+  .customButton:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .ellipses-container {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .ellipse-big {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+  
+  .ellipse-small {
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .contact-info-form .row > div {
+      padding: 20px !important;
+    }
+    
+    .contact-info-form .rounded-start,
+    .contact-info-form .rounded-end {
+      border-radius: 10px !important;
+      margin-bottom: 20px;
+    }
+    
+    .ellipses-container {
+      display: none;
+    }
+  }

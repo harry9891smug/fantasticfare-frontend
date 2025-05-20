@@ -1,0 +1,260 @@
+/* Main Container */
+.myAccountContainer {
+    display: flex;
+    min-height: 100vh;
+    background-color: #ffff;
+    padding: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 310px;
+    padding: 15px 0;
+    margin-left: 20px; /* Added space from the left */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 30px; /* Curved corners */
+}
+
+/* Profile Section */
+.profileSection {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    text-align: left;
+    gap: 15px;
+    padding: 10px;
+}
+
+/* Profile Image */
+.profileImage img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    object-fit: cover;
+}
+
+/* Profile Info */
+.profileInfo {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+}
+
+/* Name and Email */
+.profileInfo h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.profileInfo p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #777;
+}
+
+/* Sidebar Links */
+.sidebarLinks li {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    padding: 12px 20px;
+    margin: 5px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    font-size: 1rem;
+    text-align: left;
+}
+
+/* Sidebar Icons */
+.sidebarIcon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+
+
+.sidebarLinks li:hover {
+    background-color: #eaeaea;
+}
+
+/* Sidebar Icons */
+.sidebarLinks li i {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* Content */
+.content {
+    flex: 1;
+    padding: 25px;
+    background-color: white;
+    margin-left: 20px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.profileForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.formGroup {
+    margin-bottom: 15px;
+}
+
+.inputField {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+
+.inputField:focus {
+    border-color: #1abc9c;
+}
+
+.saveButton {
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.saveButton:hover {
+    background-color: #16a085;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .myAccountContainer {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        margin-left: 0;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+}
+
+
+
+/* Sidebar Items */
+.sidebarItem {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between icon and text */
+    padding: 12px 15px;
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+    font-size: 1rem;
+    text-align: left;
+}
+
+/* Hover effect */
+.sidebarItem:hover {
+    background-color: #f5f5f5;
+}
+
+/* Sidebar Icons */
+.sidebarIcon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+
+
+/* Info Box */
+.infoBox {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: #fff;
+}
+
+/* Header (Title + Edit Button) */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* Edit Button */
+.editButton {
+    background-color: #0389c6;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.editButton:hover {
+    background-color: #0056b3;
+}
+
+/* Info Grid (2-Column Layout) */
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 80px; /* Increased space between the columns */
+    align-items: center; /* Aligns items properly */
+}
+
+
+/* Labels */
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Input Fields */
+.inputField {
+    width: 90%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    cursor: not-allowed;
+    margin-top: 5px;
+}
+
+/* Enable input fields when editing */
+.inputField:read-write {
+    background-color: #fff;
+    cursor: text;
+}
+
+/* Read-only input fields */
+.inputField[readonly] {
+    background-color: #f9f9f9;
+}

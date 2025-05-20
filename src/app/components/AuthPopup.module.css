@@ -1,0 +1,384 @@
+/* Overlay */
+.authPopupOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1030;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.welcomeMargin {
+    margin-top: 50px;
+}
+
+.authTopImage {
+    position: absolute;
+    top: 38px;
+    right: 1px;
+    width: 141px;
+    height: auto;
+}
+/* Popup Container */
+.authPopupContainer {
+    display: flex;
+    flex-wrap: wrap;
+    width: 32%;
+    max-width: 900px;
+    min-height: 550px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Left Section */
+.authPopupLeft {
+    flex: 1;
+    background: url("../assets/images/bg.svg") center/cover no-repeat;
+    color: white;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 350px;
+}
+
+
+.leftTitle {
+    font-family: 'Aladin'; 
+    font-size: 28px;
+        font-weight: bold;
+        color: white; 
+}
+.authPopupContent {
+    max-width: 80%;
+}
+/* Right Section */
+.authPopupRight {
+    flex: 1;
+    padding: 40px;
+    position: relative;
+    text-align: center;
+}
+
+/* Title */
+.authPopupRight h3 {
+    margin-top: 15px;
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #019ee2;
+    margin-bottom: 10px;
+}
+
+.greyText {
+    font-size: 0.9rem;
+    color: grey;
+}
+
+/* Close Button */
+.closeBtn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: none;
+    border: none;
+    font-size: 1.0rem;
+    cursor: pointer;
+}
+
+/* Form */
+.authForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Input Group */
+.inputGroup {
+    display: flex;
+    align-items: center;
+    border: 1px solid #019ee2;
+    border-radius: 5px;
+    padding: 5px;
+    width: 80%;
+    margin-bottom: 15px;
+    background: #fff;
+    position: relative;
+}
+
+.inputGroup input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-size: 0.9rem;
+}
+.phoneContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between inputs */
+    width: 80%;
+    margin-bottom: 15px;
+}
+
+/* Country Code Input */
+.countryCode {
+    width: 20%;
+    min-width: 60px;
+    border: 1px solid #019ee2;
+    border-radius: 5px;
+    padding: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+/* Phone Number Input */
+.phoneNumber {
+    flex: 1;
+    border: 1px solid #019ee2;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.inputIcon {
+    color: #019ee2;
+    margin-right: 10px;
+}
+
+.eyeIcon {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+/* Smaller Inputs for Country Code */
+.smallInput {
+    width: 25%;
+    margin-right: 5px;
+}
+
+.largeInput {
+    width: 70%;
+}
+
+/* Forgot Password */
+.forgotPassword {
+    text-align: right;
+    width: 80%;
+    font-size: 0.8rem;
+    color: grey;
+    margin-top: -10px;
+}
+
+/* Login Button */
+.authButton {
+    width: 38%;
+    padding: 9px;
+    background: #019ee2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Divider */
+.divider {
+    margin: 10px 0;
+    position: relative;
+    width: 80%;
+}
+
+.divider span {
+    background: white;
+    padding: 0 10px;
+}
+
+/* Social Login */
+.socialLogin img {
+    width: 77px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+/* Toggle Form */
+.toggleForm {
+    font-size: 0.65rem;
+    color: #514e4e;
+}
+
+.toggleForm span {
+    font-weight: bold; 
+    color: #797878;
+    cursor: pointer;
+}
+
+/* Center Elements */
+.authPopupRight form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .authPopupContainer {
+        flex-direction: column;
+        max-width: 90%;
+    }
+
+    .authPopupLeft {
+        display: none; /* Hide left section on small screens */
+    }
+
+    .authPopupRight {
+        padding: 20px;
+        width: 100%;
+    }
+
+   
+
+    .forgotPassword {
+        width: 100%;
+    }
+
+    .authButton {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .authPopupRight {
+        padding: 15px;
+    }
+
+    .authPopupRight h3 {
+        font-size: 1.4rem;
+    }
+
+    .inputGroup {
+        padding: 8px;
+    }
+
+    .authButton {
+        padding: 8px;
+    }
+}
+
+.sideImage {
+    position: absolute;
+    height: 60px;
+    transform: translateY(0);
+    bottom: 0px;
+}
+
+.leftImage {
+    left: 0px;
+}
+
+.rightImage {
+    right: -6px;
+}
+
+@media (max-width: 768px) {
+    .authTopImage {
+        width: 60px; 
+        top: 40px; 
+        right: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .authTopImage {
+        width: 71px;
+        top: 24px;
+        right: 5px;
+    }
+}
+
+@media (max-width: 768px) {
+    .leftTopImage {
+        width: 80px; /* Smaller image on mobile */
+        margin-bottom: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .leftTopImage {
+        width: 60px;
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .authPopupLeft {
+        padding: 30px;
+    }
+
+    .leftTitle {
+        font-size: 24px;
+    }
+
+    .authPopupContent {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .authPopupLeft {
+        padding: 20px;
+        justify-content: flex-start; /* Move content to the top */
+        min-height: auto; /* Allow content to dictate height */
+    }
+
+    .leftTitle {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .authPopupLeft {
+        padding: 15px;
+    }
+
+    .leftTitle {
+        font-size: 20px;
+    }
+
+    .authPopupContent {
+        max-width: 100%;
+    }
+}
+
+/* Top-Level Error Message */
+.topError {
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Input Error Styling */
+.inputError {
+    border: 2px solid red !important;
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Shake Animation */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}

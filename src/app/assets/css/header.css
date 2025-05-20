@@ -1,0 +1,230 @@
+
+.navbar-toggler-iconct {
+  display: inline-block;
+  width: 2em;
+  height: 1.5em;
+  vertical-align: middle;
+  background-image: var(--bs-navbar-toggler-icon-bg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+}
+.navbar-custom .navbar-brand img {
+  height: 70px;
+}
+
+.navbar-custom .search-box {
+  background: #ffffff;
+  border-radius: 26px;
+  box-shadow: 3px 0px 17.4px 4px rgba(0, 0, 0, 0.13);
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.navbar-custom .search-box input {
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+/* 🔹 Fixed Sign-in Button */
+.navbar-custom .sign-in-box {
+  border: 1px solid #000000;
+  border-radius: 16px;
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  text-decoration: none;
+  color: #000000;
+}
+
+.navbar-custom .sign-in-box img {
+  /* height: 20px; */
+  margin-right: 4px;
+}
+
+.navbar-custom .sign-in-box:hover {
+  background-color: #f8f9fa;
+}
+.navbar-custom .sign-in-box .btn {
+  color: #000000;
+  font-size: 13px;
+  padding: 0;
+  background: none;
+  border: none;
+  white-space: nowrap; 
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 991.98px) {
+  .navbar-custom .sign-in-box {
+    margin-bottom: 10px;
+  }
+  .navbar-custom .search-box {
+    margin-bottom: 10px;
+  }
+}
+/* ✅ Responsive Fix */
+@media (max-width: 991.98px) {
+  .navbar-custom .sign-in-box {
+    margin-bottom: 10px;
+  }
+  .navbar-custom .search-box {
+    margin-bottom: 10px;
+  }
+}
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* 🔔 Notification Button */
+.notificationBtn {
+  background: #0389c6;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: white;
+  font-size: 16px;
+}
+
+.notificationBtn:hover {
+  background: #026ba3;
+}
+
+/* 👤 Profile + Logout */
+.profileActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+/* 👤 Profile Image */
+.profileWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.userIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.userIcon:hover {
+  transform: scale(1.08);
+}
+
+/* 🔽 Dropdown Menu */
+.dropdownMenu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  padding: 10px;
+  min-width: 140px;
+  z-index: 1022;
+}
+
+/* 🚪 Logout Button */
+.logoutBtn {
+  background: transparent;
+  border: none;
+  color: #000;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.3s ease;
+}
+
+.logoutBtn:hover {
+  color: #dc3545; /* red color on hover */
+}
+
+.logoutBtn i {
+  font-size: 20px;
+}
+
+/* ✍️ Greeting Text */
+.greeting {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap; /* 🛑 Never allow greeting to wrap */
+}
+
+.floating-call-button {
+  padding-left: 102px;
+  display: none;
+}
+
+.floating-call-button a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 39px;
+  height: 39px;
+  background-color: #038bc9;
+  color: #fff;
+  font-size: 20px;
+  border-radius: 20%;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.floating-call-button a:hover {
+  transform: scale(1.1);
+}
+.navbar-custom {
+  display: none;
+}
+@media (max-width: 768px) {
+  .floating-call-button {
+    display: block;
+  }
+  .navbar-custom {
+  background: #ffffff;
+  padding: 4px 2px;
+  display: block;
+}
+}
+.tooltip-text {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 6px 8px;
+  border-radius: 4px;
+  position: absolute;
+  right: 120%;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.floating-call-button a:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}

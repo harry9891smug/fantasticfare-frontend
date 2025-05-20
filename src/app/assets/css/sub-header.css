@@ -1,0 +1,107 @@
+/* sub-header.css */
+.sub-header {
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px 0;
+}
+
+.sub-header .container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.sub-header ul {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sub-header li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    position: relative;
+    transition: transform 0.4s ease-in-out;
+}
+
+/* Icon Styling */
+.sub-header li img {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 0px;
+    transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
+}
+
+/* Text Styling */
+.sub-header li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    transition: color 0.4s ease-in-out;
+    display: contents;
+}
+
+/* Hover Effects */
+/* .sub-header li:hover {
+    transform: translateY(-8px);
+} */
+
+
+
+.sub-header li:hover a {
+    color: #ff4500; /* Bright orange for strong impact */
+}
+
+/* Additional bounce effect */
+
+/* Phone Button Styles */
+.phone-button-container {
+    margin-left: auto; /* Pushes to the right */
+  }
+  
+  .phone-button {
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 8px 16px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid #dee2e6;
+  }
+  
+  .phone-button:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    color: #000;
+  }
+  
+  .phone-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .phone-button svg {
+    transition: transform 0.3s ease;
+  }
+  
+  .phone-button:hover svg {
+    transform: scale(1.1) rotate(10deg);
+  }
+  @media (max-width: 768px) {
+    .phone-button-container {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+  
+  
+  

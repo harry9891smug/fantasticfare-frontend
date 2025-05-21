@@ -164,7 +164,9 @@ const HotelDetails = () => {
       hotel,
       room
     }));
-    router.push(`/booking/${hotelId}`);
+    router.push(`/booking/${hotelId}`); 
+    // window.open(`/booking/${hotelId}`, '_blank', 'noopener,noreferrer');
+
   };
 
 

@@ -18,11 +18,13 @@ import debounce from 'lodash.debounce';
 
 type TravelerType = "adults" | "children";
 type Suggestion = {
+  city:string;
   id: string;
   name: string;
   type: 'city' | 'country' | 'region';
   country?: string;
   country_name?:string;
+  iata:string;
 };
 
 const HotelSearch = () => {
@@ -90,7 +92,7 @@ const HotelSearch = () => {
 
   const handleSuggestionSelect = (suggestion: Suggestion) => {
     setSelectedLocation(suggestion);
-    setSearch(`${suggestion.name}${suggestion.country ? `, ${suggestion.country}` : ''}`);
+    setSearch(`${suggestion.city}${suggestion.country ? `, ${suggestion.country}` : ''}`);
     setShowSuggestions(false);
   };
 
@@ -114,7 +116,7 @@ const HotelSearch = () => {
     const params = new URLSearchParams();
     params.set('locationId', selectedLocation.id);
     params.set('locationType', selectedLocation.type);
-    params.set('locationName', selectedLocation.name);
+    params.set('locationName', selectedLocation.city);
     params.set('checkIn', dateRange[0].toISOString().split('T')[0]);
     params.set('checkOut', dateRange[1].toISOString().split('T')[0]);
     params.set('adults', travelers.adults.toString());
@@ -173,8 +175,8 @@ const HotelSearch = () => {
                   >
                     <div className="suggestion-content">
                       <div className="suggestion-text">
-                        <strong>{suggestion.name}</strong>
-                        {suggestion.country_name && <span className="country">{`, ${suggestion.country_name}`}</span>}
+                        <strong>{suggestion.iata}-{suggestion.city}</strong>
+                        {suggestion.country&& <span className="country">{`, ${suggestion.country}`}</span>}
                       </div>
                       <div className="suggestion-type-badge">
                         {/* {suggestion.type?.charAt(0).toUpperCase() + suggestion.type?.slice(1)} */}

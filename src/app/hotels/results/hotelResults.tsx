@@ -72,6 +72,7 @@ export default function HotelResultsPage() {
   const [selectedStars, setSelectedStars] = useState<number[]>([]);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [IsLoading,setIsLoading] = useState(true)
   const [collapsedFilters, setCollapsedFilters] = useState({
     sort: false,
     suggested: false,
@@ -83,7 +84,7 @@ export default function HotelResultsPage() {
   const hotelsPerPage = 10;
   const fetchHotelImages = async (hotelCode: number) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/${hotelCode}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/searchHotel/${hotelCode}`);
       const data = await response.json();
   
       if (data?.status && data.data?.images) {

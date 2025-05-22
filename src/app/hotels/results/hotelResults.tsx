@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FiSearch, FiStar, FiChevronDown, FiChevronUp, FiMapPin ,FiImage, FiTrendingUp } from 'react-icons/fi';
 import { FaSwimmingPool, FaWifi, FaSpa, FaDumbbell} from 'react-icons/fa';
-
+import gif from "../../assets/images/app.gif";
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -72,7 +72,7 @@ export default function HotelResultsPage() {
   const [selectedStars, setSelectedStars] = useState<number[]>([]);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
-  const [IsLoading,setIsLoading] = useState(true)
+  const [IsLoading,setIsLoading] = useState(false)
   const [collapsedFilters, setCollapsedFilters] = useState({
     sort: false,
     suggested: false,
@@ -110,7 +110,7 @@ export default function HotelResultsPage() {
           setLoading(false);
           return;
         }
-  
+        setIsLoading(true);
         const requestBody = {
           stay: {
             checkIn: checkIn || new Date().toISOString().split('T')[0],
@@ -177,6 +177,7 @@ export default function HotelResultsPage() {
         setFilteredHotels([]);
       } finally {
         setLoading(false);
+        setIsLoading(false);
       }
     };
   
@@ -322,6 +323,25 @@ export default function HotelResultsPage() {
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
+      </div>
+    );
+  }
+  if(IsLoading){
+    return (
+       <div className="flex justify-center -mt-2 mb-4">
+        <div className="border-x-2 border-b-2 border-blue-400 rounded-b-lg overflow-hidden max-w-md w-full">
+          <Image
+            src={gif}
+            alt="Decorative animation"
+            width={800}  // Adjust based on your GIF dimensions
+            height={100} // Adjust based on your GIF dimensions
+            className="w-full h-auto object-cover"
+            style={{
+              display: 'block',
+              margin: '0 auto',
+            }}
+          />
+        </div>
       </div>
     );
   }

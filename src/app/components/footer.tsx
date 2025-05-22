@@ -27,7 +27,7 @@ const Footer: React.FC = () => {
     { src: SriLanka, title: "Sri Lanka" ,slug: "Sri Lanka" },
     { src: thailand, title: "Thailand",slug: "Thailand" },
     { src: ladakh, title: "Ladakh",slug:'india' },
-    { src: hongkong, title: "Hong Kong",slug:'china' },
+    { src: hongkong, title: "Hong Kong",slug:'hong-kong' },
     { src: dubai, title: "Dubai",slug:'united arab emirates' },
     { src: singapore, title: "Singapore",slug: "Singapore" },
     { src: andaman, title: "Andaman and Nicobar Islands" ,slug: "india"},

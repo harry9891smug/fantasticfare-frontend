@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -18,22 +19,54 @@ import bali from "../assets/images/footer_images/bali.png";
 import NewYork from "../assets/images/footer_images/new-york.png";
 import SriLanka from "../assets/images/footer_images/sri-lanka.png";
 import WatiWidget from './WatiWidget';
+import axios from "axios";
+interface Countries {
+  country_name: string;
+  image: string;
+  showInFrontend: string;
+}
 
 const Footer: React.FC = () => {
   const slugify = (text) =>
     text.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
 
   const destinations = [
-    { src: SriLanka, title: "Sri Lanka" ,slug: "Sri Lanka" },
-    { src: thailand, title: "Thailand",slug: "Thailand" },
-    { src: ladakh, title: "Ladakh",slug:'india' },
-    { src: hongkong, title: "Hong Kong",slug:'hong-kong' },
-    { src: dubai, title: "Dubai",slug:'united arab emirates' },
-    { src: singapore, title: "Singapore",slug: "Singapore" },
-    { src: andaman, title: "Andaman and Nicobar Islands" ,slug: "india"},
-    { src: bali, title: "Bali"  ,slug: "indonesia"},
-    { src: NewYork, title: "New York",  slug:"united states"}
+    { src: NewYork, title: "New York", slug: "united states" },
+    { src: thailand, title: "Thailand", slug: "Thailand" },
+    { src: dubai, title: "Dubai", slug: 'united-arab-emirates' },
+    { src: singapore, title: "Singapore", slug: "Singapore" },
+    { src: bali, title: "Bali", slug: "indonesia" },
+    { src: hongkong, title: "Hong Kong", slug: 'hong-kong' },
+    { src: ladakh, title: "Ladakh", slug: 'india' },
+    { src: andaman, title: "Andaman and Nicobar Islands", slug: "india" },
+    { src: SriLanka, title: "Sri Lanka", slug: "Sri Lanka" },
   ];
+  const [countries, setCountries] = useState<Countries[]>([]);
+  const [finalDestinations, setFinalDestinations] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/display-countries`);
+        const dynamicCountries: Countries[] = response.data.data;
+        const dynamicDestinations = dynamicCountries.map((country) => ({
+          src: country.image,
+          title: country.country_name,
+          slug: country.country_name.toLowerCase(),
+        }));
+        const existingTitles = dynamicDestinations.map((item) => item.title.toLowerCase());
+        const filteredStatic = destinations.filter(
+          (item) => !existingTitles.includes(item.title.toLowerCase())
+        );
+
+        const combined = [...dynamicDestinations, ...filteredStatic.slice(0, 9 - dynamicDestinations.length)];
+        setFinalDestinations(combined);
+      } catch (error) {
+        console.error("Failed to fetch countries", error);
+      }
+    };
+    fetchCountries()
+  })
   return (
     <section className="footer-section">
       <div className="footer-background">
@@ -109,9 +142,21 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          <div className="background-border-shadow-1">
+          {/* <div className="background-border-shadow-1">
             <div className="gallery">
               {destinations.map((item, index) => (
+                <div className="gallery-item" key={index}>
+                  <a href={`/${slugify(item.slug)}`} rel="noopener noreferrer">
+                    <Image src={item.src} alt={item.title} width={100} height={100} />
+                    <div className="image-title">{item.title}</div>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div> */}
+          <div className="background-border-shadow-1">
+            <div className="gallery">
+              {finalDestinations.map((item, index) => (
                 <div className="gallery-item" key={index}>
                   <a href={`/${slugify(item.slug)}`} rel="noopener noreferrer">
                     <Image src={item.src} alt={item.title} width={100} height={100} />

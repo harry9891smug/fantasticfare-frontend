@@ -10,41 +10,49 @@ function PaymentStatusContent() {
     const bookingId = searchParams.get('booking_id');
     const paypalToken = searchParams.get('token');
     const PayerID = searchParams.get('PayerID');
-const [success,setSuccess] = useState(false);
-    useEffect(() => {
-        successBooking();
-        if (success == true && bookingId) {
-            // Payment was successful
-            window.location.href = `/booking-confirmation/${bookingId}`;
-        } else {
-            // Payment failed or was cancelled
-            window.location.href = '/booking-failed';
-        }
-    }, [success, bookingId]);
+const [success, setSuccess] = useState<boolean | null>(null); // null as initial
+const [loading, setLoading] = useState(true); // optional: to control loading state
 
-    const successBooking = (async () => {
-        const token = localStorage.getItem('authToken')
+useEffect(() => {
+    const handleSuccess = async () => {
+        const token = localStorage.getItem('authToken');
         if (!token) {
-            console.error('Unauthorized: No token found. Please log in.')
-            return
+            console.error('Unauthorized: No token found. Please log in.');
+            setSuccess(false);
+            return;
         }
 
         try {
-
             const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/paypal/success-payment?booking_id=${bookingId}&token=${paypalToken}&PayerID=${PayerID}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-            })
-            setSuccess(response.data.status)
+            });
+
+            console.log("Booking Success Response:", response.data);
+            setSuccess(response.data.status); 
         } catch (error: any) {
-            console.error('error on success payment:', error)
-            // console.error(error.response?.data?.message || 'Failed to fetch articles')
-
+            console.error('Error on success payment:', error);
+            setSuccess(false);
+        } finally {
+            setLoading(false);
         }
+    };
 
+    if (bookingId && paypalToken && PayerID) {
+        handleSuccess();
+    }
+}, [bookingId, paypalToken, PayerID]);
 
-    })
+useEffect(() => {
+    if (loading) return;
+
+    if (success === true && bookingId) {
+        window.location.href = `/booking-confirmation/${bookingId}`;
+    } else if (success === false) {
+        window.location.href = '/booking-failed';
+    }
+}, [success, loading, bookingId]);
 
     return (
         <div className="flex items-center justify-center min-h-screen">

@@ -14,6 +14,7 @@ import { usePathname } from 'next/navigation';
 import EnquiryModal from "../components/EnquiryModal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ads from '../assets/images/ads.jpeg';
 
 interface Package {
   _id: string;
@@ -174,6 +175,22 @@ const [showAll, setShowAll] = useState(false);
       </div>
     </div>
   );
+const groupPackagesByCountry = (packages: Package[]) => {
+  return packages.reduce((acc, pkg) => {
+    let rawCountry = (pkg as any).country_name || "Unknown Country";
+
+    // Normalize: trim, lowercase, capitalize
+    let country =
+      rawCountry.trim().toLowerCase().replace(/\s+/g, " "); // remove extra spaces
+    country = country.charAt(0).toUpperCase() + country.slice(1);
+
+    if (!acc[country]) acc[country] = [];
+    acc[country].push(pkg);
+    return acc;
+  }, {} as Record<string, Package[]>);
+};
+const groupedPackages = groupPackagesByCountry(packages);
+
 
   return (
     <div className="container mt-5 packages-container">
@@ -190,96 +207,96 @@ const [showAll, setShowAll] = useState(false);
       </div>
 
       {/* Packages */}
-      <div className="row">
-      {packages.length > 0 ? (
-    packages.slice(0, showAll ? packages.length : 6).map(pkg => (
-            <div className="col-12 col-sm-6 col-md-4 mb-4" key={pkg._id}>
-              <div className="card shadow-sm h-100 package-card">
+      {Object.entries(groupedPackages).map(([countryName, countryPackages]) => (
+  <div key={countryName} className="mb-5">
+    {/* Country Header with View All Button */}
+    <div className="d-flex justify-content-between align-items-center mb-3">
+      <h3 className="fw-bold">{countryName}</h3>
+      <Link href={`/country/${countryName.toLowerCase().replace(/\s+/g, '-')}`}>
+        <button className="btn btn-outline-primary btn-sm">View All</button>
+      </Link>
+    </div>
 
-              <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
-                <div className="card-img-container">
-                  {pkg.package_image?.length > 0 ? (
-                    <Swiper
-                      modules={[Pagination, Autoplay]}
-                      pagination={{ clickable: true }}
-                      spaceBetween={10}
-                      slidesPerView={1}
-                      autoplay={{ delay: 2500, disableOnInteraction: false }}
-                      observer={true}  // Add this
-                      observeParents={true}  // Add this
-                      key={pkg._id}  // Add unique key
-                    >
-                      {pkg.package_image.map((img, idx) => (
-                        <SwiperSlide key={idx}>
-                          <Image
-                            src={img}
-                            alt={`${pkg.package_name}-${idx}`}
-                            width={400}
-                            height={250}
-                            className="card-img-top"
-                            style={{
-                              objectFit: "cover",
-                              borderRadius: "8px",
-                              width: '100%',
-                              height: 'auto'
-                            }}
-                            priority={idx === 0}
-                            onLoadingComplete={() => window.dispatchEvent(new Event('resize'))}
-                          />
-                        </SwiperSlide>
-                      ))}
-                    </Swiper>
-                  ) : (
-                    <div className="placeholder-image">No Image Available</div>
-                  )}
-                </div>
+    {/* Country's Packages */}
+    <div className="row">
+      {countryPackages.slice(0, 3).map((pkg) => (
+        <div className="col-12 col-sm-6 col-md-4 mb-4" key={pkg._id}>
+          {/* Your existing card UI for individual package here */}
+          <div className="card shadow-sm h-100 package-card">
+            <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
+              <div className="card-img-container">
+                {pkg.package_image?.length > 0 ? (
+                  <Swiper
+                    modules={[Pagination, Autoplay]}
+                    pagination={{ clickable: true }}
+                    spaceBetween={10}
+                    slidesPerView={1}
+                    autoplay={{ delay: 2500, disableOnInteraction: false }}
+                    observer={true}
+                    observeParents={true}
+                    key={pkg._id}
+                  >
+                    {pkg.package_image.map((img, idx) => (
+                      <SwiperSlide key={idx}>
+                        <Image
+                          src={img}
+                          alt={`${pkg.package_name}-${idx}`}
+                          width={400}
+                          height={250}
+                          className="card-img-top"
+                          style={{
+                            objectFit: "cover",
+                            borderRadius: "8px",
+                            width: "100%",
+                            height: "auto",
+                          }}
+                          priority={idx === 0}
+                          onLoadingComplete={() => window.dispatchEvent(new Event("resize"))}
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                ) : (
+                  <div className="placeholder-image">No Image Available</div>
+                )}
+              </div>
             </Link>
-                <div className="card-body d-flex flex-column">
-                  <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
-                    <h5 className="card-title">{pkg.package_name || 'Package Name'}</h5>
-                  </Link>
-                  <p className="card-text text-muted mb-2">
-                    {pkg.package_heading || 'Package description'}
-                  </p>
-                  <div className="price-container mb-3 mt-auto">
-                    {pkg.discounted_price ? (
-                      <>
-                        <span className="text-decoration-line-through text-muted me-2">
-                          ${pkg.total_price}
-                        </span>
-                        <span className="text-danger fw-bold">
-                          ${pkg.discounted_price}
-                        </span>
-                        <div className="savings-badge">
-                          Save ${calculateSavings(pkg.total_price, pkg.discounted_price)}
-                        </div>
-                      </>
-                    ) : (
-                      <span className="fw-bold">${pkg.total_price}</span>
-                    )}
-                  </div>
-                  <div className="buttons">
-                    <a href="tel:+18334227770">
-                      <button className="phone-button">📞</button>
-                    </a>
-                      <button className="callback-button"  onClick={() => openEnquiryModal(pkg)}>
-                            Request Callback
-                      
-
-                     
-                        </button>
-                  </div>
-                </div>
+            <div className="card-body d-flex flex-column">
+              <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
+                <h5 className="card-title">{pkg.package_name}</h5>
+              </Link>
+              <p className="card-text text-muted mb-2">{pkg.package_heading}</p>
+              <div className="price-container mb-3 mt-auto">
+                {pkg.discounted_price ? (
+                  <>
+                    <span className="text-decoration-line-through text-muted me-2">
+                      ${pkg.total_price}
+                    </span>
+                    <span className="text-danger fw-bold">${pkg.discounted_price}</span>
+                    <div className="savings-badge">
+                      Save ${calculateSavings(pkg.total_price, pkg.discounted_price)}
+                    </div>
+                  </>
+                ) : (
+                  <span className="fw-bold">${pkg.total_price}</span>
+                )}
+              </div>
+              <div className="buttons">
+                <a href="tel:+18334227770">
+                  <button className="phone-button">📞</button>
+                </a>
+                <button className="callback-button" onClick={() => openEnquiryModal(pkg)}>
+                  Request Callback
+                </button>
               </div>
             </div>
-          ))
-        ) : (
-          <div className="col-12 text-center py-5">
-            <h4>No packages available</h4>
-            <p>Please check back later</p>
           </div>
-        )}
-      </div>
+        </div>
+      ))}
+    </div>
+  </div>
+))}
+
       {packages.length > 6 && (
   <div className="text-center mt-4">
     {!showAll ? (
@@ -310,7 +327,7 @@ const [showAll, setShowAll] = useState(false);
       {/* Advertisement */}
       <div className="ads-container my-5">
         <Image
-          src="/assets/images/ads.jpeg"
+          src={ads}
           alt="Advertisement"
           className="img-fluid rounded"
           width={1200}

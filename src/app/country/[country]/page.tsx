@@ -9,15 +9,15 @@ import { Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import "../assets/css/packages.css";
-import user1 from "../assets/images/user.svg"; 
+import "../../assets/css/packages.css";
+import user1 from "../../assets/images/user.svg"; 
 import Link from "next/link";
-import '../assets/css/about.css';
-import EnquiryModal from "../components/EnquiryModal";
+import '../../assets/css/about.css';
+import EnquiryModal from "../../components/EnquiryModal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import cornerImage from "../assets/images/revimg.svg";
-import WhyChooseUs from '../components/WhyChooseUs';
+import cornerImage from "../../assets/images/revimg.svg";
+import WhyChooseUs from '../../components/WhyChooseUs';
 const reviews = [
   {
     id: 1,

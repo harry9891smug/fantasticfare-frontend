@@ -382,3 +382,18 @@
     50% { transform: translateX(5px); }
     75% { transform: translateX(-5px); }
 }
+.loaderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #333;
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.loaderGif {
+    margin-bottom: 15px;
+}

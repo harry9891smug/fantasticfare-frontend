@@ -23,6 +23,7 @@ import { useForm, Controller } from "react-hook-form";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import he from "he";
 import { FaMapMarkedAlt, FaLightbulb, FaBed } from "react-icons/fa";
+import EnquiryModal from "../../components/EnquiryModal";
 
 interface Packages {
   _id: string;
@@ -143,7 +144,8 @@ const schema = yup.object().shape({
 const PackageDetails: React.FC = () => {
   const params = useParams();
   const { id } = params;
-
+const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
+  const [showEnquiryModal, setShowEnquiryModal] = useState(false);
   const [packages, setPackages] = useState<Packages[]>([]);
   const [packageData, setPackageData] = useState<Package | null>(null);
   const [loading, setLoading] = useState(true);
@@ -275,6 +277,16 @@ const PackageDetails: React.FC = () => {
   const exclusions = packageData?.inclusion
     ?.find(item => item.type === "exclusion")
     ?.description || [];
+
+      const openEnquiryModal = (pkg: Package) => {
+    setSelectedPackage(pkg);
+    setShowEnquiryModal(true);
+  };
+
+  const closeEnquiryModal = () => {
+    setShowEnquiryModal(false);
+    setSelectedPackage(null);
+  };
   return (
     <>
       <Head>
@@ -344,13 +356,7 @@ const PackageDetails: React.FC = () => {
                 </>
               )}
               <div className="enquire-btn">
-                <button onClick={() => {
-  const formSection = document.getElementById('enquiry-form');
-  if (formSection) {
-    formSection.scrollIntoView({ behavior: 'smooth' });
-    formSection.querySelector('input')?.focus();
-  }
-}}>Enquire Now</button>
+                <button onClick={() => openEnquiryModal(packageData)}>Enquire Now</button>
               </div>
             </div>
             <div className="rating">
@@ -359,7 +365,15 @@ const PackageDetails: React.FC = () => {
           </div>
         </div>
       </div>
-
+ {/* Enquiry Modal */}
+      {selectedPackage && (
+        <EnquiryModal
+          packageData={selectedPackage}
+          show={showEnquiryModal}
+          onClose={closeEnquiryModal}
+          countryOptions={countryOptions}
+        />
+      )}
       <div className="container-2">
         <div className="first-column">
           <div className="itenary-activity">
@@ -852,6 +866,15 @@ const PackageDetails: React.FC = () => {
           </div>
         )}
       </div>
+      {/* Floating Enquiry Button - Mobile Only */}
+<div className="floating-enquiry-btn-container">
+  <button 
+    className="floating-enquiry-btn"
+    onClick={() => openEnquiryModal(packageData)}
+  >
+    Send Enquiry
+  </button>
+</div>
     </>
   );
 };

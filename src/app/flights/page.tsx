@@ -433,7 +433,6 @@ const FlightSearch = () => {
 
             {/* Going To */}
             <div className="custom-input position-relative mb-3">
-              <div className="custom-input position-relative mb-3">
                 <InputGroup className="custom-input">
                   <InputGroup.Text><FaPlaneArrival /></InputGroup.Text>
                   <Form.Control type="text" placeholder="Going To" onChange={(e) => handleAirportChange(e, 'goingTo')} name="goingTo" />
@@ -451,7 +450,6 @@ const FlightSearch = () => {
                     ))}
                   </div>
                 )}
-              </div>
             </div>
 
             {/* Departure Date */}
@@ -641,19 +639,19 @@ const FlightSearch = () => {
 
       {/* Main Content */}
       <div className="flex justify-center -mt-2 mb-4">
-        <div className="border-x-2 border-b-2 border-blue-400 rounded-b-lg overflow-hidden max-w-md w-full">
-          <Image
-            src={gif}
-            alt="Decorative animation"
-            width={800}  // Adjust based on your GIF dimensions
-            height={100} // Adjust based on your GIF dimensions
-            className="w-full h-auto object-cover"
-            style={{
-              display: 'block',
-              margin: '0 auto',
-            }}
-          />
-        </div>
+     <div className="gif-container">
+  <Image
+    src={gif}
+    alt="Decorative animation"
+    width={800}
+    height={100}
+    className="w-full h-auto"
+    style={{
+      display: 'block',
+      margin: '0 auto',
+    }}
+  />
+</div>
       </div>
     </div>
   );

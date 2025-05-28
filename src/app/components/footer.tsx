@@ -9,13 +9,13 @@ import fbIcon from "../assets/images/fb.svg";
 import xIcon from "../assets/images/x.svg";
 import instaIcon from "../assets/images/insta.svg";
 import ytIcon from "../assets/images/yt.svg";
-import thailand from "../assets/images/footer_images/thailand.png";
-import ladakh from "../assets/images/footer_images/ladakh.png";
-import hongkong from "../assets/images/footer_images/hongkong.png";
-import dubai from "../assets/images/footer_images/dubai.png";
-import singapore from "../assets/images/footer_images/singapore.png";
-import andaman from "../assets/images/footer_images/andaman.png";
-import bali from "../assets/images/footer_images/bali.png";
+import thailand from "../assets/images/footer_images/Thailand.png";
+import ladakh from "../assets/images/footer_images/Ladakh.png";
+import hongkong from "../assets/images/footer_images/Hongkong.png";
+import dubai from "../assets/images/footer_images/Dubai.png";
+import singapore from "../assets/images/footer_images/Singapore.png";
+import andaman from "../assets/images/footer_images/Andaman.png";
+import bali from "../assets/images/footer_images/Bali.png";
 import NewYork from "../assets/images/footer_images/new-york.png";
 import SriLanka from "../assets/images/footer_images/sri-lanka.png";
 import WatiWidget from './WatiWidget';
@@ -158,7 +158,7 @@ const Footer: React.FC = () => {
             <div className="gallery">
               {finalDestinations.map((item, index) => (
                 <div className="gallery-item" key={index}>
-                  <a href={`/${slugify(item.slug)}`} rel="noopener noreferrer">
+                  <a href={`/country/${slugify(item.slug)}`} rel="noopener noreferrer">
                     <Image src={item.src} alt={item.title} width={100} height={100} />
                     <div className="image-title">{item.title}</div>
                   </a>

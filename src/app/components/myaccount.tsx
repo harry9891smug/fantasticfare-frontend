@@ -1,12 +1,13 @@
+"use client"
 import React, { useEffect, useState } from "react";
-import Sidebar from "./myaccount/sidebar";
-import MyProfile from "./myaccount/myprofile";
-import MyBookings from "./myaccount/mybookings";
-import Communications from "./myaccount/communications";
-import Coupons from "./myaccount/coupons";
-import SecuritySettings from "./myaccount/securitysettings";
-import SupportFAQ from "./myaccount/supportfaq";
-import styles from './myaccount/myaccount.module.css';
+import Sidebar from "./myaccount-components/sidebar";
+import MyProfile from "./myaccount-components/myprofile";
+import MyBookings from "./myaccount-components/mybookings";
+import Communications from "./myaccount-components/communications";
+import Coupons from "./myaccount-components/coupons";
+import SecuritySettings from "./myaccount-components/securitysettings";
+import SupportFAQ from "./myaccount-components/supportfaq";
+import styles from '../assets/css/myaccount.module.css';
 
 interface User {
   name: string;

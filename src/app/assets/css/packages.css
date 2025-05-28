@@ -156,14 +156,18 @@
 
 /* Advertisement */
 .ads-container {
-  margin: 40px 0;
-  text-align: center;
+  width: 100%;
+  max-width: 100%; 
+  margin: 0 auto;
+  overflow: hidden; 
 }
 
 .ads-container img {
-  border-radius: 10px;
-  max-width: 100%;
+  width: 100%;
   height: auto;
+  max-height: 583px; 
+  object-fit: cover;  
+  display: block;
 }
 
 /* Tips Section */
@@ -526,4 +530,15 @@
 
 .react-select__menu {
   z-index: 1001 !important;
+}
+@media (max-width: 768px) {
+  .ads-container img {
+    max-height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ads-container img {
+    max-height: 150px;
+  }
 }

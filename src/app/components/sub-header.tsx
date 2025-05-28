@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { usePathname } from 'next/navigation';
 import Link from "next/link";
 import Image from "next/image";
 import home from "../assets/images/home.png";
@@ -7,7 +8,60 @@ import hotels from "../assets/images/hotels.png";
 import packages from "../assets/images/packages.png";
 import "../assets/css/sub-header.css";
 
+interface RegionData {
+  continent_name: string;
+  regions: {
+    region_name: string;
+    countries: string[];
+  }[];
+}
+
+interface ApiResponse {
+  status: boolean;
+  data: RegionData[];
+}
+
 const SubHeader = () => {
+
+
+  const [showViewDropdown, setShowViewDropdown] = useState(false);
+  const [activeContinent, setActiveContinent] = useState<string | null>(null);
+  const [regionsData, setRegionsData] = useState<ApiResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
+    const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const handleToggle = () => {
+    setShowViewDropdown((prev) => !prev);
+  };
+  useEffect(() => {
+    const fetchRegionsData = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/global-links`);
+        if (!response.ok) throw new Error("Failed to fetch regions data");
+        const data: ApiResponse = await response.json();
+        setRegionsData(data);
+      } catch (error) {
+        console.error("Error fetching regions data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRegionsData();
+  }, []);
+
+  const toggleContinent = (continent: string) => {
+    setActiveContinent(activeContinent === continent ? null : continent);
+  };
+
   return (
     <nav className="sub-header sticky-top">
       <div className="container d-flex justify-content-between align-items-center position-relative">
@@ -37,6 +91,60 @@ const SubHeader = () => {
               <span>Packages</span>
             </Link>
           </li>
+          {/* New View Dropdown */}
+
+{pathname === '/packages' && (
+      <li className="position-relative view-dropdown-item">
+  <div 
+    className="flex items-center gap-2 cursor-pointer"
+      onClick={isMobile ? handleToggle : undefined}
+        onMouseEnter={!isMobile ? () => setShowViewDropdown(true) : undefined}
+  >
+    <span className="spandes">More</span>
+    <span className="dropdown-icon">+</span>
+  </div>
+
+  {showViewDropdown && (
+  <div 
+    className="mega-dropdown"
+    onMouseEnter={() => setShowViewDropdown(true)}
+    onMouseLeave={() => setShowViewDropdown(false)}
+  >
+    <div className="container">
+      {loading ? (
+        <div className="loading-spinner">Loading destinations...</div>
+      ) : regionsData ? (
+        <div className="continent-container">
+          {regionsData.data.map((continent) => (
+            <div key={continent.continent_name} className="continent-column">
+              <h3 className="continent-title">{continent.continent_name}</h3>
+              {continent.regions.map((region) => (
+                <div key={region.region_name} className="region-group">
+                  <div className="region-title">{region.region_name}</div>
+                  <div className="country-list">
+                    {region.countries.map((country) => (
+                      <Link
+                        key={country}
+                        href={`/country/${country.toLowerCase().replace(/\s+/g, '-')}`}
+                        className="country-item"
+                      >
+                        {country}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="error-message">Failed to load destinations</div>
+      )}
+    </div>
+  </div>
+)}
+</li>
+          )}
         </ul>
         
         {/* Phone Button - Right Side */}
@@ -55,4 +163,5 @@ const SubHeader = () => {
     </nav>
   );
 };
+
 export default SubHeader;

@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import { Form, Button, InputGroup } from "react-bootstrap";
+import gif from "../assets/images/app.gif";
 import {
   FaPlaneDeparture,
   FaPlaneArrival,
@@ -280,6 +281,12 @@ const FlightSearch = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+const handleClick = () => {
+  console.log("You clicked the Chip.");
+};
+
+
   return (
     <div className="container py-5">
       {/* Tabs */}
@@ -545,7 +552,6 @@ const FlightSearch = () => {
 
             {/* Going To */}
             <div className="custom-input position-relative mb-3">
-              <div className="custom-input position-relative mb-3">
                 <InputGroup className="custom-input">
                   <InputGroup.Text>
                     <FaPlaneArrival />
@@ -557,26 +563,19 @@ const FlightSearch = () => {
                     name="goingTo"
                   />
                 </InputGroup>
-                {focusedField === "goingTo" &&
-                  airportSuggestions.length > 0 && (
-                    <div className="autocomplete-dropdown">
-                      {airportSuggestions.map((airportData, index) => (
-                        <div
-                          key={index}
-                          className="autocomplete-item"
-                          onClick={() =>
-                            handleAirportSelect(
-                              `${airportData.iata}-${airportData.city}(${airportData.country})`
-                            )
-                          }
-                        >
-                          {airportData.iata}-{airportData.city}(
-                          {airportData.country})
-                        </div>
-                      ))}
-                    </div>
-                  )}
-              </div>
+                {focusedField === 'goingTo' && airportSuggestions.length > 0 && (
+                  <div className="autocomplete-dropdown">
+                    {airportSuggestions.map((airportData, index) => (
+                      <div
+                        key={index}
+                        className="autocomplete-item"
+                        onClick={() => handleAirportSelect(`${airportData.iata}-${airportData.city}(${airportData.country})`)}
+                      >
+                        {airportData.iata}-{airportData.city}({airportData.country})
+                      </div>
+                    ))}
+                  </div>
+                )}
             </div>
 
             {/* Departure Date */}
@@ -982,6 +981,20 @@ const FlightSearch = () => {
             </Button>
           </div>
         </div>
+      <div className="flex justify-center -mt-2 mb-4">
+     <div className="gif-container">
+  <Image
+    src={gif}
+    alt="Decorative animation"
+    width={800}
+    height={100}
+    className="w-full h-auto"
+    style={{
+      display: 'block',
+      margin: '0 auto',
+    }}
+  />
+</div>
       </div>
 
       <div className="container mt-5 d-flex flex-column align-items-center">
@@ -995,13 +1008,9 @@ const FlightSearch = () => {
         ))}
       </div>
     </div>
+    </div>
   );
 };
-
-const handleClick = () => {
-  console.log("You clicked the Chip.");
-};
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -1050,5 +1059,6 @@ const PrevArrow: React.FC<ArrowProps> = ({ className, style, onClick }) => (
     <FaChevronLeft size={20} />
   </div>
 );
+
 
 export default FlightSearch;

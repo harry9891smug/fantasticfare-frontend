@@ -1,4 +1,9 @@
-
+/* Base Navbar Styles */
+.navbar-custom {
+  background: #ffffff;
+  padding: 10px 0;
+  position: relative;
+}
 .navbar-toggler-iconct {
   display: inline-block;
   width: 2em;
@@ -9,171 +14,51 @@
   background-position: center;
   background-size: 100%;
 }
+.navbar-custom .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 15px;
+}
+
+/* Logo/Brand Styles */
+.navbar-custom .navbar-brand {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  z-index: 1021;
+  padding: 5px 0;
+}
+
 .navbar-custom .navbar-brand img {
-  height: 70px;
+  height: auto;
+  max-height: 60px;
+  width: auto;
+  max-width: 192px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  transition: all 0.3s ease;
 }
 
-.navbar-custom .search-box {
-  background: #ffffff;
-  border-radius: 26px;
-  box-shadow: 3px 0px 17.4px 4px rgba(0, 0, 0, 0.13);
-  padding: 10px 20px;
-  width: 100%;
-  max-width: 300px;
-}
-
-.navbar-custom .search-box input {
+/* Toggle Button Styles - Restored original hamburger icon */
+.navbar-custom .navbar-toggler {
+  order: 2;
+  padding: 0.25rem 0.5rem;
   border: none;
-  outline: none;
-  width: 100%;
-}
-
-/* 🔹 Fixed Sign-in Button */
-.navbar-custom .sign-in-box {
-  border: 1px solid #000000;
-  border-radius: 16px;
-  padding: 8px 15px;
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-  text-decoration: none;
-  color: #000000;
-}
-
-.navbar-custom .sign-in-box img {
-  /* height: 20px; */
-  margin-right: 4px;
-}
-
-.navbar-custom .sign-in-box:hover {
-  background-color: #f8f9fa;
-}
-.navbar-custom .sign-in-box .btn {
-  color: #000000;
-  font-size: 13px;
-  padding: 0;
   background: none;
-  border: none;
-  white-space: nowrap; 
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 991.98px) {
-  .navbar-custom .sign-in-box {
-    margin-bottom: 10px;
-  }
-  .navbar-custom .search-box {
-    margin-bottom: 10px;
-  }
-}
-/* ✅ Responsive Fix */
-@media (max-width: 991.98px) {
-  .navbar-custom .sign-in-box {
-    margin-bottom: 10px;
-  }
-  .navbar-custom .search-box {
-    margin-bottom: 10px;
-  }
-}
-.userMenu {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-/* 🔔 Notification Button */
-.notificationBtn {
-  background: #0389c6;
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  color: white;
-  font-size: 16px;
+  z-index: 1021;
 }
 
-.notificationBtn:hover {
-  background: #026ba3;
-}
 
-/* 👤 Profile + Logout */
-.profileActions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: relative;
-}
 
-/* 👤 Profile Image */
-.profileWrapper {
-  position: relative;
-  cursor: pointer;
-}
-
-.userIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.userIcon:hover {
-  transform: scale(1.08);
-}
-
-/* 🔽 Dropdown Menu */
-.dropdownMenu {
-  position: absolute;
-  top: 50px;
-  right: 0;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-  padding: 10px;
-  min-width: 140px;
-  z-index: 1022;
-}
-
-/* 🚪 Logout Button */
-.logoutBtn {
-  background: transparent;
-  border: none;
-  color: #000;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 5px;
-  transition: color 0.3s ease;
-}
-
-.logoutBtn:hover {
-  color: #dc3545; /* red color on hover */
-}
-
-.logoutBtn i {
-  font-size: 20px;
-}
-
-/* ✍️ Greeting Text */
-.greeting {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #333;
-  white-space: nowrap; /* 🛑 Never allow greeting to wrap */
-}
-
+/* Phone button in header - Restored */
 .floating-call-button {
-  padding-left: 102px;
-  display: none;
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .floating-call-button a {
@@ -194,19 +79,7 @@
 .floating-call-button a:hover {
   transform: scale(1.1);
 }
-.navbar-custom {
-  display: none;
-}
-@media (max-width: 768px) {
-  .floating-call-button {
-    display: block;
-  }
-  .navbar-custom {
-  background: #ffffff;
-  padding: 4px 2px;
-  display: block;
-}
-}
+
 .tooltip-text {
   visibility: hidden;
   background-color: #333;
@@ -227,4 +100,237 @@
 .floating-call-button a:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+/* Collapsible Content */
+.navbar-custom .navbar-collapse {
+  order: 3;
+  width: 100%;
+  flex-basis: 100%;
+  flex-grow: 1;
+}
+
+/* Search Box Styles */
+.navbar-custom .search-box {
+  background: #ffffff;
+  border-radius: 26px;
+  box-shadow: 3px 0px 17.4px 4px rgba(0, 0, 0, 0.13);
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 300px;
+  margin: 10px 0;
+}
+
+.navbar-custom .search-box input {
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+/* User Menu Styles */
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto;
+}
+
+.notificationBtn {
+  background: #0389c6;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: white;
+  font-size: 16px;
+}
+
+.notificationBtn:hover {
+  background: #026ba3;
+}
+
+.profileActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.profileWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.userIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.userIcon:hover {
+  transform: scale(1.08);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  padding: 10px;
+  min-width: 140px;
+  z-index: 1022;
+}
+
+.logoutBtn {
+  background: transparent;
+  border: none;
+  color: #000;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.3s ease;
+}
+
+.logoutBtn:hover {
+  color: #dc3545;
+}
+
+.greeting {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+}
+
+/* Sign In Box */
+.navbar-custom .sign-in-box {
+  border: 1px solid #000000;
+  border-radius: 16px;
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  text-decoration: none;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.navbar-custom .sign-in-box img {
+  margin-right: 4px;
+}
+
+.navbar-custom .sign-in-box:hover {
+  background-color: #f8f9fa;
+}
+
+.navbar-custom .sign-in-box .btn {
+  color: #000000;
+  font-size: 13px;
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+/* Responsive Styles */
+@media (min-width: 992px) {
+  .navbar-custom .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+    width: auto;
+    order: 1;
+  }
+  
+  .navbar-custom .search-box {
+    margin: 0 20px;
+  }
+  
+  .userMenu {
+    margin-left: auto;
+  }
+  .navbar-custom {
+  display: none;
+}
+  .floating-call-button {
+    display: none; /* Hide on desktop */
+  }
+}
+
+@media (max-width: 991.98px) {
+  .navbar-custom .navbar-collapse {
+    padding-top: 15px;
+  }
+  
+  .navbar-custom .sign-in-box {
+    margin: 10px 0;
+  }
+  
+  .navbar-custom .search-box {
+    margin: 10px 0;
+  }
+  
+  .userMenu {
+    margin: 10px 0 0;
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-call-button {
+    display: flex; /* Show on mobile */
+    padding-left: 10px;
+    margin-left: auto;
+  }
+  
+  .navbar-custom {
+    padding: 4px 0;
+  }
+  
+  .navbar-custom .container {
+    padding: 0 10px;
+  }
+  
+ 
+  
+  .navbar-custom .navbar-toggler {
+    order: 2;
+  }
+}
+
+@media (max-width: 480px) {
+ 
+  
+  .greeting {
+    font-size: 0.9rem;
+  }
+  
+  .floating-call-button {
+    padding-right:9px;
+  }
+}
+@media (max-width: 768px) {
+  .navbar-custom .navbar-brand img {
+    max-height: 50px;
+    max-width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-custom .navbar-brand img {
+    max-height: 45px;
+    max-width: 140px;
+  }
 }

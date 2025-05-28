@@ -11,6 +11,7 @@ import appleIcon from '../assets/images/apple.svg';
 // import LeftImage from '../assets/images/left.svg';
 // import RightImage from '../assets/images/right.svg';
 import PlaneImage from '../assets/images/plane.svg';
+import loaderGif from '../assets/images/app.gif';
 
 interface AuthPopupProps {
     onClose: () => void;
@@ -116,6 +117,7 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose,  onSuccess, error}) => {
             setTimeout(() => {
                 onSuccess(); // This will trigger the booking flow
                 onClose();    // Close the popup
+                window.location.href = window.location.origin;
               }, 1000);
             } catch (err: any) {
               setTopError(

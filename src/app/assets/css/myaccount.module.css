@@ -200,7 +200,7 @@
     margin-top: 30px;
 }
 
-h3 {
+.header h3 {
     margin: 0;
     font-size: 1.2rem;
 }
@@ -230,7 +230,7 @@ h3 {
 
 
 /* Labels */
-label {
+.infoGrid label {
     font-weight: bold;
     display: block;
     margin-bottom: 5px;

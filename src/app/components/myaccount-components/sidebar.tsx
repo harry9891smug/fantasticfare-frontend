@@ -1,5 +1,5 @@
 import React from "react";
-import styles from './myaccount.module.css';
+import styles from '../../assets/css/myaccount.module.css';
 import support from '../../assets/images/support.svg';
 import accounts from '../../assets/images/account.svg';
 import setting from '../../assets/images/settings.svg';
@@ -27,6 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelect, user, setUser }) => {
     localStorage.removeItem("token");
     setUser(null);
     window.dispatchEvent(new Event("storage"));
+    window.location.href = window.location.origin;
   };
 
   return (

@@ -49,6 +49,7 @@ const Header: React.FC = () => {
     localStorage.removeItem("token");
     setUser(null);
     window.dispatchEvent(new Event("storage"));
+    window.location.href = window.location.origin;
   };
 
   return (
@@ -101,7 +102,7 @@ const Header: React.FC = () => {
                       className="profileWrapper"
                       onClick={() => setShowDropdown(!showDropdown)}
                     >
-                      <Link href="/myaccount">
+                      <Link href="/my-account">
                         <Image
                           src={user.profileImage || userIcon}
                           alt="User Profile"
@@ -139,7 +140,7 @@ const Header: React.FC = () => {
               )}
             </div>
           </div>
-          {showPopup && <AuthPopup onClose={() => setShowPopup(false)} />}
+          {showPopup && <AuthPopup onClose={() => setShowPopup(false)} onSuccess={() => {}}/>}
         </div>
       </nav>
 

@@ -524,8 +524,7 @@
       position: relative;
       width: auto;
       height: auto;
-      display: flex
-;
+      display: flex;
     }
   
     /* .main-image {
@@ -593,6 +592,7 @@
       font-size: 16px;
       padding: 12px 24px;
     }
+   
   }
   
   @media (max-width: 480px) {
@@ -637,3 +637,8 @@
     font-size: 48px;
 }
 
+@media (max-width: 768px) {  
+  .discount-banner {
+      margin: 60px auto 40px auto; 
+  }
+}

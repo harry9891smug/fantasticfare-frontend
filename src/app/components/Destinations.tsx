@@ -36,22 +36,26 @@ const FeaturedSection = () => {
           navigation
           pagination={{ clickable: true }}
           autoplay={{ delay: 3000 }}
-         
         >
           {featuredDestinations.map((item) => (
             <SwiperSlide key={item.id}>
               <div className="featured-destination-card">
-                <Image className="featured-destination-image " src={item.img} alt={item.title} width={300} height={200} />
+                <Image
+                  className="featured-destination-image "
+                  src={item.img}
+                  alt={item.title}
+                  width={300}
+                  height={200}
+                />
                 <h3 className="featured-destination-title">{item.title}</h3>
-                
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
 
-      <div className="explore-container">
-        <button className="explore-btn">Explore More</button>
-      </div>
+        <div className="explore-container">
+          <button className="explore-btn">Explore More</button>
+        </div>
       </div>
     </div>
   );

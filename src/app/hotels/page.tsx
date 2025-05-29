@@ -1,348 +1,274 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { FaSearch, FaCalendarAlt, FaUsers, FaTimes } from "react-icons/fa";
+import { Container, Row, Col } from "react-bootstrap";
+import HotelSearchComponent from "../components/HotelSearchComponent";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../assets/css/hotels.css";
-import HotelBanner from "../assets/images/hotel-banner.svg";
+import "../assets/css/newhotels.css";
 import Hotel1 from "../assets/images/first-up.svg";
 import Hotel2 from "../assets/images/second-down.svg";
 import Hotel3 from "../assets/images/middle.svg";
 import Hotel4 from "../assets/images/third-up.png";
 import Hotel5 from "../assets/images/thiird-down.svg";
-import { Container, Row, Col, Form, Button, InputGroup } from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useRouter } from 'next/navigation';
-import debounce from 'lodash.debounce';
-
-type TravelerType = "adults" | "children";
-type Suggestion = {
-  city:string;
-  id: string;
-  name: string;
-  type: 'city' | 'country' | 'region';
-  country?: string;
-  country_name?:string;
-  iata:string;
-};
-
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Autoplay } from "swiper/modules";
 const HotelSearch = () => {
-  const [search, setSearch] = useState("");
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
-  const [showTravelerDropdown, setShowTravelerDropdown] = useState(false);
-  const [travelers, setTravelers] = useState({ adults: 2, children: 0 });
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState<Suggestion | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [suggestion_type,setSuggestionType] = useState(String);
-  const searchRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
+ const recommendedHotels = [
+  {
+    name: "Taj Ecotica Resort & Spa, Goa",
+    rating: "5-star Resort - Branellin",
+    price: "$0000 + $000 taxes & fees / night",
+    discount: "Additional bank discounts",
+    images: [Hotel1, Hotel2, Hotel3], // multiple images here
+  },
+  {
+    name: "ITC Grand Goa, a Luxury Collection Resort & Spa",
+    rating: "5-star Resort - Anestim",
+    price: "$0000 + $000 taxes & fees / night",
+    discount: "No cost EMI from €8,850",
+    images: [Hotel2, Hotel4, Hotel5],
+  },
+  {
+    name: "The LaLiT Golf & Spa Resort, Goa",
+    rating: "5-star Resort - Canacona",
+    price: "$0000 + taxes & fees / night",
+    discount: "30% off No cost EMI from €3,924",
+    ratings: "4.5 600+ ratings",
+    images: [Hotel3, Hotel1, Hotel5],
+  },
+  {
+    name: "Novotel Goa Dona Sylvia Resort",
+    rating: "4-star Hotel - Canbellin",
+    price: "$0000 + taxes & fees / night",
+    discount: "23% off No cost EMI from €2,028",
+    ratings: "4.5 250+ ratings",
+    images: [Hotel4, Hotel3, Hotel2],
+  },
+];
 
-  const fetchSuggestions = debounce(async (query: string) => {
-    if (query.length < 2) {
-      setSuggestions([]);
-      return;
-    }
 
-    try {
-      setIsLoading(true);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/search_city`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ city_name: query }),
-      });
+  const popularDestinations = [
+  {
+    name: "Mumbai",
+    location: "Maharashtra, India",
+    price: "$6,019",
+    category: "avg. nightly price",
+    images: [Hotel1, Hotel2, Hotel3],
+  },
+  {
+    name: "Goa",
+    location: "Goa, India",
+    price: "$5,200",
+    category: "avg. nightly price",
+    images: [Hotel2, Hotel3, Hotel4],
+  },
+  {
+    name: "Delhi",
+    location: "Delhi, India",
+    price: "$4,800",
+    category: "avg. nightly price",
+    images: [Hotel5, Hotel3, Hotel1],
+  }
+];
 
-      if (!response.ok) throw new Error('Failed to fetch suggestions');
-      
-      const result = await response.json();
-      setSuggestionType(result?.data?.type);
-      setSuggestions(result?.data?.data || []);
-    } catch (error) {
-      console.error("Error fetching suggestions:", error);
-      setSuggestions([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, 300);
 
-  useEffect(() => {
-    fetchSuggestions(search);
-    return () => fetchSuggestions.cancel();
-  }, [search]);
+  const travelDeals = [
+    { title: "Well Furnished Apartment", location: "100 Smart Street, LA, USA", price: "$1000 – 5000 USD", images: [Hotel1, Hotel4, Hotel5], },
+    { title: "Blue Door Villa Modern", location: "100 Smart Street, LA, USA", price: "$1000 – 5000 USD",images: [Hotel3, Hotel4, Hotel5],},
+    { title: "Beach House Apartment", location: "100 Smart Street, LA, USA", price: "$1000 – 5000 USD" , images: [Hotel1, Hotel2, Hotel3],},
+    { title: "Country Boys Hostel", location: "100 Smart Street, LA, USA", price: "$1000 – 5000 USD", images: [Hotel2, Hotel3, Hotel4], },
+    { title: "Large Family Flat on Rent", location: "100 Smart Street, LA, USA", price: "$1000 – 5000 USD", images: [Hotel3, Hotel4, Hotel5], }
+  ];
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setShowSuggestions(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleTravelerChange = (type: TravelerType, increment: boolean) => {
-    setTravelers(prev => ({
-      ...prev,
-      [type]: Math.max(0, increment ? prev[type] + 1 : prev[type] - 1),
-    }));
-  };
-
-  const handleSuggestionSelect = (suggestion: Suggestion) => {
-    setSelectedLocation(suggestion);
-    setSearch(`${suggestion.city}${suggestion.country ? `, ${suggestion.country}` : ''}`);
-    setShowSuggestions(false);
-  };
-
-  const clearSearch = () => {
-    setSearch("");
-    setSelectedLocation(null);
-    setSuggestions([]);
-  };
-
-  const handleSearch = () => {
-    if (!selectedLocation) {
-      alert("Please select a location from the suggestions");
-      return;
-    }
-    
-    if (!dateRange[0] || !dateRange[1]) {
-      alert("Please select check-in and check-out dates");
-      return;
-    }
-
-    const params = new URLSearchParams();
-    params.set('locationId', selectedLocation.id);
-    params.set('locationType', selectedLocation.type);
-    params.set('locationName', selectedLocation.city);
-    params.set('checkIn', dateRange[0].toISOString().split('T')[0]);
-    params.set('checkOut', dateRange[1].toISOString().split('T')[0]);
-    params.set('adults', travelers.adults.toString());
-    params.set('children', travelers.children.toString());
-    
-    router.push(`/hotels/results?${params.toString()}`);
-  };
+  const categories = ["Beach", "Culture", "Adventure", "Family", "Wellness & Relaxation"];
 
   return (
     <div className="container hotel-search-container">
-      <div className="row g-3 justify-content-center">
-        <h2 className="hotel-title">Discover Your Perfect Stay</h2>
+      <HotelSearchComponent />
+      
+      <div className="recommended-section">
+        <h2>Recommended stays for you</h2>
+        <p className="subtitle">Based on your most recently viewed property</p>
+        
+        <div className="voucher-banner">
+          <h3>Get Taj voucher worth upto £2000</h3>
+        </div>
 
-        {/* Search Input with Suggestions */}
-        <div className="col-md-4 position-relative" ref={searchRef}>
-          <InputGroup className="custom-input">
-            <InputGroup.Text className="icon">
-              <FaSearch />
-            </InputGroup.Text>
-            <Form.Control
-              type="text"
-              placeholder="City, Country, or Region"
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setSelectedLocation(null);
-                setShowSuggestions(true);
-              }}
-              onFocus={() => setShowSuggestions(true)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && selectedLocation) handleSearch();
-              }}
+       <Row className="hotel-grid">
+  {recommendedHotels.map((hotel, index) => (
+    <Col md={3} key={index} className="hotel-card">
+      <Swiper
+        spaceBetween={10}
+        slidesPerView={1}
+        loop={true}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        modules={[Autoplay]}
+        style={{ width: "100%", height: "200px", borderRadius: "8px", overflow: "hidden" }}
+      >
+        {hotel.images.map((imgSrc, idx) => (
+          <SwiperSlide key={idx}>
+            <div style={{ position: "relative", width: "100%", height: "200px" }}>
+              <Image
+                src={imgSrc}
+                alt={`${hotel.name} image ${idx + 1}`}
+                fill
+                style={{ objectFit: "cover", borderRadius: "8px" }}
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      <h3 className="hotel-name">{hotel.name}</h3>
+      <p className="hotel-rating">{hotel.rating}</p>
+      <p className="hotel-price">{hotel.price}</p>
+      <p className="hotel-discount">{hotel.discount}</p>
+      {hotel.ratings && <p className="hotel-ratings">{hotel.ratings}</p>}
+    </Col>
+  ))}
+</Row>
+
+      </div>
+
+      <div className="destinations-section">
+        <h2>Explore stays in popular destinations</h2>
+        
+        <div className="categories">
+          {categories.map((category, index) => (
+            <span key={index} className="category-badge">{category}</span>
+          ))}
+        </div>
+
+        <Row className="destination-grid">
+  {popularDestinations.map((destination, index) => (
+    <Col md={4} key={index} className="destination-card">
+      <div className="destination-images">
+        <div className="left-image">
+          <Image
+            src={destination.images[0]}
+            alt={`${destination.name} 1`}
+            fill
+            style={{ objectFit: "cover", borderRadius: "8px" }}
+          />
+        </div>
+        <div className="right-images">
+          <div className="top-image">
+            <Image
+              src={destination.images[1]}
+              alt={`${destination.name} 2`}
+              fill
+              style={{ objectFit: "cover", borderRadius: "8px" }}
             />
-            {search && (
-              <Button
-                variant="link"
-                className="clear-btn"
-                onClick={clearSearch}
-                aria-label="Clear search"
+          </div>
+          <div className="bottom-image">
+            <Image
+              src={destination.images[2]}
+              alt={`${destination.name} 3`}
+              fill
+              style={{ objectFit: "cover", borderRadius: "8px" }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="destination-info">
+        <h3 className="destination-name">{destination.name}</h3>
+        <p className="destination-location">{destination.location}</p>
+        <div className="destination-price-info">
+          <p className="destination-price">{destination.price}</p>
+          <p className="destination-category">{destination.category}</p>
+        </div>
+      </div>
+    </Col>
+  ))}
+</Row>
+
+      </div>
+
+      <div className="deals-section">
+        <h2>This Week's Top Travel Deals</h2>
+        
+  <Row className="deals-grid" >
+  {travelDeals.map((deal, index) => (
+    <Col 
+      md={4} 
+      key={index} 
+      className="deal-card" 
+      style={{ padding: "0 10px", boxSizing: "border-box" }}
+    >
+      <Swiper
+        spaceBetween={10}
+        slidesPerView={1}
+        loop={true}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        modules={[Autoplay]}
+        style={{ width: "100%", height: "300px", borderRadius: "8px", overflow: "hidden" }}
+      >
+        {deal.images.map((imgSrc, idx) => (
+          <SwiperSlide key={idx}>
+            <div 
+              className="deal-image-container" 
+              style={{ 
+                position: "relative", 
+                width: "100%", 
+                height: "300px", 
+                borderRadius: "8px", 
+                overflow: "hidden" 
+              }}
+            >
+              <Image
+                src={imgSrc}
+                alt={`${deal.title} image ${idx + 1}`}
+                fill
+                className="deal-image"
+                style={{ objectFit: "cover", borderRadius: "8px" }}
+              />
+              <span 
+                className="deal-price" 
+                style={{ 
+                  position: "absolute", 
+                  bottom: "10px", 
+                  left: "10px", 
+                  backgroundColor: "rgba(0,0,0,0.6)", 
+                  color: "#fff", 
+                  padding: "4px 8px", 
+                  borderRadius: "4px",
+                  fontSize: "14px",
+                }}
               >
-                <FaTimes />
-              </Button>
-            )}
-          </InputGroup>
-
-          {showSuggestions && (
-            <div className="suggestions-dropdown">
-              {isLoading ? (
-                <div className="suggestion-item loading">Loading...</div>
-              ) : suggestions.length > 0 ? (
-                suggestions.map((suggestion) => (
-                  <div
-                    key={suggestion.id}
-                    className={`suggestion-item ${selectedLocation?.id === suggestion.id ? 'active' : ''}`}
-                    onClick={() => handleSuggestionSelect(suggestion)}
-                  >
-                    <div className="suggestion-content">
-                      <div className="suggestion-text">
-                        <strong>{suggestion.iata}-{suggestion.city}</strong>
-                        {suggestion.country&& <span className="country">{`, ${suggestion.country}`}</span>}
-                      </div>
-                      <div className="suggestion-type-badge">
-                        {/* {suggestion.type?.charAt(0).toUpperCase() + suggestion.type?.slice(1)} */}
-                        {suggestion_type}
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                search.length > 1 && <div className="suggestion-item no-results">No results found</div>
-              )}
+                {deal.price}
+              </span>
+              <span 
+                className="deal-favorite-icon" 
+                style={{ 
+                  position: "absolute", 
+                  top: "10px", 
+                  right: "10px", 
+                  color: "white", 
+                  fontSize: "20px", 
+                  cursor: "pointer" 
+                }}
+              >
+                ♡
+              </span>
             </div>
-          )}
-        </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-        {/* Date Range Picker */}
-        <div className="col-md-4">
-          <InputGroup className="custom-input">
-            <InputGroup.Text className="icon">
-              <FaCalendarAlt />
-            </InputGroup.Text>
-            <DatePicker
-              selected={dateRange[0]}
-              onChange={(update: [Date | null, Date | null]) => setDateRange(update)}
-              startDate={dateRange[0]}
-              endDate={dateRange[1]}
-              selectsRange
-              placeholderText="Check-in - Check-out"
-              className="form-control date-picker"
-              minDate={new Date()}
-            />
-          </InputGroup>
-        </div>
+      <h3 className="deal-title" style={{ marginTop: "12px" }}>{deal.title}</h3>
+      <p className="deal-location">{deal.location}</p>
+    </Col>
+  ))}
+</Row>
 
-        {/* Travelers Dropdown */}
-        <div className="col-md-4 position-relative">
-          <InputGroup className="custom-input">
-            <InputGroup.Text className="icon">
-              <FaUsers />
-            </InputGroup.Text>
-            <Form.Control
-              type="text"
-              readOnly
-              value={`${travelers.adults} Adults, ${travelers.children} Children`}
-              onClick={() => setShowTravelerDropdown(!showTravelerDropdown)}
-              aria-label="Select number of travelers"
-            />
-          </InputGroup>
 
-          {showTravelerDropdown && (
-            <div className="traveler-dropdown">
-              <div className="traveler-item">
-                <span>Adults</span>
-                <div className="traveler-controls">
-                  <Button size="sm" variant="outline-secondary" onClick={() => handleTravelerChange("adults", false)} disabled={travelers.adults <= 0}>
-                    -
-                  </Button>
-                  <span className="count">{travelers.adults}</span>
-                  <Button size="sm" variant="outline-secondary" onClick={() => handleTravelerChange("adults", true)}>
-                    +
-                  </Button>
-                </div>
-              </div>
-              <div className="traveler-item">
-                <span>Children</span>
-                <div className="traveler-controls">
-                  <Button size="sm" variant="outline-secondary" onClick={() => handleTravelerChange("children", false)} disabled={travelers.children <= 0}>
-                    -
-                  </Button>
-                  <span className="count">{travelers.children}</span>
-                  <Button size="sm" variant="outline-secondary" onClick={() => handleTravelerChange("children", true)}>
-                    +
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+
+
+
       </div>
-
-      {/* Search Button */}
-      <div className="text-center mt-4">
-        <Button className="btn btn-primary search-btn" onClick={handleSearch}>
-          Search Hotels
-        </Button>
-      </div>
-
-      <div className="spacer"></div>
-
-      {/* Banner Section */}
-      <div className="banner-section">
-        <Image 
-          src={HotelBanner} 
-          alt="Luxury hotel banner showing various accommodations" 
-          className="banner-image" 
-          priority
-        />
-      </div>
-
-      {/* Room Section */}
-      <Container className="room-section text-center">
-        <h5 className="small-title">Our Room</h5>
-        <h2 className="main-title">A World of Choice</h2>
-        <p className="description">
-          Experience luxury and comfort with our wide range of rooms, each designed for a perfect stay.
-        </p>
-
-        <Row className="room-grid">
-          {/* Column 1 */}
-          <Col lg={4} md={12} className="room-col">
-            <div className="room-box">
-              <Image 
-                src={Hotel1} 
-                alt="Modern hotel room with queen bed" 
-                className="room-img"
-              />
-              <p className="guest-count">2 Guests</p>
-              <p className="amenities">WiFi, TV, Air Conditioning</p>
-            </div>
-            <div className="room-box">
-              <Image 
-                src={Hotel2} 
-                alt="Family suite with two beds" 
-                className="room-img"
-              />
-              <p className="guest-count">3 Guests</p>
-              <p className="amenities">WiFi, Kitchen, Balcony</p>
-            </div>
-          </Col>
-
-          {/* Column 2 */}
-          <Col lg={4} md={12} className="room-col">
-            <div className="room-box full">
-              <Image 
-                src={Hotel3} 
-                alt="Luxury penthouse suite with living area" 
-                className="room-img"
-              />
-              <p className="guest-count">4 Guests</p>
-              <p className="amenities">WiFi, Pool, Breakfast</p>
-            </div>
-          </Col>
-
-          {/* Column 3 */}
-          <Col lg={4} md={12} className="room-col">
-            <div className="room-box">
-              <Image 
-                src={Hotel4} 
-                alt="Executive business room with workspace" 
-                className="room-img"
-              />
-              <p className="guest-count">2 Guests</p>
-              <p className="amenities">WiFi, Parking, Spa</p>
-            </div>
-            <div className="room-box">
-              <Image 
-                src={Hotel5} 
-                alt="Deluxe room with king bed" 
-                className="room-img"
-              />
-              <p className="guest-count">3 Guests</p>
-              <p className="amenities">WiFi, Gym, Mini Bar</p>
-            </div>
-          </Col>
-        </Row>
-      </Container>
     </div>
   );
 };

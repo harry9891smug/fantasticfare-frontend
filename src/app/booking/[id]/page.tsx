@@ -22,6 +22,7 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [activeTab, setActiveTab] = useState<'coupon' | 'giftCard'>('coupon');
+  const [useHolderAsGuest, setUseHolderAsGuest] = useState(true);
 
   const [formData, setFormData] = useState({
     holder: {
@@ -42,23 +43,44 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
     couponCode: ''
   });
 
-  // Fetch booking data
+  // Fetch booking data and user info
   useEffect(() => {
     const fetchBookingData = async () => {
       try {
         const bookingData = sessionStorage.getItem(`booking_${id}`);
         const dateData = sessionStorage.getItem(`hotel_${id}`);
+        const userData = localStorage.getItem('user');
        
         if (!bookingData) {
           throw new Error('Failed to fetch booking data');
         }
         const data = JSON.parse(bookingData);
         const dates = JSON.parse(dateData);
-       console.log(data);
+        const user = userData ? JSON.parse(userData) : null;
+
         setBookingData(data);
         setDateData(dates);
         setHotel(data.hotel);
         setSelectedRoom(data.room);
+        
+        // Set initial form data with user info if available
+        if (user) {
+          const [userName, ...userSurname] = user.name ? user.name.split(' ') : ['', ''];
+          const surname = userSurname.join(' ');
+          
+          setFormData(prev => ({
+            ...prev,
+            holder: {
+              name: userName,
+              surname: surname
+            },
+            paxes: [
+              { name: userName, surname: surname },
+              { name: '', surname: '' }
+            ]
+          }));
+        }
+        
         setIsLoading(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load booking data');
@@ -69,6 +91,19 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
     fetchBookingData();
   }, [id]);
 
+  // Update guest 1 when holder changes or checkbox is toggled
+  useEffect(() => {
+    if (useHolderAsGuest) {
+      setFormData(prev => ({
+        ...prev,
+        paxes: [
+          { name: prev.holder.name, surname: prev.holder.surname },
+          prev.paxes[1]
+        ]
+      }));
+    }
+  }, [useHolderAsGuest, formData.holder]);
+
   // Slider settings
   const sliderSettings = {
     dots: true,
@@ -78,7 +113,7 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    pauseOnHover: true,  // Pause the autoplay when the mouse hovers over the slider
+    pauseOnHover: true,
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -208,7 +243,7 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const roomPrice = selectedRoom.rates?.[0]?.net || 0;
   const taxes = selectedRoom.rates?.[0]?.taxes?.amount || 0;
   const totalPrice = (roomPrice + taxes) * duration;
-console.log(roomPrice ,taxes , totalPrice);
+
   // Get hotel main image
   const hotelMainImage = hotel.images?.find(img => img.type === 'general')?.src || hotel.images?.[0]?.src;
 
@@ -368,6 +403,16 @@ console.log(roomPrice ,taxes , totalPrice);
             {formData.paxes.map((pax, index) => (
               <div key={index} className={styles.guestCard}>
                 <h5 className={styles.guestTitle}>Guest {index + 1}</h5>
+                {index === 0 && (
+                  <label className={styles.sameAsHolderCheckbox}>
+                    <input
+                      type="checkbox"
+                      checked={useHolderAsGuest}
+                      onChange={(e) => setUseHolderAsGuest(e.target.checked)}
+                    />
+                    Same as booking holder
+                  </label>
+                )}
                 <div className={styles.formRow}>
                   <div className={styles.formGroup}>
                     <label className={styles.formLabel}>First Name*</label>
@@ -379,8 +424,12 @@ console.log(roomPrice ,taxes , totalPrice);
                         const newPaxes = [...formData.paxes];
                         newPaxes[index] = { ...newPaxes[index], name: e.target.value };
                         setFormData({ ...formData, paxes: newPaxes });
+                        if (index === 0) {
+                          setUseHolderAsGuest(false);
+                        }
                       }}
                       required
+                      disabled={index === 0 && useHolderAsGuest}
                     />
                   </div>
                   <div className={styles.formGroup}>
@@ -393,8 +442,12 @@ console.log(roomPrice ,taxes , totalPrice);
                         const newPaxes = [...formData.paxes];
                         newPaxes[index] = { ...newPaxes[index], surname: e.target.value };
                         setFormData({ ...formData, paxes: newPaxes });
+                        if (index === 0) {
+                          setUseHolderAsGuest(false);
+                        }
                       }}
                       required
+                      disabled={index === 0 && useHolderAsGuest}
                     />
                   </div>
                 </div>

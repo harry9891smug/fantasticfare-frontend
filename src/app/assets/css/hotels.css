@@ -15,24 +15,26 @@
 }
 
   
-.custom-input {
+.customh-input {
   display: flex;
   align-items: center;
   background: #fff;
-  border: 1px solid #ddd;
+  border-bottom: 1px solid #0c8ac6;
   border-radius: 8px;
   padding: 4px;
   width: 100%;
   position: relative;
+  border-bottom-width: medium;
 }
 
-.custom-input .icon {
-  color: gray;
-  font-size: 18px;
-  margin-right: 10px;
+.customh-input .icon {
+   color: gray;
+   font-size: 14px;
+   margin-right: 17px;
+   margin-top: 9px;
 }
 
-.custom-input input {
+.customh-input input {
   border: none;
   outline: none;
   width: 100%;

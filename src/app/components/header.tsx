@@ -28,16 +28,28 @@ const Header: React.FC = () => {
   }, []);
 
   useEffect(() => {
+  const loadUser = () => {
     try {
       const userData = localStorage.getItem("user");
       if (userData) {
         setUser(JSON.parse(userData));
+      } else {
+        setUser(null);
       }
     } catch (error) {
       console.error("Error parsing user data:", error);
       setUser(null);
     }
-  }, []);
+  };
+
+  loadUser(); 
+  window.addEventListener("userUpdated", loadUser);
+
+  return () => {
+    window.removeEventListener("userUpdated", loadUser);
+  };
+}, []);
+
 
   const handleNavToggle = () => {
     setIsNavCollapsed(!isNavCollapsed);

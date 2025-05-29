@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { FiSearch, FiStar, FiChevronDown, FiChevronUp, FiMapPin ,FiImage, FiTrendingUp } from 'react-icons/fi';
-import { FaSwimmingPool, FaWifi, FaSpa, FaDumbbell} from 'react-icons/fa';
+import { FiStar, FiChevronDown, FiChevronUp, FiMapPin, FiImage, FiTrendingUp, FiCoffee, FiCheckCircle } from 'react-icons/fi';
+import { FaSwimmingPool, FaWifi, FaSpa, FaDumbbell } from 'react-icons/fa';
 import gif from "../../assets/images/app.gif";
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import Link from 'next/link';
@@ -13,6 +13,7 @@ import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
+import HotelSearchComponent from '../../components/HotelSearchComponent';
 
 type Hotel = {
   code: number;
@@ -71,37 +72,33 @@ export default function HotelResultsPage() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [selectedStars, setSelectedStars] = useState<number[]>([]);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
-  const [IsLoading,setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [collapsedFilters, setCollapsedFilters] = useState({
     sort: false,
-    suggested: false,
     price: false,
-    ratings: false,
-    locations: false
+    stars: false,
+    amenities: false
   });
   const [currentPage, setCurrentPage] = useState(1);
   const hotelsPerPage = 10;
+
   const fetchHotelImages = async (hotelCode: number) => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/searchHotel/${hotelCode}`);
       const data = await response.json();
   
       if (data?.status && data.data?.images) {
-        // Only return images with type = "General view"
-        const generalViewImages = data.data.images.filter(
+        return data.data.images.filter(
           (img: any) => img.type?.toLowerCase() === 'general view'
         );
-        return generalViewImages;
       }
-  
       return [];
     } catch (error) {
       console.error(`Error fetching images for hotel ${hotelCode}:`, error);
       return [];
     }
   };
-  
+
   useEffect(() => {
     const fetchHotels = async () => {
       try {
@@ -110,6 +107,7 @@ export default function HotelResultsPage() {
           setLoading(false);
           return;
         }
+        
         setIsLoading(true);
         const requestBody = {
           stay: {
@@ -129,49 +127,48 @@ export default function HotelResultsPage() {
           }
         };
   
-        console.log('Sending request:', requestBody);
-  
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/searchHotelsByArea`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(requestBody),
         });
   
+        if (!response.ok) throw new Error('Failed to fetch hotels');
+        
         const data = await response.json();
-        console.log('API response:', data);
-  
        
-      if (data?.status && data.data?.hotels) {
-        let hotelsList = Array.isArray(data.data.hotels) 
-          ? data.data.hotels 
-          : data.data.hotels.hotels || [];
+        if (data?.status && data.data?.hotels) {
+          let hotelsList = Array.isArray(data.data.hotels) 
+            ? data.data.hotels 
+            : data.data.hotels.hotels || [];
 
-        // Fetch images for each hotel
-        const hotelsWithImages = await Promise.all(
-          hotelsList.map(async (hotel: any) => {
-            const images = await fetchHotelImages(hotel.code || hotel.hotelCode);
-            return {
-              ...hotel,
-              code: hotel.code || hotel.hotelCode,
-              name: hotel.name || hotel.hotelName,
-              minRate: hotel.minRate || hotel.price || '0',
-              stars: hotel.stars || Math.floor(Math.random() * 5) + 1,
-              rating: hotel.rating || (Math.random() * 2 + 3).toFixed(1),
-              amenities: hotel.amenities || ['Pool', 'Wifi', 'Gym', 'Spa'].filter(() => Math.random() > 0.5),
-              images: images,
-              imageUrl: images[0]?.src || `/hotel-${Math.floor(Math.random() * 5) + 1}.jpg`
-            };
-          })
-        );
+          const hotelsWithImages = await Promise.all(
+            hotelsList.map(async (hotel: any) => {
+              const images = await fetchHotelImages(hotel.code || hotel.hotelCode);
+              return {
+                ...hotel,
+                code: hotel.code || hotel.hotelCode,
+                name: hotel.name || hotel.hotelName,
+                minRate: hotel.minRate || hotel.price || '0',
+                maxRate: hotel.maxRate || parseInt(hotel.minRate || '0') * 1.5,
+stars: hotel.stars || Math.floor(Math.random() * 5) + 1,
+rating: hotel.rating || (Math.random() * 2 + 3).toFixed(1),
 
-        setHotels(hotelsWithImages);
-        setFilteredHotels(hotelsWithImages);
-      } else {
-        console.error('No hotels found in response');
-        setHotels([]);
-        setFilteredHotels([]);
-      }
-    } catch (err) {
+                amenities: hotel.amenities || ['Pool', 'Wifi', 'Gym', 'Spa'].filter(() => Math.random() > 0.5),
+                images: images,
+                imageUrl: images[0]?.src || `/hotel-${Math.floor(Math.random() * 5) + 1}.jpg`
+              };
+            })
+          );
+
+          setHotels(hotelsWithImages);
+          setFilteredHotels(hotelsWithImages);
+        } else {
+          console.error('No hotels found in response');
+          setHotels([]);
+          setFilteredHotels([]);
+        }
+      } catch (err) {
         console.error("Error fetching hotels:", err);
         setHotels([]);
         setFilteredHotels([]);
@@ -183,115 +180,57 @@ export default function HotelResultsPage() {
   
     fetchHotels();
   }, [locationId, locationType, checkIn, checkOut, adults, children]);
-  // Apply filters
+
+  // Apply filters and sorting
   useEffect(() => {
-    const fetchHotels = async () => {
-      setLoading(true);
-      console.log('Starting hotel fetch...');
-      
-      try {
-        // Validate required params
-        if (!locationId || !locationType) {
-          console.error('Missing required parameters:', {
-            locationId,
-            locationType,
-            checkIn,
-            checkOut,
-            adults,
-            children
-          });
-          setLoading(false);
-          return;
-        }
-  
-        // Prepare request body
-        const requestBody = {
-          stay: {
-            checkIn: checkIn || new Date().toISOString().split('T')[0],
-            checkOut: checkOut || new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0],
-          },
-          occupancies: [{
-            rooms: 1,
-            adults: adults ? parseInt(adults) : 2,
-            children: children ? parseInt(children) : 0,
-          }],
-          type: locationType,
-          id: parseInt(locationId), // Ensure this is number
-          radius: {
-            radius: 20,
-            radius_type: "km"
-          }
-        };
-  
-        console.log('Request body:', JSON.stringify(requestBody, null, 2));
-  
-        // Make API call
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/searchHotelsByArea`, {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        });
-  
-        console.log('Response status:', response.status);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-  
-        const data = await response.json();
-        console.log('Full API response:', data);
-  
-        // Process response
-        if (data?.status) {
-          // Handle different response structures
-          let hotelsList = [];
-          
-          if (Array.isArray(data.data)) {
-            hotelsList = data.data;
-          } else if (data.data?.hotels) {
-            hotelsList = Array.isArray(data.data.hotels) 
-              ? data.data.hotels 
-              : [data.data.hotels];
-          } else {
-            console.warn('Unexpected response structure:', data);
-            hotelsList = [];
-          }
-  
-          console.log('Extracted hotels:', hotelsList);
-  
-          // Enhance hotel data
-          const enhancedHotels = hotelsList.map((hotel: any) => ({
-            ...hotel,
-            code: hotel.code || hotel.hotelCode || Math.random().toString(36).substring(2, 9),
-            name: hotel.name || hotel.hotelName || 'Unknown Hotel',
-            minRate: hotel.minRate || hotel.price || '0',
-            stars: hotel.stars || Math.floor(Math.random() * 5) + 1,
-            rating: hotel.rating || (Math.random() * 2 + 3).toFixed(1),
-            amenities: hotel.amenities || ['Pool', 'Wifi', 'Gym', 'Spa'].filter(() => Math.random() > 0.5),
-            imageUrl: hotel.imageUrl || `/hotel-${Math.floor(Math.random() * 5) + 1}.jpg`
-          }));
-  
-          setHotels(enhancedHotels);
-          setFilteredHotels(enhancedHotels);
-        } else {
-          console.error('API returned non-success status:', data);
-          setHotels([]);
-          setFilteredHotels([]);
-        }
-      } catch (error) {
-        console.error('Failed to fetch hotels:', error);
-        setHotels([]);
-        setFilteredHotels([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    fetchHotels();
-  }, [locationId, locationType, checkIn, checkOut, adults, children]);
-  const toggleFilterSection = (section: string) => {
+    if (hotels.length === 0) return;
+
+    let results = [...hotels];
+
+    // Apply star rating filter
+  if (selectedStars.length > 0) {
+  results = results.filter(hotel => 
+    selectedStars.some(star => (hotel.stars || 0) >= star)
+  );
+}
+
+    // Apply price range filter
+    results = results.filter(hotel => {
+      const price = parseFloat(hotel.minRate);
+      return price >= priceRange[0] && price <= priceRange[1];
+    });
+
+    // Apply amenities filter
+   if (selectedAmenities.length > 0) {
+  results = results.filter(hotel => 
+    selectedAmenities.every(amenity => 
+      hotel.amenities?.includes(amenity)
+    )
+  );
+}
+
+
+    // Apply sorting
+    switch (sortOption) {
+      case 'rating':
+        results.sort((a, b) => parseFloat(b.rating || '0') - parseFloat(a.rating || '0'));
+        break;
+      case 'price-high':
+        results.sort((a, b) => parseFloat(b.minRate) - parseFloat(a.minRate));
+        break;
+      case 'price-low':
+        results.sort((a, b) => parseFloat(a.minRate) - parseFloat(b.minRate));
+        break;
+      default: // 'popular'
+        results.sort((a, b) => parseFloat(b.rating || '0') - parseFloat(a.rating || '0'));
+        break;
+    }
+
+    setFilteredHotels(results);
+    setCurrentPage(1);
+  }, [hotels, sortOption, priceRange, selectedStars, selectedAmenities]);
+
+  const toggleFilterSection = (section: keyof typeof collapsedFilters) => {
     setCollapsedFilters(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
@@ -307,10 +246,8 @@ export default function HotelResultsPage() {
     );
   };
 
-  const toggleLocationSelection = (location: string) => {
-    setSelectedLocations(prev => 
-      prev.includes(location) ? prev.filter(l => l !== location) : [...prev, location]
-    );
+  const loadMoreHotels = () => {
+    setCurrentPage(prev => prev + 1);
   };
 
   const indexOfLastHotel = currentPage * hotelsPerPage;
@@ -326,20 +263,18 @@ export default function HotelResultsPage() {
       </div>
     );
   }
-  if(IsLoading){
+
+  if (isLoading) {
     return (
-       <div className="flex justify-center -mt-2 mb-4">
+      <div className="flex justify-center -mt-2 mb-4">
         <div className="border-x-2 border-b-2 border-blue-400 rounded-b-lg overflow-hidden max-w-md w-full">
           <Image
             src={gif}
             alt="Decorative animation"
-            width={800}  // Adjust based on your GIF dimensions
-            height={100} // Adjust based on your GIF dimensions
+            width={800}
+            height={100}
             className="w-full h-auto object-cover"
-            style={{
-              display: 'block',
-              margin: '0 auto',
-            }}
+            style={{ display: 'block', margin: '0 auto' }}
           />
         </div>
       </div>
@@ -364,25 +299,22 @@ export default function HotelResultsPage() {
 
   return (
     <div className="hotel-results-page">
-      {/* Header with search */}
+      {/* Search Component */}
       <div className="search-header py-3 bg-light">
         <Container>
-          <div className="search-box p-3 bg-white rounded shadow-sm">
-            <div className="search-input d-flex align-items-center">
-              <FiSearch className="search-icon me-2" />
-              <input 
-                type="text" 
-                className="form-control border-0"
-                placeholder="Search hotels..." 
-                defaultValue={locationName || ''}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    router.push(`/hotels?city=${e.currentTarget.value}`);
-                  }
-                }}
-              />
-            </div>
-          </div>
+          <HotelSearchComponent 
+            initialData={{
+              locationId: locationId || '',
+              locationType: locationType || '',
+              locationName: locationName || '',
+              checkIn: checkIn ? new Date(checkIn) : null,
+              checkOut: checkOut ? new Date(checkOut) : null,
+              adults: adults ? parseInt(adults) : 2,
+              children: children ? parseInt(children) : 0
+            }}
+            compact={true}
+            showTitle={false}
+          />
         </Container>
       </div>
 
@@ -390,7 +322,8 @@ export default function HotelResultsPage() {
         <Row>
           {/* Filters Sidebar */}
           <Col md={3} className="mb-4">
-            <div className="filters-sidebar bg-white p-3 rounded shadow-sm">
+            <div className="filters-sidebar bg-white p-3 rounded shadow-sm sticky-top" style={{ top: '20px' }}>
+              {/* Sort By Filter */}
               <div className="filter-section mb-3">
                 <div 
                   className="filter-header d-flex justify-content-between align-items-center cursor-pointer"
@@ -429,6 +362,7 @@ export default function HotelResultsPage() {
                 )}
               </div>
 
+              {/* Price Range Filter */}
               <div className="filter-section mb-3">
                 <div 
                   className="filter-header d-flex justify-content-between align-items-center cursor-pointer"
@@ -456,15 +390,16 @@ export default function HotelResultsPage() {
                 )}
               </div>
 
+              {/* Star Rating Filter */}
               <div className="filter-section mb-3">
                 <div 
                   className="filter-header d-flex justify-content-between align-items-center cursor-pointer"
-                  onClick={() => toggleFilterSection('suggested')}
+                  onClick={() => toggleFilterSection('stars')}
                 >
                   <h5 className="mb-0">Star Rating</h5>
-                  {collapsedFilters.suggested ? <FiChevronUp /> : <FiChevronDown />}
+                  {collapsedFilters.stars ? <FiChevronUp /> : <FiChevronDown />}
                 </div>
-                {!collapsedFilters.suggested && (
+                {!collapsedFilters.stars && (
                   <div className="filter-options mt-2">
                     {[5, 4, 3, 2, 1].map(star => (
                       <div 
@@ -484,22 +419,27 @@ export default function HotelResultsPage() {
                 )}
               </div>
 
+              {/* Amenities Filter */}
               <div className="filter-section">
                 <div 
                   className="filter-header d-flex justify-content-between align-items-center cursor-pointer"
                   onClick={() => toggleFilterSection('amenities')}
                 >
                   <h5 className="mb-0">Amenities</h5>
-                  {collapsedFilters.ratings ? <FiChevronUp /> : <FiChevronDown />}
+                  {collapsedFilters.amenities ? <FiChevronUp /> : <FiChevronDown />}
                 </div>
-                {!collapsedFilters.ratings && (
+                {!collapsedFilters.amenities && (
                   <div className="filter-options mt-2">
                     {['Pool', 'Wifi', 'Gym', 'Spa', 'Breakfast', 'Free Cancellation'].map(amenity => (
                       <div 
                         key={amenity}
-                        className={`filter-option py-2 px-3 mb-1 rounded ${selectedAmenities.includes(amenity) ? 'active' : ''}`}
+                        className={`filter-option py-2 px-3 mb-1 rounded d-flex align-items-center ${selectedAmenities.includes(amenity) ? 'active' : ''}`}
                         onClick={() => toggleAmenitySelection(amenity)}
                       >
+                        {amenity === 'Pool' && <FaSwimmingPool className="me-2" />}
+                        {amenity === 'Wifi' && <FaWifi className="me-2" />}
+                        {amenity === 'Gym' && <FaDumbbell className="me-2" />}
+                        {amenity === 'Spa' && <FaSpa className="me-2" />}
                         {amenity}
                       </div>
                     ))}
@@ -520,124 +460,64 @@ export default function HotelResultsPage() {
 
             <div className="hotel-results">
               {currentHotels.map(hotel => (
-               <div key={hotel.code} className="hotel-card-enhanced mb-4">
-               <Row className="g-0">
-                 {/* Image Slider Column */}
-                 <Col md={4} className="pe-md-2">
-                   <div className="hotel-image-container h-100">
-                     {hotel.images && hotel.images.length > 0 ? (
-                       <Swiper
-                         modules={[Pagination, Autoplay]}
-                         spaceBetween={0}
-                         slidesPerView={1}
-                         pagination={{ clickable: true }}
-                         autoplay={{ delay: 3000, disableOnInteraction: false }}
-                         loop={hotel.images.length > 1}
-                         className="h-100"
-                         style={{
-                            '--swiper-pagination-bullet-size': '8px',
-                            '--swiper-pagination-bullet-horizontal-gap': '6px'
-                          } as React.CSSProperties}
-                       >
-                         {hotel.images.map((image, index) => (
-                           <SwiperSlide key={index}>
-                             <div className="image-wrapper h-100">
-                               <Image
-                                 src={image.src}
-                                 alt={`${hotel.name} - ${image.type}`}
-                                 fill
-                                 className="swiper-image"
-                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                 priority={index === 0}
-                                 unoptimized={true}
-                               />
-                             </div>
-                           </SwiperSlide>
-                         ))}
-                       </Swiper>
-                     ) : (
-                       <div className="no-image-placeholder h-100">
-                         <FiImage className="placeholder-icon" />
-                       </div>
-                     )}
-                     
-                     {hotel.trending && (
-                       <div className="trending-badge">
-                         <FiTrendingUp className="me-1" /> Trending
-                       </div>
-                     )}
-                     
-                     <div className="rating-badge">
-                       <FiStar className="me-1" />
-                       {hotel.rating}
-                     </div>
-                   </div>
-                 </Col>
-             
-                 {/* Details Column */}
-                 <Col md={5} className="py-3 py-md-0">
-                   <div className="hotel-details h-100 ps-md-3">
-                     <h3 className="hotel-name mb-2">
-                       <Link href={`/hotels/${hotel.code}`} className="text-decoration-none">
-                         {hotel.name}
-                       </Link>
-                     </h3>
-                     
-                     <div className="hotel-location mb-2">
-                       <FiMapPin className="me-1" />
-                       <span>{hotel.zoneName}, {hotel.destinationName}</span>
-                     </div>
-                     
-                     <div className="hotel-stars mb-2">
-                       {[...Array(5)].map((_, i) => (
-                         <FiStar 
-                           key={i} 
-                           className={`star-icon ${i < (hotel.stars || 0) ? 'filled' : 'empty'}`} 
-                         />
-                       ))}
-                     </div>
-                     
-                     <div className="hotel-amenities mb-3">
-                       {hotel.amenities?.slice(0, 4).map(amenity => (
-                         <span key={amenity} className="amenity-badge">
-                           {amenity === 'Pool' && <FaSwimmingPool className="me-1" />}
-                           {amenity === 'Wifi' && <FaWifi className="me-1" />}
-                           {amenity === 'Gym' && <FaDumbbell className="me-1" />}
-                           {amenity === 'Spa' && <FaSpa className="me-1" />}
-                           {amenity}
-                         </span>
-                       ))}
-                     </div>
-                     
-                     {hotel.tags?.includes('Breakfast Included') && (
-                       <div className="highlight-tag">
-                         <FiCoffee className="me-1" /> Breakfast Included
-                       </div>
-                     )}
-                     {hotel.tags?.includes('Free Cancellation') && (
-                       <div className="highlight-tag">
-                         <FiCheckCircle className="me-1" /> Free Cancellation
-                       </div>
-                     )}
-                   </div>
-                 </Col>
-             
-                 {/* Pricing Column */}
-                 <Col md={3} className="py-3 py-md-0">
-                   <div className="hotel-pricing h-100">
-                     <div className=" mb-3">
-                       <div className="original-price">
-                         <span>${(parseFloat(hotel.minRate) * 1.2).toFixed(2)}</span>
-                         <span className="discount-badge">20% OFF</span>
-                       </div>
-                       <div className="current-price">${hotel.minRate}</div>
-                       <div className="price-note">per night (incl. taxes)</div>
-                     </div>
-                     
-                     <Button
-  variant="primary"
-  className="book-now-btn w-100 mb-2"
-  onClick={() => {
+                <div key={hotel.code} className="hotel-card-enhanced mb-4 bg-white rounded shadow-sm overflow-hidden">
+                  <Row className="g-0">
+                    {/* Image Slider Column */}
+                    <Col md={4} className="pe-md-2">
+                      <div className="hotel-image-container h-100 position-relative" style={{ minHeight: '200px' }}>
+                        {hotel.images && hotel.images.length > 0 ? (
+                          <Swiper
+                            modules={[Pagination, Autoplay]}
+                            spaceBetween={0}
+                            slidesPerView={1}
+                            pagination={{ clickable: true }}
+                            autoplay={{ delay: 3000, disableOnInteraction: false }}
+                            loop={hotel.images.length > 1}
+                            className="h-100"
+                          >
+                            {hotel.images.map((image, index) => (
+                              <SwiperSlide key={index}>
+                                <div className="image-wrapper h-100 w-100 position-relative">
+                                  <Image
+                                    src={image.src}
+                                    alt={`${hotel.name} - ${image.type}`}
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    priority={index === 0}
+                                  />
+                                </div>
+                              </SwiperSlide>
+                            ))}
+                          </Swiper>
+                        ) : (
+                          <div className="no-image-placeholder h-100 d-flex justify-content-center align-items-center bg-light">
+                            <FiImage className="text-muted" size={48} />
+                          </div>
+                        )}
+                        
+                        {hotel.trending && (
+                          <div className="trending-badge bg-primary text-white px-2 py-1 rounded d-flex align-items-center">
+                            <FiTrendingUp className="me-1" /> Trending
+                          </div>
+                        )}
+                        
+                        <div className="rating-badge bg-white text-dark px-2 py-1 rounded d-flex align-items-center shadow-sm">
+                          <FiStar className="text-warning me-1" />
+                          {hotel.rating}
+                        </div>
+                      </div>
+                    </Col>
+                
+                    {/* Details Column */}
+                    <Col md={5} className="py-3 py-md-3">
+                      <div className="hotel-details h-100 ps-md-3 d-flex flex-column">
+                        <h3 className="hotel-name mb-2">
+                         <a
+  href="#"
+  className="text-decoration-none current-price"
+  onClick={(e) => {
+    e.preventDefault();
     if (typeof window !== "undefined") {
       sessionStorage.setItem(`hotel_${hotel.code}`, JSON.stringify({
         hotel,
@@ -645,25 +525,103 @@ export default function HotelResultsPage() {
         checkIn,
         checkOut,
       }));
-
-      // Use delay to ensure it's written before navigating
       setTimeout(() => {
         router.push(`/hotels/${hotel.code}`);
       }, 200);
     }
   }}
 >
-  View Deal
-</Button>
+  {hotel.name}
+</a>
 
-                     
-                     <div className="text-center">
-                       <small className="text-muted">Login to Book Now & Pay Later</small>
-                     </div>
-                   </div>
-                 </Col>
-               </Row>
-             </div>
+                        </h3>
+                        
+                        <div className="hotel-location mb-2 d-flex align-items-center text-muted">
+                          <FiMapPin className="me-1" />
+                          <span>{hotel.zoneName}, {hotel.destinationName}</span>
+                        </div>
+                        
+                        <div className="hotel-stars mb-2 d-flex">
+                          {[...Array(5)].map((_, i) => (
+                            <FiStar 
+                              key={i} 
+                              className={`me-1 ${i < (hotel.stars || 0) ? 'text-warning' : 'text-secondary'}`} 
+                            />
+                          ))}
+                        </div>
+                        
+                        <div className="hotel-amenities mb-3 d-flex flex-wrap gap-2">
+                          {hotel.amenities?.slice(0, 4).map(amenity => (
+                            <span key={amenity} className="amenity-badge bg-light text-dark px-2 py-1 rounded d-flex align-items-center">
+                              {amenity === 'Pool' && <FaSwimmingPool className="me-1" />}
+                              {amenity === 'Wifi' && <FaWifi className="me-1" />}
+                              {amenity === 'Gym' && <FaDumbbell className="me-1" />}
+                              {amenity === 'Spa' && <FaSpa className="me-1" />}
+                              {amenity}
+                            </span>
+                          ))}
+                        </div>
+                        
+                        {hotel.tags?.includes('Breakfast Included') && (
+                          <div className="highlight-tag bg-light-success text-success px-2 py-1 rounded d-inline-flex align-items-center mb-1">
+                            <FiCoffee className="me-1" /> Breakfast Included
+                          </div>
+                        )}
+                        {hotel.tags?.includes('Free Cancellation') && (
+                          <div className="highlight-tag bg-light-success text-success px-2 py-1 rounded d-inline-flex align-items-center">
+                            <FiCheckCircle className="me-1" /> Free Cancellation
+                          </div>
+                        )}
+                      </div>
+                    </Col>
+                
+                    {/* Pricing Column */}
+                    <Col md={3} className="py-3 py-md-3">
+                      <div className="hotel-pricing h-100 d-flex flex-column justify-content-between">
+                        <div className="price-section">
+                          <div className="original-price d-flex align-items-center">
+                            <span className="text-decoration-line-through text-muted me-2">
+                              ${(parseFloat(hotel.minRate) * 1.2).toFixed(2)}
+                            </span>
+                            <span className="discount-badge bg-danger text-white px-1 rounded small">
+                              20% OFF
+                            </span>
+                          </div>
+                          <div className="current-price fw-bold fs-4 my-1">
+                            ${hotel.minRate}
+                          </div>
+                          <div className="price-note text-muted small">
+                            per night (incl. taxes)
+                          </div>
+                        </div>
+                        
+                        <Button
+                          variant="primary"
+                          className="book-now-btn w-100 mb-2"
+                          onClick={() => {
+                            if (typeof window !== "undefined") {
+                              sessionStorage.setItem(`hotel_${hotel.code}`, JSON.stringify({
+                                hotel,
+                                rooms: hotel.rooms,
+                                checkIn,
+                                checkOut,
+                              }));
+                              setTimeout(() => {
+                                router.push(`/hotels/${hotel.code}`);
+                              }, 200);
+                            }
+                          }}
+                        >
+                          View Deal
+                        </Button>
+                        
+                        <div className="text-center">
+                          <small className="text-muted">Login to Book Now & Pay Later</small>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
               ))}
             </div>
 
@@ -671,7 +629,7 @@ export default function HotelResultsPage() {
               <div className="text-center mt-4">
                 <Button 
                   variant="outline-primary"
-                  onClick={() => setCurrentPage(prev => prev + 1)}
+                  onClick={loadMoreHotels}
                   className="px-4"
                 >
                   Load More Hotels

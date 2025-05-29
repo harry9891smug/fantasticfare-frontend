@@ -117,7 +117,7 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose,  onSuccess, error}) => {
             setTimeout(() => {
                 onSuccess(); // This will trigger the booking flow
                 onClose();    // Close the popup
-                window.location.href = window.location.origin;
+                
               }, 1000);
             } catch (err: any) {
               setTopError(

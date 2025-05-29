@@ -207,12 +207,13 @@ const Packages = ({ params }: CountryPageProps) => {
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end p-4 rounded">
         <div className="mb-3 mb-md-0">
           <h4 className="mb-2 text-capitalize">
-            <Link href={`/region/${countryData?.region}`}>{countryData?.region}</Link>
-            >
+            <Link href={`/continent/${countryData?.region}`}>{countryData?.region}</Link>
+            {/* {countryData?.region}    */}
+            &gt;&nbsp;
             <Link href={`/region/${countryData?.subregion?.split(' ').join('-')}`}>
               {countryData?.subregion}
-            </Link>           
-            >
+            </Link>          
+             &gt;&nbsp;
             <Link href={`/country/${country}`}>{country}</Link>
           </h4>
         </div>

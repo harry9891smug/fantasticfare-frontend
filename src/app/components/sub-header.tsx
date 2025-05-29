@@ -7,6 +7,7 @@ import flights from "../assets/images/flight.png";
 import hotels from "../assets/images/hotels.png";
 import packages from "../assets/images/packages.png";
 import "../assets/css/sub-header.css";
+import { FaChevronDown } from "react-icons/fa";
 
 interface RegionData {
   continent_name: string;
@@ -101,7 +102,7 @@ const SubHeader = () => {
         onMouseEnter={!isMobile ? () => setShowViewDropdown(true) : undefined}
   >
     <span className="spandes">More</span>
-    <span className="dropdown-icon">+</span>
+    <span className="dropdown-icon">  <FaChevronDown /></span>
   </div>
 
   {showViewDropdown && (

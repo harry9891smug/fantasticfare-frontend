@@ -118,7 +118,7 @@
 .dropdown-icon {
   font-weight: bold;
   transition: transform 0.3s ease;
-  font-size: 1.1em;
+  font-size: 1em;
   margin-top: 9px;
 }
 
@@ -129,7 +129,7 @@
 }
 
 .view-dropdown-item:hover .dropdown-icon {
-  transform: rotate(45deg);
+  /* transform: rotate(45deg); */
   color: #ff4500;
 }
 
@@ -177,10 +177,11 @@
   flex: 0 0 auto;
   width: 254px;
   min-width: 254px;
+  text-align: left;
 }
 
 .continent-title {
-  color: #ff4500;
+  color: #070707;
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 15px;
@@ -195,10 +196,11 @@
 
 .region-group {
   margin-bottom: 15px;
+  text-align: left;
 }
 
 .region-title {
-  font-weight: 600;
+  font-weight: 800;
   color: #333;
   font-size: 15px;
   margin-bottom: 10px;
@@ -225,14 +227,17 @@
 
 .mega-dropdown .country-item {
   display: block;
-  padding: 8px 10px;
-  
+  padding: 0px 0px;
+  color: #070707 !important;
   font-size: 14px;
-  
+  font-weight: 400;
   width: 100%;
-  text-align: center;
+  text-align: left;
 }
-
+.mega-dropdown .country-item:hover {
+  
+  color: #0389ca !important;
+}
 
 
 /* Responsive Adjustments */

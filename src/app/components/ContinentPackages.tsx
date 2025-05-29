@@ -30,20 +30,19 @@ interface CountryData {
 
 interface RegionResponse {
   status: boolean;
-  region_name: string;
+  continent_name: string;
   data: CountryData[];
-  continentData:continents
 }
 
-interface RegionPackagesProps {
-  region: string;
+interface ContinentPackageProps {
+  continent: string;
 }
-interface continents{
-  id:string;
-  name:string;
-}
+// interface continents{
+//   id:string;
+//   name:string;
+// }
 
-const RegionPackages = ({ region }: RegionPackagesProps) => {
+const ContinentPackage = ({ continent }: ContinentPackageProps) => {
   const [data, setData] = useState<RegionResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -51,11 +50,11 @@ const RegionPackages = ({ region }: RegionPackagesProps) => {
   const [showEnquiryModal, setShowEnquiryModal] = useState(false);
 
 
-  const fetchRegionPackages = async () => {
+  const fetchContinentPackage = async () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/packages-data?region=${encodeURIComponent(region)}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/packages-data?continent=${encodeURIComponent(continent)}`
       );
       
       if (!response.ok) throw new Error("Failed to fetch region packages.");
@@ -85,10 +84,10 @@ const RegionPackages = ({ region }: RegionPackagesProps) => {
   };
 
   useEffect(() => {
-    if (region) {
-      fetchRegionPackages();
+    if (continent) {
+      fetchContinentPackage();
     }
-  }, [region]);
+  }, [continent]);
 
   if (loading) {
     return <div className="container mt-5">Loading packages...</div>;
@@ -109,7 +108,7 @@ const RegionPackages = ({ region }: RegionPackagesProps) => {
     return (
       <div className="container mt-5">
         <div className="alert alert-info">
-          <h4>No packages found for {region}</h4>
+          <h4>No packages found for {continent}</h4>
           <p>Please try another region or check back later.</p>
         </div>
       </div>
@@ -122,21 +121,21 @@ const RegionPackages = ({ region }: RegionPackagesProps) => {
 
       {/* Region Header */}
       <div className="region-header mb-5">
-        <h1 className="text-center mb-3">{data.region_name} Tour Packages</h1>
+        <h1 className="text-center mb-3">{continent} Tour Packages</h1>
         <p className="text-center lead">
-          Explore our curated collection of vacation packages across {data.region_name}
+          Explore our curated collection of vacation packages across {continent}
         </p>
       </div>
  {/* Header */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end p-4 rounded">
         <div className="mb-3 mb-md-0">
           <h4 className="mb-2 text-capitalize">
-            {/* <Link href={`/continent/${data.continentData.name}`}>{data.continentData.name}</Link> */}
-            {data.continentData.name}
-            >
-            <Link href={`/region/${region?.split(' ').join('-')}`}>
+            <Link href={`/continent/${continent}`}>{continent}</Link>
+            {/* {data.continentData.name} */}
+            {/* > */}
+            {/* <Link href={`/region/${region?.split(' ').join('-')}`}>
               {region}
-            </Link>           
+            </Link>            */}
           </h4>
         </div>
         <div>
@@ -241,15 +240,15 @@ const RegionPackages = ({ region }: RegionPackagesProps) => {
       ))}
 
       {/* Enquiry Modal */}
-      {selectedPackage && (
+      {/* {selectedPackage && (
         <EnquiryModal
           packageData={selectedPackage}
           show={showEnquiryModal}
           onClose={closeEnquiryModal}
         />
-      )}
+      )} */}
     </div>
   );
 };
 
-export default RegionPackages;
+export default ContinentPackage;

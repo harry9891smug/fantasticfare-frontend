@@ -144,7 +144,7 @@ const schema = yup.object().shape({
 const PackageDetails: React.FC = () => {
   const params = useParams();
   const { id } = params;
-const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
+  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [showEnquiryModal, setShowEnquiryModal] = useState(false);
   const [packages, setPackages] = useState<Packages[]>([]);
   const [packageData, setPackageData] = useState<Package | null>(null);
@@ -278,7 +278,7 @@ const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
     ?.find(item => item.type === "exclusion")
     ?.description || [];
 
-      const openEnquiryModal = (pkg: Package) => {
+  const openEnquiryModal = (pkg: Package) => {
     setSelectedPackage(pkg);
     setShowEnquiryModal(true);
   };
@@ -322,7 +322,7 @@ const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
         <div className="package-details">
           <h2 className="package-title">{packageData.package_name}</h2>
           <div className="package-duration">
-            <span>{packageData.itineraries?.[0]?.days?.length || 0}N/{(packageData.itineraries?.[0]?.days?.length || 0) - 1}D</span>
+            <span>{(packageData.itineraries?.[0]?.days?.length || 0) - 1}N/{(packageData.itineraries?.[0]?.days?.length || 0) }D</span>
           </div>
           <div className="package-inclusions">
             {/* <div className="inclusion">
@@ -365,7 +365,7 @@ const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
           </div>
         </div>
       </div>
- {/* Enquiry Modal */}
+      {/* Enquiry Modal */}
       {selectedPackage && (
         <EnquiryModal
           packageData={selectedPackage}
@@ -389,14 +389,14 @@ const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
                 className={`tab ${activeTab === "activities" ? "active" : ""}`}
                 onClick={() => setActiveTab("activities")}
               >
-                 <FaLightbulb size={20} />
+                <FaLightbulb size={20} />
                 <div>Activities</div>
               </div>
               <div
                 className={`tab ${activeTab === "stay" ? "active" : ""}`}
                 onClick={() => setActiveTab("stay")}
               >
-                 <FaBed size={20} />
+                <FaBed size={20} />
                 <div>Stay</div>
               </div>
             </div>
@@ -501,11 +501,11 @@ const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
                             {/* <h3 className="accordion-title">Itinerary Details</h3> */}
                           </div>
                           <div className="content">
-                           <p
-  dangerouslySetInnerHTML={{
-    __html: he.decode(day?.day_description || ""),
-  }}
-></p>
+                            <p
+                              dangerouslySetInnerHTML={{
+                                __html: he.decode(day?.day_description || ""),
+                              }}
+                            ></p>
                           </div>
                         </div>
                       </div>
@@ -530,7 +530,7 @@ const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
                           <div className="activiity-image-row">
                             {day.activity_images.map((img, imgIndex) => (
                               <Image
-                              className=""
+                                className=""
                                 key={imgIndex}
                                 src={img}
                                 alt={`Activity ${dayIndex + 1} Image ${imgIndex + 1}`}
@@ -719,7 +719,7 @@ const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
               <div className="form-group date-traveller-group">
                 <div className="form-group">
                   <input
-                  placeholder="Enter Date"
+                    placeholder="Enter Date"
                     type="date"
                     id="travel-date"
                     {...register("travel_date")}
@@ -867,14 +867,14 @@ const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
         )}
       </div>
       {/* Floating Enquiry Button - Mobile Only */}
-<div className="floating-enquiry-btn-container">
-  <button 
-    className="floating-enquiry-btn"
-    onClick={() => openEnquiryModal(packageData)}
-  >
-    Send Enquiry
-  </button>
-</div>
+      <div className="floating-enquiry-btn-container">
+        <button
+          className="floating-enquiry-btn"
+          onClick={() => openEnquiryModal(packageData)}
+        >
+          Send Enquiry
+        </button>
+      </div>
     </>
   );
 };

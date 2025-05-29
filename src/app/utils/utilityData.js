@@ -5,6 +5,13 @@ import Img4 from "../assets/images/destinations/4.svg";
 import Img5 from "../assets/images/destinations/5.svg";
 import Img6 from "../assets/images/destinations/3.svg";
 
+export const cabinOptions = [
+  { value: "Economy", label: "Economy" },
+  { value: "Premium economy", label: "Premium economy" },
+  { value: "Business class", label: "Business class" },
+  { value: "First class", label: "First class" },
+];
+
 export const nearByFlights = [
   {
     id: 1,

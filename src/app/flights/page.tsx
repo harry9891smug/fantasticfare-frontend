@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import { Form, Button, InputGroup } from "react-bootstrap";
-import gif from "../assets/images/app.gif";
 import {
   FaPlaneDeparture,
   FaPlaneArrival,
@@ -33,11 +32,12 @@ import {
   topFlights,
   faqList,
   metaData,
+  cabinOptions,
 } from "../utils/utilityData";
 import { Chip, Stack, Grid } from "@mui/material";
 import Accordion from "react-bootstrap/Accordion";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-
+import SuccessPopup from "../components/successPopup";
 interface ArrowProps {
   className?: string;
   style?: React.CSSProperties;
@@ -67,10 +67,10 @@ interface AirportData {
 }
 interface FormData {
   tripType: string;
-  leavingFrom: string[];
-  goingTo: string[];
-  startDate: Date;
-  returnDate: Date;
+  leavingFrom: string;
+  goingTo: string;
+  startDate: Date | null;
+  returnDate: Date | null;
   mobile_number: string;
   email: string;
   travellers: Travelers;
@@ -98,12 +98,6 @@ const FlightSearch = () => {
   >(null);
   const [formErrors, setFormErrors] = useState<FormData>({} as FormData);
 
-  const cabinOptions = [
-    { value: "Economy", label: "Economy" },
-    { value: "Premium economy", label: "Premium economy" },
-    { value: "Business class", label: "Business class" },
-    { value: "First class", label: "First class" },
-  ];
   const filtersRef = useRef<HTMLDivElement>(null);
   const [travelers, setTravelers] = useState<Travelers>({
     adults: 1,
@@ -113,12 +107,24 @@ const FlightSearch = () => {
   });
   const [formData, setFormData] = useState<FormData>({
     travellers: travelers,
-    cabinClass: "economy",
+    cabinClass: cabinClass,
     tripType: "round-trip",
   } as FormData);
   const [sortDirection, setSortDirection] = useState("left");
   const [showTravelerDropdown, setShowTravelerDropdown] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [flightSegments, setFlightSegments] = useState<FlightSegment[]>([
+    { from: "", to: "", date: "" },
+    { from: "", to: "", date: "" },
+  ]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState({
+    title: "",
+    content: "",
+    isSuccess: true,
+  });
 
   const dates: DateItem[] = [
     { day: "Tue, 11 Mar", price: "$4,708" },
@@ -129,8 +135,7 @@ const FlightSearch = () => {
     { day: "Sun, 16 Mar", price: "$4,325" },
     { day: "Mon, 17 Mar", price: "$4,399" },
   ];
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+
   const settings = {
     dots: false,
     infinite: true,
@@ -160,10 +165,6 @@ const FlightSearch = () => {
       });
     }
   };
-  const [flightSegments, setFlightSegments] = useState<FlightSegment[]>([
-    { from: "", to: "", date: "" },
-    { from: "", to: "", date: "" },
-  ]);
 
   const addFlightSegment = () => {
     setFlightSegments([...flightSegments, { from: "", to: "", date: "" }]);
@@ -232,18 +233,16 @@ const FlightSearch = () => {
   };
   const handleAirportSelect = (airport: string) => {
     if (focusedField === "leavingFrom") {
-      document.querySelector<HTMLInputElement>(
-        'input[name="leavingFrom"]'
-      )!.value = airport;
+      setFormData((prev) => ({
+        ...prev,
+        leavingFrom: airport, // Now assigning a string
+      }));
     } else if (focusedField === "goingTo") {
-      document.querySelector<HTMLInputElement>('input[name="goingTo"]')!.value =
-        airport;
+      setFormData((prev) => ({
+        ...prev,
+        goingTo: airport, // Now assigning a string
+      }));
     }
-    setFormData((prev) => ({
-      ...prev,
-      [focusedField!]: airport,
-    }));
-
     setAirportSuggestions([]);
     setFocusedField(null);
   };
@@ -255,9 +254,9 @@ const FlightSearch = () => {
       goingTo: prev.leavingFrom,
     }));
   };
+
   const submitForm = async () => {
     try {
-      console.log(formData);
       if (!formData.email) {
         setFormErrors((prev) => ({
           ...prev,
@@ -269,11 +268,63 @@ const FlightSearch = () => {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/flight-enquiry`,
         formData
       );
-
-      console.log("Enquiry submitted:", response.data);
+      setPopupMessage({
+        title: "Success!",
+        content: "Your flight enquiry has been submitted successfully.",
+        isSuccess: true,
+      });
+      setShowPopup(true);
+      resetFormFields();
     } catch (error) {
-      console.error("Error submitting form:", error);
+      setPopupMessage({
+        title: "Error",
+        content:
+          "There was an error submitting your enquiry. Please try again.",
+        isSuccess: false,
+      });
+      setShowPopup(true);
     }
+  };
+
+  const resetFormFields = () => {
+    setFormData({
+      tripType: formData.tripType,
+      leavingFrom: "",
+      goingTo: "",
+      startDate: null,
+      returnDate: null,
+      mobile_number: "",
+      email: "",
+      travellers: {
+        adults: 1,
+        children: 0,
+        infantsSeat: 0,
+        infantsLap: 0,
+      },
+      cabinClass: cabinClass,
+    });
+
+    setTravelers({
+      adults: 1,
+      children: 0,
+      infantsSeat: 0,
+      infantsLap: 0,
+    });
+
+    if (formData.tripType === "multi-city") {
+      setFlightSegments([{ from: "", to: "", date: "" }]);
+    }
+
+    // Clear input field references
+    const leavingFromInput = document.querySelector<HTMLInputElement>(
+      'input[name="leavingFrom"]'
+    );
+    const goingToInput = document.querySelector<HTMLInputElement>(
+      'input[name="goingTo"]'
+    );
+
+    if (leavingFromInput) leavingFromInput.value = "";
+    if (goingToInput) goingToInput.value = "";
   };
 
   const [value, setValue] = useState(0);
@@ -282,37 +333,46 @@ const FlightSearch = () => {
     setValue(newValue);
   };
 
-const handleClick = () => {
-  console.log("You clicked the Chip.");
-};
-
+  const handleClick = () => {
+    console.log("You clicked the Chip.");
+  };
 
   return (
     <div className="container py-5">
+      {/* Add the popup near the top of your return statement */}
+      <SuccessPopup
+        show={showPopup}
+        onClose={() => setShowPopup(false)}
+        title={popupMessage.title}
+        message={popupMessage.content}
+        isSuccess={popupMessage.isSuccess}
+      />
       {/* Tabs */}
       <div className="trip-type-container">
         <div className="trip-type">
           <button
             className={formData.tripType === "one-way" ? "active" : ""}
-            onClick={() =>
-              setFormData((prev) => ({ ...prev, tripType: "one-way" }))
-            }
+            onClick={() => {
+              resetFormFields();
+              setFormData((prev) => ({ ...prev, tripType: "one-way" }));
+            }}
           >
             One Way
           </button>
           <button
             className={formData.tripType === "round-trip" ? "active" : ""}
-            onClick={() =>
-              setFormData((prev) => ({ ...prev, tripType: "round-trip" }))
-            }
+            onClick={() => {
+              resetFormFields();
+              setFormData((prev) => ({ ...prev, tripType: "round-trip" }));
+            }}
           >
             Round Trip
           </button>
           <button
             className={formData.tripType === "multi-city" ? "active" : ""}
-            onClick={() =>
-              setFormData((prev) => ({ ...prev, tripType: "multi-city" }))
-            }
+            onClick={() => {
+              setFormData((prev) => ({ ...prev, tripType: "multi-city" }));
+            }}
           >
             Multi-City
           </button>
@@ -520,6 +580,7 @@ const handleClick = () => {
                 <Form.Control
                   type="text"
                   placeholder="Leaving From"
+                  value={formData.leavingFrom}
                   onChange={(e) => handleAirportChange(e, "leavingFrom")}
                   name="leavingFrom"
                 />
@@ -552,30 +613,36 @@ const handleClick = () => {
 
             {/* Going To */}
             <div className="custom-input position-relative mb-3">
-                <InputGroup className="custom-input">
-                  <InputGroup.Text>
-                    <FaPlaneArrival />
-                  </InputGroup.Text>
-                  <Form.Control
-                    type="text"
-                    placeholder="Going To"
-                    onChange={(e) => handleAirportChange(e, "goingTo")}
-                    name="goingTo"
-                  />
-                </InputGroup>
-                {focusedField === 'goingTo' && airportSuggestions.length > 0 && (
-                  <div className="autocomplete-dropdown">
-                    {airportSuggestions.map((airportData, index) => (
-                      <div
-                        key={index}
-                        className="autocomplete-item"
-                        onClick={() => handleAirportSelect(`${airportData.iata}-${airportData.city}(${airportData.country})`)}
-                      >
-                        {airportData.iata}-{airportData.city}({airportData.country})
-                      </div>
-                    ))}
-                  </div>
-                )}
+              <InputGroup className="custom-input">
+                <InputGroup.Text>
+                  <FaPlaneArrival />
+                </InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  placeholder="Going To"
+                  value={formData.goingTo}
+                  onChange={(e) => handleAirportChange(e, "goingTo")}
+                  name="goingTo"
+                />
+              </InputGroup>
+              {focusedField === "goingTo" && airportSuggestions.length > 0 && (
+                <div className="autocomplete-dropdown">
+                  {airportSuggestions.map((airportData, index) => (
+                    <div
+                      key={index}
+                      className="autocomplete-item"
+                      onClick={() =>
+                        handleAirportSelect(
+                          `${airportData.iata}-${airportData.city}(${airportData.country})`
+                        )
+                      }
+                    >
+                      {airportData.iata}-{airportData.city}(
+                      {airportData.country})
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Departure Date */}
@@ -981,33 +1048,18 @@ const handleClick = () => {
             </Button>
           </div>
         </div>
-      <div className="flex justify-center -mt-2 mb-4">
-     <div className="gif-container">
-  <Image
-    src={gif}
-    alt="Decorative animation"
-    width={800}
-    height={100}
-    className="w-full h-auto"
-    style={{
-      display: 'block',
-      margin: '0 auto',
-    }}
-  />
-</div>
-      </div>
 
-      <div className="container mt-5 d-flex flex-column align-items-center">
-        {metaData.map((item, index) => (
-          <div key={index}>
-            <h6 className="fw-bold mt-2 mb-0">{item.title}</h6>
-            <p className="text-dark" style={{ fontSize: "x-small" }}>
-              {item.destinations}
-            </p>
-          </div>
-        ))}
+        <div className="container mt-5 d-flex flex-column align-items-center">
+          {metaData.map((item, index) => (
+            <div key={index}>
+              <h6 className="fw-bold mt-2 mb-0">{item.title}</h6>
+              <p className="text-dark" style={{ fontSize: "x-small" }}>
+                {item.destinations}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
     </div>
   );
 };
@@ -1059,6 +1111,5 @@ const PrevArrow: React.FC<ArrowProps> = ({ className, style, onClick }) => (
     <FaChevronLeft size={20} />
   </div>
 );
-
 
 export default FlightSearch;

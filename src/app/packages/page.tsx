@@ -240,9 +240,9 @@ const groupedPackages = groupPackagesByCountry(packages);
           </p>
         </div>
         <div>
-          <button className="btn btn-primary custom-btn-main">
+          <a target="_blank" href="/all-packages" className="btn btn-primary custom-btn-main">
             Discover More
-          </button>
+          </a>
         </div>
       </div>
 

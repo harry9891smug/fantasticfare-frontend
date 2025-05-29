@@ -32,10 +32,15 @@ interface RegionResponse {
   status: boolean;
   region_name: string;
   data: CountryData[];
+  continentData:continents
 }
 
 interface RegionPackagesProps {
   region: string;
+}
+interface continents{
+  id:string;
+  name:string;
 }
 
 const RegionPackages = ({ region }: RegionPackagesProps) => {
@@ -44,6 +49,7 @@ const RegionPackages = ({ region }: RegionPackagesProps) => {
   const [error, setError] = useState<string | null>(null);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [showEnquiryModal, setShowEnquiryModal] = useState(false);
+
 
   const fetchRegionPackages = async () => {
     try {
@@ -121,7 +127,21 @@ const RegionPackages = ({ region }: RegionPackagesProps) => {
           Explore our curated collection of vacation packages across {data.region_name}
         </p>
       </div>
-
+ {/* Header */}
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end p-4 rounded">
+        <div className="mb-3 mb-md-0">
+          <h4 className="mb-2 text-capitalize">
+            <Link href={`/continent/${data.continentData.name}`}>{data.continentData.name}</Link>
+            >
+            <Link href={`/region/${region?.split(' ').join('-')}`}>
+              {region}
+            </Link>           
+          </h4>
+        </div>
+        <div>
+          <button className="btn btn-primary custom-btn-main">Discover More</button>
+        </div>
+      </div>
       {/* Countries and Packages */}
       {data.data.map((countryData) => (
         <div key={countryData.country_id} className="country-section mb-5">

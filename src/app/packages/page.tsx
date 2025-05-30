@@ -26,6 +26,10 @@ interface Package {
   total_price: string;
   discounted_price: string;
   days?: string;
+  country_name:string;
+  region_name:string;
+  continent_name:string;
+  package_url:string;
 }
 
 interface TravelTip {
@@ -117,6 +121,12 @@ const Packages: React.FC = () => {
   const [displayCount, setDisplayCount] = useState(6);
   const [showAll, setShowAll] = useState(false);
 
+  const sanitize = (str) => {
+  if (str.includes('-')) return str;
+    return str.replace(/ /g, '-');
+};
+
+
   const fetchPackages = async () => {
     try {
       setLoading(true);
@@ -126,6 +136,7 @@ const Packages: React.FC = () => {
       if (!response.ok) throw new Error("Failed to fetch packages.");
 
       const data = await response.json();
+      console.log(data.data);
       if (data.status && data.data) {
         setPackages(data.data);
       }
@@ -263,7 +274,8 @@ const groupedPackages = groupPackagesByCountry(packages);
         <div className="col-12 col-sm-6 col-md-4 mb-4" key={pkg._id}>
           {/* Your existing card UI for individual package here */}
           <div className="card shadow-sm h-100 package-card">
-            <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
+            {/* <Link href={`/packages/${pkg._id}`} className="text-decoration-none"> */}
+            <Link href={`/package/${sanitize(pkg.continent_name)}/${sanitize(pkg.region_name)}/${sanitize(pkg.country_name)}/${pkg.package_url}`} className="text-decoration-none">
               <div className="card-img-container">
                 {pkg.package_image?.length > 0 ? (
                   <Swiper
@@ -302,9 +314,11 @@ const groupedPackages = groupPackagesByCountry(packages);
               </div>
             </Link>
             <div className="card-body d-flex flex-column">
-              <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
+              {/* <Link href={`/packages/${pkg._id}`} className="text-decoration-none"> */}
+              <Link href={`/package/${sanitize(pkg.continent_name)}/${sanitize(pkg.region_name)}/${sanitize(pkg.country_name)}/${pkg.package_url}`} className="text-decoration-none">
                 <h5 className="card-title">{pkg.package_name}</h5>
               </Link>
+              {/* </Link> */}
               <p className="card-text text-muted mb-2">{pkg.package_heading}</p>
               <div className="price-container mb-3 mt-auto">
                 {pkg.discounted_price ? (

@@ -151,7 +151,7 @@ const ContinentPackage = ({ continent }: ContinentPackageProps) => {
               href={`/country/${countryData.country_name.toLowerCase().replace(/\s+/g, '-')}`}
               className="btn btn-outline-primary"
             >
-              View All {countryData.packages.length} Packages
+              View All
             </Link>
           </div>
 

@@ -10,6 +10,28 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import React from 'react';
 
+type Customers = {
+  adults: number;
+  children: number;
+};
+type Pax = {
+  name: string;
+  surname: string;
+};
+
+type FormData = {
+  holder: Pax;
+  paxes: Pax[];
+  remark?: string;
+  specialRequests?: {
+    earlyCheckIn?: boolean;
+    lateCheckOut?: boolean;
+    extraBed?: boolean;
+    smokingRoom?: boolean;
+  };
+  couponCode?: string;
+};
+
 const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = React.use(params);
   const router = useRouter();
@@ -24,15 +46,14 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const [activeTab, setActiveTab] = useState<'coupon' | 'giftCard'>('coupon');
   const [useHolderAsGuest, setUseHolderAsGuest] = useState(true);
 
-  const [formData, setFormData] = useState({
+  const [customers, setCustomers] = useState<Customers>({ adults: 2, children: 0 });
+
+  const [formData, setFormData] = useState<FormData>({
     holder: {
       name: '',
       surname: ''
     },
-    paxes: [
-      { name: '', surname: '' },
-      { name: '', surname: '' }
-    ],
+    paxes: [],
     remark: '',
     specialRequests: {
       earlyCheckIn: false,
@@ -57,9 +78,10 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
         const data = JSON.parse(bookingData);
         const dates = JSON.parse(dateData);
         const user = userData ? JSON.parse(userData) : null;
-
+       
         setBookingData(data);
         setDateData(dates);
+        setCustomers(dates.occupancies);
         setHotel(data.hotel);
         setSelectedRoom(data.room);
         
@@ -73,11 +95,7 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
             holder: {
               name: userName,
               surname: surname
-            },
-            paxes: [
-              { name: userName, surname: surname },
-              { name: '', surname: '' }
-            ]
+            }
           }));
         }
         
@@ -90,19 +108,44 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
     fetchBookingData();
   }, [id]);
+ useEffect(() => {
+  if (!bookingData) return;
+
+  const totalGuests = Number(customers.adults) + Number(customers.children);
+  console.log(totalGuests,'totalGuests');
+
+    if (formData.paxes.length === totalGuests) return;
+
+  const newPaxes = Array.from({ length: totalGuests }, (_, i) => ({
+    name: '',
+    surname: '',
+    type: i < customers.adults ? 'AD' : 'CH',
+  }));
+
+  if (useHolderAsGuest && totalGuests > 0) {
+    newPaxes[0].name = formData.holder.name;
+    newPaxes[0].surname = formData.holder.surname;
+  }
+
+
+  setFormData((prev) => ({
+    ...prev,
+    paxes: newPaxes,
+  }));
+}, [customers, useHolderAsGuest, formData.holder,bookingData]);
 
   // Update guest 1 when holder changes or checkbox is toggled
-  useEffect(() => {
-    if (useHolderAsGuest) {
-      setFormData(prev => ({
-        ...prev,
-        paxes: [
-          { name: prev.holder.name, surname: prev.holder.surname },
-          prev.paxes[1]
-        ]
-      }));
-    }
-  }, [useHolderAsGuest, formData.holder]);
+  // useEffect(() => {
+  //   if (useHolderAsGuest) {
+  //     setFormData(prev => ({
+  //       ...prev,
+  //       paxes: [
+  //         { name: prev.holder.name, surname: prev.holder.surname },
+  //         prev.paxes[1]
+  //       ]
+  //     }));
+  //   }
+  // }, [useHolderAsGuest, formData.holder]);
 
   // Slider settings
   const sliderSettings = {
@@ -550,15 +593,15 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
             </div>
             <div>
               <span>Hotel taxes</span>
-              <span>₹{(taxes * duration).toLocaleString()}</span>
+              <span>${(taxes * duration).toLocaleString()}</span>
             </div>
             <div>
               <span>Convenience fee</span>
-              <span>₹0</span>
+              <span>$0</span>
             </div>
             <div className={styles.total}>
               <span>Total</span>
-              <span>₹{totalPrice.toLocaleString()}</span>
+              <span>${totalPrice.toLocaleString()}</span>
             </div>
             <div>1 room · {duration} night{duration > 1 ? 's' : ''}</div>
           </div>

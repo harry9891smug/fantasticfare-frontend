@@ -97,36 +97,67 @@ export const topFlights = [
 ];
 
 export const faqList = [
-  { id: 1, question: "What is the best time to visit Paris?", ans: "Orlando" },
+  {
+    id: 1,
+    question:
+      "Which are the lowest fare months to travel from the USA to India?",
+    ans: "The cheapest months to purchase flights from the USA to India are usually February, March, and September. During peak holiday periods such as December and July when school holidays and festive periods result in high demand, prices tend to increase. Planning ahead and booking 2-3 months prior, and departing on mid-week days, can also increase your possibilities of getting lower-priced tickets.",
+  },
   {
     id: 2,
-    question: "What are the must-see attraction in Paris?",
-    ans: "Orlando",
+    question: "Can I make round-trip and one-way flight reservations?",
+    ans: "Yes, FantasticFare has round-trip and one-way flight reservation capabilities. Our system automatically displays to you the most cost-effective option for your dates.",
   },
   {
     id: 3,
-    question:
-      "How much does it cost to visit the Eiffel Tower, and do i need to book tickets in advance?",
-    ans: "Orlando",
+    question: "Can I book last-minute flights to India?",
+    ans: "Yes, FantasticFare.com has last-minute flights to India. Though higher prices are charged nearer the departure time, sometimes airlines publish lowered fares to occupy seats left empty. We suggest you monitor our website frequently or call our customer service to obtain the latest deals.",
   },
   {
     id: 4,
-    question:
-      "How can i get from charles de Gaulle/Orly Airport to the city center?",
-    ans: "Orlando",
+    question: "What is the best time to book cheap flights?",
+    ans: "In general, making reservations 6-8 weeks ahead of time for domestic flights and 2-3 months ahead of time for international flights provides the most affordable rates. Tuesday and Wednesday flights tend to be less expensive.",
   },
   {
     id: 5,
-    question:
-      "What is the best way to get around Paris(metro, public transport, taxis)?",
-    ans: "Orlando",
+    question: "What should I do if my flight is delayed or canceled?",
+    ans: "In the event of a delay or cancellation, the airline will provide information on rebooking options or refunds. It's advisable to check the airline's policy and contact their customer service for assistance.",
   },
-  { id: 6, question: "is Paris safe for tourists?", ans: "Orlando" },
+  {
+    id: 6,
+    question: "Is it safe to book flights online with FantasticFare?",
+    ans: "Absolutely! We use industry-standard SSL encryption and secure payment gateways. Your personal and financial information is fully protected.",
+  },
   {
     id: 7,
+    question: "Are there student discounts on flights to India?",
+    ans: "Yes, several airlines provide international student discounts. The discounts can range from lowered fares to free extra baggage allowance or changeable ticketing policies. In order to benefit from these schemes, students are usually required to submit proper identification, like a student visa or university identity card.",
+  },
+  {
+    id: 8,
+    question: "Does Fantastic Fare offer discounted flights?",
+    ans: "Absolutely. We specialize in affordable international and domestic fares, providing exclusive discounts on flights to popular destinations like India, Europe, Southeast Asia, and more. Keep an eye out for our seasonal promotions and flash sales.",
+  },
+  {
+    id: 9,
+    question: "How long in advance should I check in for my flight to India?",
+    ans: "<strong>For flights to India :</strong><br><strong>Online Check-in:</strong> 24 to 48 hours prior to flight departure.<br><strong>Airport Check-in:</strong> Suggested at least 3 hours before departure.",
+  },
+  {
+    id: 10,
     question:
-      "What are the best restaurants or place to try authentic French cuisine?",
-    ans: "Orlando",
+      "Is it cheaper to book flights directly with airlines or through travel agencies?",
+    ans: "Prices can vary between airlines and travel agencies. Travel agencies like Fantastic Fare often have access to exclusive deals and bundled packages that may not be available directly through airlines. It's advisable to compare prices across platforms to find the best deal.",
+  },
+  {
+    id: 11,
+    question: "Can I book flights for tonight or today?",
+    ans: 'Yes! FantasticFare has same-day and last-minute flight bookings. Take advantage of our "Today" or "Tomorrow" quick search to fulfill immediate travel requirements.',
+  },
+  {
+    id: 12,
+    question: "How do I contact Fantastic Fare customer support?",
+    ans: 'Our customer support team is available 24/7 to assist you. You can reach us via the "Contact Us" page on our website, where you\'ll find options for live chat, email, and phone support.',
   },
 ];
 

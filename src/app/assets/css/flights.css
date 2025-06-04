@@ -128,6 +128,30 @@
   background-color: #0e87c8; /* Show underline on hover & when selected */
 }
 
+.custom-input {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #0c8ac6;
+  border-radius: 8px;
+  padding: 4px;
+  width: 100%;
+  position: relative;
+  border-bottom-width: medium;
+}
+.custom-input .icon {
+  color: gray;
+  font-size: 14px;
+  margin-right: 17px;
+  margin-top: 9px;
+}
+.custom-input input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+  background: transparent;
+}
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   .form-container {

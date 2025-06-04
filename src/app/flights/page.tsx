@@ -353,7 +353,6 @@ const FlightSearch = () => {
           <button
             className={formData.tripType === "one-way" ? "active" : ""}
             onClick={() => {
-              resetFormFields();
               setFormData((prev) => ({ ...prev, tripType: "one-way" }));
             }}
           >
@@ -362,7 +361,6 @@ const FlightSearch = () => {
           <button
             className={formData.tripType === "round-trip" ? "active" : ""}
             onClick={() => {
-              resetFormFields();
               setFormData((prev) => ({ ...prev, tripType: "round-trip" }));
             }}
           >
@@ -416,15 +414,17 @@ const FlightSearch = () => {
         </div>
       </div>
 
+      {/* Flight Search Form  new */}
+
       {/* Flight Search Form */}
       <div
         className="p-4 rounded border border-primary"
         style={{ borderWidth: "2px" }}
       >
         {/* Travelers Dropdown - Now appears consistently at the top for all trip types */}
-        <div className="custom-input position-relative mb-3">
-          <InputGroup>
-            <InputGroup.Text>
+        <div className="position-relative mb-3">
+          <InputGroup className="custom-input">
+            <InputGroup.Text className="icon">
               <FaUsers />
             </InputGroup.Text>
             <Form.Control
@@ -471,9 +471,9 @@ const FlightSearch = () => {
         {formData.tripType === "one-way" && (
           <div className="d-flex align-items-center  gap-3 flex-wrap">
             {/* Leaving From */}
-            <div className="custom-input position-relative mb-3">
+            <div className=" position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text>
+                <InputGroup.Text className="icon">
                   <FaPlaneDeparture />
                 </InputGroup.Text>
                 <Form.Control
@@ -511,9 +511,9 @@ const FlightSearch = () => {
             </div>
 
             {/* Going To */}
-            <div className="custom-input position-relative mb-3">
+            <div className="position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text>
+                <InputGroup.Text className="icon">
                   <FaPlaneArrival />
                 </InputGroup.Text>
                 <Form.Control
@@ -545,9 +545,9 @@ const FlightSearch = () => {
             </div>
 
             {/* Date Picker */}
-            <div className="custom-input position-relative mb-3">
+            <div className="position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text>
+                <InputGroup.Text className="icon">
                   <FaCalendarAlt />
                 </InputGroup.Text>
                 <DatePicker
@@ -570,11 +570,11 @@ const FlightSearch = () => {
 
         {/* Round-Trip Form */}
         {formData.tripType === "round-trip" && (
-          <div className="d-flex align-items-center justify-content-center gap-3 flex-wrap">
+          <div className="d-flex gap-3 flex-wrap">
             {/* Leaving From */}
-            <div className="custom-input position-relative mb-3">
+            <div className="position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text>
+                <InputGroup.Text className="icon">
                   <FaPlaneDeparture />
                 </InputGroup.Text>
                 <Form.Control
@@ -612,9 +612,9 @@ const FlightSearch = () => {
             </div>
 
             {/* Going To */}
-            <div className="custom-input position-relative mb-3">
+            <div className="position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text>
+                <InputGroup.Text className="icon">
                   <FaPlaneArrival />
                 </InputGroup.Text>
                 <Form.Control
@@ -646,9 +646,9 @@ const FlightSearch = () => {
             </div>
 
             {/* Departure Date */}
-            <div className="custom-input position-relative mb-3">
+            <div className="position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text>
+                <InputGroup.Text className="icon">
                   <FaCalendarAlt />
                 </InputGroup.Text>
                 <DatePicker
@@ -668,9 +668,9 @@ const FlightSearch = () => {
             </div>
 
             {/* Return Date */}
-            <div className="custom-input position-relative mb-3">
+            <div className="position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text>
+                <InputGroup.Text className="icon">
                   <FaCalendarAlt />
                 </InputGroup.Text>
                 <DatePicker
@@ -716,7 +716,7 @@ const FlightSearch = () => {
                   {/* Leaving From */}
                   <div className="position-relative flex-grow-1">
                     <InputGroup className="custom-input">
-                      <InputGroup.Text>
+                      <InputGroup.Text className="icon">
                         <FaPlaneDeparture />
                       </InputGroup.Text>
                       <Form.Control
@@ -740,7 +740,7 @@ const FlightSearch = () => {
                   {/* Going To */}
                   <div className="flex-grow-1">
                     <InputGroup className="custom-input">
-                      <InputGroup.Text>
+                      <InputGroup.Text className="icon">
                         <FaPlaneArrival />
                       </InputGroup.Text>
                       <Form.Control
@@ -757,7 +757,7 @@ const FlightSearch = () => {
                   {/* Date Picker */}
                   <div className="flex-grow-1">
                     <InputGroup className="custom-input">
-                      <InputGroup.Text>
+                      <InputGroup.Text className="icon">
                         <FaCalendarAlt />
                       </InputGroup.Text>
                       <Form.Control
@@ -796,7 +796,7 @@ const FlightSearch = () => {
           {/* Email Field */}
           <div className="custom-input">
             <InputGroup>
-              <InputGroup.Text>@</InputGroup.Text>
+              <InputGroup.Text className="icon">@</InputGroup.Text>
               <Form.Control
                 type="email"
                 placeholder="Email"
@@ -818,9 +818,9 @@ const FlightSearch = () => {
           </div>
 
           {/* Phone Field */}
-          <div className="custom-input position-relative">
-            <InputGroup>
-              <InputGroup.Text>
+          <div className="position-relative">
+            <InputGroup className="custom-input">
+              <InputGroup.Text className="icon">
                 <FaPhone />
               </InputGroup.Text>
               <Form.Control
@@ -1012,7 +1012,9 @@ const FlightSearch = () => {
                       <span>{faq.question}</span>
                     </div>
                   </Accordion.Header>
-                  <Accordion.Body>{faq.ans}</Accordion.Body>
+                  <Accordion.Body>
+                    <div dangerouslySetInnerHTML={{ __html: faq.ans }} />
+                  </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
             ))}

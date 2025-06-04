@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
-import { Form, Button, InputGroup } from "react-bootstrap";
+import { Form, Button, InputGroup, ToastContainer } from "react-bootstrap";
 import gif from "../assets/images/app.gif";
 import {
   FaPlaneDeparture,
@@ -37,6 +37,7 @@ import {
 import { Chip, Stack, Grid } from "@mui/material";
 import Accordion from "react-bootstrap/Accordion";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import { toast } from "react-toastify";
 
 interface ArrowProps {
   className?: string;
@@ -116,6 +117,7 @@ const FlightSearch = () => {
     cabinClass: "economy",
     tripType: "round-trip",
   } as FormData);
+  const [diasabled,setIsdisabled] = useState(false);
   const [sortDirection, setSortDirection] = useState("left");
   const [showTravelerDropdown, setShowTravelerDropdown] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
@@ -257,7 +259,6 @@ const FlightSearch = () => {
   };
   const submitForm = async () => {
     try {
-      console.log(formData);
       if (!formData.email) {
         setFormErrors((prev) => ({
           ...prev,
@@ -265,13 +266,20 @@ const FlightSearch = () => {
         }));
         return;
       }
+      setIsdisabled(true);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/flight-enquiry`,
         formData
       );
-
+      if (response.data.status){
+        toast.success(response.data.message);
+        setTimeout(() => {
+            location.reload()
+        }, 100);
+      }
       console.log("Enquiry submitted:", response.data);
     } catch (error) {
+      setIsdisabled(false);
       console.error("Error submitting form:", error);
     }
   };
@@ -778,8 +786,9 @@ const handleClick = () => {
             variant="primary"
             size="lg"
             onClick={submitForm}
+            disabled={diasabled}
           >
-            Search Flights
+            Send Enquiry
           </Button>
         </div>
       </div>

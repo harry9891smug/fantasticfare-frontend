@@ -589,7 +589,7 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
           <div className={styles.priceList}>
             <div>
               <span>1 room x {duration} night{duration > 1 ? 's' : ''}</span>
-              <span>₹{(roomPrice * duration).toLocaleString()}</span>
+              <span>${(roomPrice * duration).toLocaleString()}</span>
             </div>
             <div>
               <span>Hotel taxes</span>

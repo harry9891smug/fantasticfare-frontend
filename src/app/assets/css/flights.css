@@ -1,13 +1,6 @@
 /* General Styling */
-.custom-input {
-  width: 283px; /* Increase width as needed */
-  max-width: 100%;
-}
 
 /* Adjusting Input Group (Icon + Input Alignment) */
-.custom-input .input-group-text {
-  padding: 12px;
-}
 
 /* Ensure the Swap Icon Stays Aligned */
 .swap-icon-circle {
@@ -17,15 +10,7 @@
 .input-group-text {
   color: #0e87c8;
 }
-.custom-input .form-control,
-.custom-input .input-group-text {
-  border: none;
-  border-bottom: 2px solid #0e87c8;
-  border-radius: 0;
-  padding: 10px;
-  font-size: 16px;
-  background: transparent;
-}
+
 .btn-search {
   background-color: #0e87c8;
   border-color: #0e87c8;
@@ -143,16 +128,36 @@
   background-color: #0e87c8; /* Show underline on hover & when selected */
 }
 
+.custom-input {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #0c8ac6;
+  border-radius: 8px;
+  padding: 4px;
+  width: 100%;
+  position: relative;
+  border-bottom-width: medium;
+}
+.custom-input .icon {
+  color: gray;
+  font-size: 14px;
+  margin-right: 17px;
+  margin-top: 9px;
+}
+.custom-input input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+  background: transparent;
+}
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   .form-container {
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-  }
-
-  .custom-input {
-    width: 100%;
   }
 
   .swap-icon-circle {
@@ -168,11 +173,6 @@
     gap: 10px;
     align-items: center;
     width: 100%;
-  }
-
-  .custom-input .form-control {
-    font-size: 14px;
-    padding: 8px;
   }
 
   .swap-icon-circle {
@@ -439,48 +439,40 @@
   }
 }
 
-
 /* Autocomplete Dropdown Styles */
 .autocomplete-dropdown {
   position: absolute;
-  top: 100%;
+  top: 100%; /* right below the input */
   left: 0;
-  width: 100%;
-  max-height: 300px;
-  overflow-y: auto;
-  background: white;
-  border: 1px solid #0e87c8;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  margin-top: -1px; /* Align with input border */
+  z-index: 9999; /* above other elements */
+  background: #ffffff; /* white background */
+  width: 100%; /* match input width */
+  max-height: 200px; /* max height with scroll */
+  overflow-y: auto; /* vertical scroll if needed */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* subtle shadow */
+  border: 1px solid #ccc; /* light border */
+  border-radius: 4px; /* rounded corners */
+  font-size: 0.9rem; /* slightly smaller font */
+  user-select: none; /* prevent accidental text selection */
 }
 
 .autocomplete-item {
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-bottom: 1px solid #eee;
-  font-size: 14px;
-  color: #333;
-  display: flex;
-  align-items: center;
+  padding: 8px 12px; /* padding for clickable area */
+  cursor: pointer; /* pointer on hover */
+  background-color: #fff; /* default white */
+  transition: background-color 0.2s ease;
+  color: #333; /* readable text color */
+  border-bottom: 1px solid #eee; /* subtle separator */
 }
 
 .autocomplete-item:last-child {
-  border-bottom: none;
+  border-bottom: none; /* no border on last item */
 }
 
-.autocomplete-item:hover {
-  background-color: #f5f9ff;
-  color: #0e87c8;
-}
-
-/* IATA code styling */
-.autocomplete-item strong {
-  font-weight: 600;
-  color: #0e87c8;
-  margin-right: 5px;
+.autocomplete-item:hover,
+.autocomplete-item:focus {
+  background-color: #f0f0f0; /* light highlight on hover/focus */
+  outline: none; /* remove default outline */
 }
 
 /* Responsive adjustments */
@@ -488,7 +480,7 @@
   .autocomplete-dropdown {
     max-height: 200px;
   }
-  
+
   .autocomplete-item {
     padding: 8px 12px;
     font-size: 13px;
@@ -496,9 +488,6 @@
 }
 
 /* Ensure the dropdown appears above other elements */
-.custom-input.position-relative {
-  z-index: 1001;
-}
 
 /* Mobile Responsive Layout */
 @media (max-width: 768px) {
@@ -507,9 +496,7 @@
     flex-direction: column;
     gap: 15px !important;
   }
-    .custom-input {
-        width: 100%;
-    }
+
   /* Pair leavingFrom and goingTo in one row */
   .flight-field-pair {
     display: flex;
@@ -518,9 +505,6 @@
   }
 
   /* Make fields full width except when paired */
-  .custom-input {
-    width: 100% !important;
-  }
 
   /* Adjust swap icon for mobile */
   .swap-icon-circle {

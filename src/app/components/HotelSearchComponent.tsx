@@ -4,8 +4,8 @@ import { FaSearch, FaCalendarAlt, FaUsers, FaTimes } from "react-icons/fa";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useRouter } from 'next/navigation';
-import debounce from 'lodash.debounce';
+import { useRouter } from "next/navigation";
+import debounce from "lodash.debounce";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/hotels.css";
 
@@ -14,7 +14,7 @@ type Suggestion = {
   city: string;
   id: string;
   name: string;
-  type: 'city' | 'country' | 'region';
+  type: "city" | "country" | "region";
   country?: string;
   country_name?: string;
   iata: string;
@@ -34,7 +34,11 @@ type HotelSearchProps = {
   compact?: boolean;
 };
 
-const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }: HotelSearchProps) => {
+const HotelSearchComponent = ({
+  initialData,
+  showTitle = true,
+  compact = false,
+}: HotelSearchProps) => {
   const [search, setSearch] = useState(initialData?.locationName || "");
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
     initialData?.checkIn || null,
@@ -47,7 +51,9 @@ const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }
   });
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState<Suggestion | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<Suggestion | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [suggestion_type, setSuggestionType] = useState("");
   const searchRef = useRef<HTMLDivElement>(null);
@@ -75,14 +81,17 @@ const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }
 
     try {
       setIsLoading(true);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/search_city`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ city_name: query }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/search_city`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ city_name: query }),
+        }
+      );
 
-      if (!response.ok) throw new Error('Failed to fetch suggestions');
-      
+      if (!response.ok) throw new Error("Failed to fetch suggestions");
+
       const result = await response.json();
       setSuggestionType(result?.data?.type);
       setSuggestions(result?.data?.data || []);
@@ -101,7 +110,10 @@ const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
         setShowSuggestions(false);
       }
     };
@@ -129,7 +141,9 @@ const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }
 
   const handleSuggestionSelect = (suggestion: Suggestion) => {
     setSelectedLocation(suggestion);
-    setSearch(`${suggestion.city}${suggestion.country ? `, ${suggestion.country}` : ''}`);
+    setSearch(
+      `${suggestion.city}${suggestion.country ? `, ${suggestion.country}` : ""}`
+    );
     setShowSuggestions(false);
   };
 
@@ -144,28 +158,34 @@ const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }
       alert("Please select a location from the suggestions");
       return;
     }
-    
+
     if (!dateRange[0] || !dateRange[1]) {
       alert("Please select check-in and check-out dates");
       return;
     }
 
     const params = new URLSearchParams();
-    params.set('locationId', selectedLocation.id);
-    params.set('locationType', selectedLocation.type);
-    params.set('locationName', selectedLocation.city);
-    params.set('checkIn', dateRange[0].toISOString().split('T')[0]);
-    params.set('checkOut', dateRange[1].toISOString().split('T')[0]);
-    params.set('adults', travelers.adults.toString());
-    params.set('children', travelers.children.toString());
-    
+    params.set("locationId", selectedLocation.id);
+    params.set("locationType", selectedLocation.type);
+    params.set("locationName", selectedLocation.city);
+    params.set("checkIn", dateRange[0].toISOString().split("T")[0]);
+    params.set("checkOut", dateRange[1].toISOString().split("T")[0]);
+    params.set("adults", travelers.adults.toString());
+    params.set("children", travelers.children.toString());
+
     router.push(`/hotels/results?${params.toString()}`);
   };
 
   return (
-    <div className={`hotel-search-container ${compact ? 'compact' : ''}`}>
-      <div className={`row g-3 ${compact ? 'align-items-end' : 'justify-content-center'}`}>
-        {showTitle && <h2 className="hotel-title">Discover Your Perfect Stay</h2>}
+    <div className={`hotel-search-container ${compact ? "compact" : ""}`}>
+      <div
+        className={`row g-3 ${
+          compact ? "align-items-end" : "justify-content-center"
+        }`}
+      >
+        {showTitle && (
+          <h2 className="hotel-title">Discover Your Perfect Stay</h2>
+        )}
 
         {/* Search Input with Suggestions */}
         <div className={`${compact ? 'col-md-4' : 'col-md-3'} position-relative`} ref={searchRef}>
@@ -184,7 +204,7 @@ const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }
               }}
               onFocus={() => setShowSuggestions(true)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && selectedLocation) handleSearch();
+                if (e.key === "Enter" && selectedLocation) handleSearch();
               }}
             />
             {search && (
@@ -200,20 +220,26 @@ const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }
           </InputGroup>
 
           {showSuggestions && (
-            <div className="">
+            <div className="suggestions-dropdown">
               {isLoading ? (
                 <div className="suggestion-item loading">Loading...</div>
               ) : suggestions.length > 0 ? (
                 suggestions.map((suggestion) => (
                   <div
                     key={suggestion.id}
-                    className={`suggestion-item ${selectedLocation?.id === suggestion.id ? 'active' : ''}`}
+                    className={`suggestion-item ${
+                      selectedLocation?.id === suggestion.id ? "active" : ""
+                    }`}
                     onClick={() => handleSuggestionSelect(suggestion)}
                   >
                     <div className="suggestion-content">
                       <div className="suggestion-text">
-                        <strong>{suggestion.iata}-{suggestion.city}</strong>
-                        {suggestion.country && <span className="country">{`, ${suggestion.country}`}</span>}
+                        <strong>
+                          {suggestion.iata}-{suggestion.city}
+                        </strong>
+                        {suggestion.country && (
+                          <span className="country">{`, ${suggestion.country}`}</span>
+                        )}
                       </div>
                       <div className="suggestion-type-badge">
                         {suggestion_type}
@@ -222,7 +248,11 @@ const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }
                   </div>
                 ))
               ) : (
-                search.length > 1 && <div className="suggestion-item no-results">No results found</div>
+                search.length > 1 && (
+                  <div className="suggestion-item no-results">
+                    No results found
+                  </div>
+                )
               )}
             </div>
           )}
@@ -278,11 +308,20 @@ const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }
               <div className="traveler-item">
                 <span>Adults</span>
                 <div className="traveler-controls">
-                  <Button size="sm" variant="outline-secondary" onClick={() => handleTravelerChange("adults", false)} disabled={travelers.adults <= 0}>
+                  <Button
+                    size="sm"
+                    variant="outline-secondary"
+                    onClick={() => handleTravelerChange("adults", false)}
+                    disabled={travelers.adults <= 0}
+                  >
                     -
                   </Button>
                   <span className="count">{travelers.adults}</span>
-                  <Button size="sm" variant="outline-secondary" onClick={() => handleTravelerChange("adults", true)}>
+                  <Button
+                    size="sm"
+                    variant="outline-secondary"
+                    onClick={() => handleTravelerChange("adults", true)}
+                  >
                     +
                   </Button>
                 </div>
@@ -290,11 +329,20 @@ const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }
               <div className="traveler-item">
                 <span>Children</span>
                 <div className="traveler-controls">
-                  <Button size="sm" variant="outline-secondary" onClick={() => handleTravelerChange("children", false)} disabled={travelers.children <= 0}>
+                  <Button
+                    size="sm"
+                    variant="outline-secondary"
+                    onClick={() => handleTravelerChange("children", false)}
+                    disabled={travelers.children <= 0}
+                  >
                     -
                   </Button>
                   <span className="count">{travelers.children}</span>
-                  <Button size="sm" variant="outline-secondary" onClick={() => handleTravelerChange("children", true)}>
+                  <Button
+                    size="sm"
+                    variant="outline-secondary"
+                    onClick={() => handleTravelerChange("children", true)}
+                  >
                     +
                   </Button>
                 </div>
@@ -310,7 +358,10 @@ const HotelSearchComponent = ({ initialData, showTitle = true, compact = false }
 
         {compact && (
           <div className="col-md-12 text-center mt-3">
-            <Button className="btn btn-primary search-btn" onClick={handleSearch}>
+            <Button
+              className="btn btn-primary search-btn"
+              onClick={handleSearch}
+            >
               Search Hotels
             </Button>
           </div>

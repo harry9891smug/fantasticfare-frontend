@@ -12,22 +12,45 @@ import appleIcon from '../assets/images/apple.svg';
 // import RightImage from '../assets/images/right.svg';
 import PlaneImage from '../assets/images/plane.svg';
 import loaderGif from '../assets/images/app.gif';
+import ForgotPassword from './ForgotPassword';
+import Script from "next/script";
 
 interface AuthPopupProps {
     onClose: () => void;
     onSuccess: () => void; 
     error?: string | null;
 }
+const handleGoogleLogin = () => {
+  const googleClientId = "341176353179-v8a3fikhpq8kafolh11upjgbisf8ro55.apps.googleusercontent.com";
+  const redirectUri = "https://accounts.google.com/o/oauth2/v2/auth" +
+    "?client_id=" + googleClientId +
+    "&redirect_uri=" + window.location.origin + "/auth/callback/google" +
+    "&response_type=token" +
+    "&scope=email%20profile";
 
+  window.location.href = redirectUri;
+};
+
+const handleFacebookLogin = () => {
+  const fbAppId = "1194872025612298";
+  const redirectUri = "https://www.facebook.com/v10.0/dialog/oauth" +
+    "?client_id=" + fbAppId +
+    "&redirect_uri=" + window.location.origin + "/auth/callback/facebook" +
+    "&response_type=token" +
+    "&scope=email,public_profile";
+
+  window.location.href = redirectUri;
+};
 const AuthPopup: React.FC<AuthPopupProps> = ({ onClose,  onSuccess, error}) => {
     const [isLogin, setIsLogin] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
         phone: "",
-        countryCode: "+91",
+        countryCode: "+1",
         password: "",
         confirmPassword: "",
     });
@@ -149,6 +172,10 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose,  onSuccess, error}) => {
                 <div className={styles.authPopupRight}>
                     <button className={styles.closeBtn} onClick={onClose}>×</button>
                     <Image src={PlaneImage} alt="Plane Icon" className={styles.authTopImage} />
+                    {showForgotPassword ? (
+  <ForgotPassword onBack={() => setShowForgotPassword(false)} />
+) : (
+  <>
                     <h3 className={isLogin ? styles.welcomeMargin : ''}>
                         {isLogin ? 'Welcome Back 👋' : 'Join Fantastic Fare!'}
                     </h3>
@@ -192,7 +219,7 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose,  onSuccess, error}) => {
                                     name="countryCode"
                                     value={formData.countryCode}
                                     onChange={handleChange}
-                                    placeholder="+91" 
+                                    placeholder="+1" 
                                 />
                                 <input 
                                     type="text" 
@@ -235,7 +262,15 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose,  onSuccess, error}) => {
                             </div>
                         )}
 
-                        {isLogin && <p className={styles.forgotPassword}>Forgot password?</p>}
+                        {isLogin && (
+                            <p 
+                                className={styles.forgotPassword} 
+                                onClick={() => setShowForgotPassword(true)}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                Forgot password?
+                            </p>
+                            )}
 
                         <button type="submit" className={styles.authButton} disabled={loading}>
                             {loading ? "Processing..." : isLogin ? 'Login' : 'Sign Up'}
@@ -249,13 +284,14 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose,  onSuccess, error}) => {
 
                         {isLogin && (
                             <div className={styles.socialLogin}>
-                                <Image src={googleIcon} alt="Google" />
-                                <Image src={facebookIcon} alt="Facebook" />
+                                <Image src={googleIcon}  onClick={handleGoogleLogin} alt="Google" />
+                                <Image src={facebookIcon} onClick={handleFacebookLogin} alt="Facebook" />
                                 <Image src={appleIcon} alt="Apple" />
                             </div>
                         )}
                     </form>
-
+ </>
+)}
                     <p className={styles.toggleForm}>
                         {isLogin ? "Don't have an account? " : "Already have an account? "}
                         <span onClick={() => setIsLogin(!isLogin)}>{isLogin ? "Sign Up" : "Login"}</span>

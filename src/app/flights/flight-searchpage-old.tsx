@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
-import { Form, Button, InputGroup, ToastContainer } from "react-bootstrap";
+import { Form, Button, InputGroup } from "react-bootstrap";
 import gif from "../assets/images/app.gif";
 import {
   FaPlaneDeparture,
@@ -15,7 +15,6 @@ import {
   FaChevronLeft,
   FaAngleUp,
 } from "react-icons/fa";
-import FlightSearchComponent from '../components/SharedFlightSearch';
 import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -34,13 +33,11 @@ import {
   topFlights,
   faqList,
   metaData,
-  cabinOptions,
 } from "../utils/utilityData";
 import { Chip, Stack, Grid } from "@mui/material";
 import Accordion from "react-bootstrap/Accordion";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-import { toast } from "react-toastify";
-import SuccessPopup from "../components/successPopup";
+
 interface ArrowProps {
   className?: string;
   style?: React.CSSProperties;
@@ -70,10 +67,10 @@ interface AirportData {
 }
 interface FormData {
   tripType: string;
-  leavingFrom: string;
-  goingTo: string;
-  startDate: Date | null;
-  returnDate: Date | null;
+  leavingFrom: string[];
+  goingTo: string[];
+  startDate: Date;
+  returnDate: Date;
   mobile_number: string;
   email: string;
   travellers: Travelers;
@@ -101,6 +98,12 @@ const FlightSearch = () => {
   >(null);
   const [formErrors, setFormErrors] = useState<FormData>({} as FormData);
 
+  const cabinOptions = [
+    { value: "Economy", label: "Economy" },
+    { value: "Premium economy", label: "Premium economy" },
+    { value: "Business class", label: "Business class" },
+    { value: "First class", label: "First class" },
+  ];
   const filtersRef = useRef<HTMLDivElement>(null);
   const [travelers, setTravelers] = useState<Travelers>({
     adults: 1,
@@ -110,25 +113,12 @@ const FlightSearch = () => {
   });
   const [formData, setFormData] = useState<FormData>({
     travellers: travelers,
-    cabinClass: cabinClass,
+    cabinClass: "economy",
     tripType: "round-trip",
   } as FormData);
-  const [diasabled,setIsdisabled] = useState(false);
   const [sortDirection, setSortDirection] = useState("left");
   const [showTravelerDropdown, setShowTravelerDropdown] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [flightSegments, setFlightSegments] = useState<FlightSegment[]>([
-    { from: "", to: "", date: "" },
-    { from: "", to: "", date: "" },
-  ]);
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupMessage, setPopupMessage] = useState({
-    title: "",
-    content: "",
-    isSuccess: true,
-  });
 
   const dates: DateItem[] = [
     { day: "Tue, 11 Mar", price: "$4,708" },
@@ -139,7 +129,8 @@ const FlightSearch = () => {
     { day: "Sun, 16 Mar", price: "$4,325" },
     { day: "Mon, 17 Mar", price: "$4,399" },
   ];
-
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const settings = {
     dots: false,
     infinite: true,
@@ -169,6 +160,10 @@ const FlightSearch = () => {
       });
     }
   };
+  const [flightSegments, setFlightSegments] = useState<FlightSegment[]>([
+    { from: "", to: "", date: "" },
+    { from: "", to: "", date: "" },
+  ]);
 
   const addFlightSegment = () => {
     setFlightSegments([...flightSegments, { from: "", to: "", date: "" }]);
@@ -237,16 +232,18 @@ const FlightSearch = () => {
   };
   const handleAirportSelect = (airport: string) => {
     if (focusedField === "leavingFrom") {
-      setFormData((prev) => ({
-        ...prev,
-        leavingFrom: airport, // Now assigning a string
-      }));
+      document.querySelector<HTMLInputElement>(
+        'input[name="leavingFrom"]'
+      )!.value = airport;
     } else if (focusedField === "goingTo") {
-      setFormData((prev) => ({
-        ...prev,
-        goingTo: airport, // Now assigning a string
-      }));
+      document.querySelector<HTMLInputElement>('input[name="goingTo"]')!.value =
+        airport;
     }
+    setFormData((prev) => ({
+      ...prev,
+      [focusedField!]: airport,
+    }));
+
     setAirportSuggestions([]);
     setFocusedField(null);
   };
@@ -258,85 +255,25 @@ const FlightSearch = () => {
       goingTo: prev.leavingFrom,
     }));
   };
-
   const submitForm = async () => {
     try {
+      console.log(formData);
       if (!formData.email) {
-        console.log('herer')
-        setPopupMessage({
-          title: "Error",
-          content:
-            "Please Enter Email.",
-          isSuccess: false,
-        });
         setFormErrors((prev) => ({
           ...prev,
           email: "Please Enter Email",
         }));
         return;
       }
-      setIsdisabled(true);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/flight-enquiry`,
         formData
       );
-      setPopupMessage({
-        title: "Success!",
-        content: "Your flight enquiry has been submitted successfully.",
-        isSuccess: true,
-      });
-      setShowPopup(true);
-      resetFormFields();
+
+      console.log("Enquiry submitted:", response.data);
     } catch (error) {
-      setPopupMessage({
-        title: "Error",
-        content:
-          "There was an error submitting your enquiry. Please try again.",
-        isSuccess: false,
-      });
-      setShowPopup(true);
+      console.error("Error submitting form:", error);
     }
-  };
-
-  const resetFormFields = () => {
-    setFormData({
-      tripType: formData.tripType,
-      leavingFrom: "",
-      goingTo: "",
-      startDate: null,
-      returnDate: null,
-      mobile_number: "",
-      email: "",
-      travellers: {
-        adults: 1,
-        children: 0,
-        infantsSeat: 0,
-        infantsLap: 0,
-      },
-      cabinClass: cabinClass,
-    });
-
-    setTravelers({
-      adults: 1,
-      children: 0,
-      infantsSeat: 0,
-      infantsLap: 0,
-    });
-
-    if (formData.tripType === "multi-city") {
-      setFlightSegments([{ from: "", to: "", date: "" }]);
-    }
-
-    // Clear input field references
-    const leavingFromInput = document.querySelector<HTMLInputElement>(
-      'input[name="leavingFrom"]'
-    );
-    const goingToInput = document.querySelector<HTMLInputElement>(
-      'input[name="goingTo"]'
-    );
-
-    if (leavingFromInput) leavingFromInput.value = "";
-    if (goingToInput) goingToInput.value = "";
   };
 
   const [value, setValue] = useState(0);
@@ -345,44 +282,37 @@ const FlightSearch = () => {
     setValue(newValue);
   };
 
-  const handleClick = () => {
-    console.log("You clicked the Chip.");
-  };
+const handleClick = () => {
+  console.log("You clicked the Chip.");
+};
+
 
   return (
     <div className="container py-5">
-      {/* Add the popup near the top of your return statement */}
-      <SuccessPopup
-        show={showPopup}
-        onClose={() => setShowPopup(false)}
-        title={popupMessage.title}
-        message={popupMessage.content}
-        isSuccess={popupMessage.isSuccess}
-      />
       {/* Tabs */}
       <div className="trip-type-container">
         <div className="trip-type">
           <button
             className={formData.tripType === "one-way" ? "active" : ""}
-            onClick={() => {
-              setFormData((prev) => ({ ...prev, tripType: "one-way" }));
-            }}
+            onClick={() =>
+              setFormData((prev) => ({ ...prev, tripType: "one-way" }))
+            }
           >
             One Way
           </button>
           <button
             className={formData.tripType === "round-trip" ? "active" : ""}
-            onClick={() => {
-              setFormData((prev) => ({ ...prev, tripType: "round-trip" }));
-            }}
+            onClick={() =>
+              setFormData((prev) => ({ ...prev, tripType: "round-trip" }))
+            }
           >
             Round Trip
           </button>
           <button
             className={formData.tripType === "multi-city" ? "active" : ""}
-            onClick={() => {
-              setFormData((prev) => ({ ...prev, tripType: "multi-city" }));
-            }}
+            onClick={() =>
+              setFormData((prev) => ({ ...prev, tripType: "multi-city" }))
+            }
           >
             Multi-City
           </button>
@@ -426,17 +356,15 @@ const FlightSearch = () => {
         </div>
       </div>
 
-      {/* Flight Search Form  new */}
-
       {/* Flight Search Form */}
       <div
         className="p-4 rounded border border-primary"
         style={{ borderWidth: "2px" }}
       >
         {/* Travelers Dropdown - Now appears consistently at the top for all trip types */}
-        <div className="position-relative mb-3">
-          <InputGroup className="custom-input">
-            <InputGroup.Text className="icon">
+        <div className="custom-input position-relative mb-3">
+          <InputGroup>
+            <InputGroup.Text>
               <FaUsers />
             </InputGroup.Text>
             <Form.Control
@@ -483,9 +411,9 @@ const FlightSearch = () => {
         {formData.tripType === "one-way" && (
           <div className="d-flex align-items-center  gap-3 flex-wrap">
             {/* Leaving From */}
-            <div className=" position-relative mb-3">
+            <div className="custom-input position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text className="icon">
+                <InputGroup.Text>
                   <FaPlaneDeparture />
                 </InputGroup.Text>
                 <Form.Control
@@ -523,9 +451,9 @@ const FlightSearch = () => {
             </div>
 
             {/* Going To */}
-            <div className="position-relative mb-3">
+            <div className="custom-input position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text className="icon">
+                <InputGroup.Text>
                   <FaPlaneArrival />
                 </InputGroup.Text>
                 <Form.Control
@@ -557,9 +485,9 @@ const FlightSearch = () => {
             </div>
 
             {/* Date Picker */}
-            <div className="position-relative mb-3">
+            <div className="custom-input position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text className="icon">
+                <InputGroup.Text>
                   <FaCalendarAlt />
                 </InputGroup.Text>
                 <DatePicker
@@ -582,17 +510,16 @@ const FlightSearch = () => {
 
         {/* Round-Trip Form */}
         {formData.tripType === "round-trip" && (
-          <div className="d-flex gap-3 flex-wrap">
+          <div className="d-flex align-items-center justify-content-center gap-3 flex-wrap">
             {/* Leaving From */}
-            <div className="position-relative mb-3">
+            <div className="custom-input position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text className="icon">
+                <InputGroup.Text>
                   <FaPlaneDeparture />
                 </InputGroup.Text>
                 <Form.Control
                   type="text"
                   placeholder="Leaving From"
-                  value={formData.leavingFrom}
                   onChange={(e) => handleAirportChange(e, "leavingFrom")}
                   name="leavingFrom"
                 />
@@ -624,43 +551,37 @@ const FlightSearch = () => {
             </div>
 
             {/* Going To */}
-            <div className="position-relative mb-3">
-              <InputGroup className="custom-input">
-                <InputGroup.Text className="icon">
-                  <FaPlaneArrival />
-                </InputGroup.Text>
-                <Form.Control
-                  type="text"
-                  placeholder="Going To"
-                  value={formData.goingTo}
-                  onChange={(e) => handleAirportChange(e, "goingTo")}
-                  name="goingTo"
-                />
-              </InputGroup>
-              {focusedField === "goingTo" && airportSuggestions.length > 0 && (
-                <div className="autocomplete-dropdown">
-                  {airportSuggestions.map((airportData, index) => (
-                    <div
-                      key={index}
-                      className="autocomplete-item"
-                      onClick={() =>
-                        handleAirportSelect(
-                          `${airportData.iata}-${airportData.city}(${airportData.country})`
-                        )
-                      }
-                    >
-                      {airportData.iata}-{airportData.city}(
-                      {airportData.country})
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="custom-input position-relative mb-3">
+                <InputGroup className="custom-input">
+                  <InputGroup.Text>
+                    <FaPlaneArrival />
+                  </InputGroup.Text>
+                  <Form.Control
+                    type="text"
+                    placeholder="Going To"
+                    onChange={(e) => handleAirportChange(e, "goingTo")}
+                    name="goingTo"
+                  />
+                </InputGroup>
+                {focusedField === 'goingTo' && airportSuggestions.length > 0 && (
+                  <div className="autocomplete-dropdown">
+                    {airportSuggestions.map((airportData, index) => (
+                      <div
+                        key={index}
+                        className="autocomplete-item"
+                        onClick={() => handleAirportSelect(`${airportData.iata}-${airportData.city}(${airportData.country})`)}
+                      >
+                        {airportData.iata}-{airportData.city}({airportData.country})
+                      </div>
+                    ))}
+                  </div>
+                )}
             </div>
 
             {/* Departure Date */}
-            <div className="position-relative mb-3">
+            <div className="custom-input position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text className="icon">
+                <InputGroup.Text>
                   <FaCalendarAlt />
                 </InputGroup.Text>
                 <DatePicker
@@ -680,9 +601,9 @@ const FlightSearch = () => {
             </div>
 
             {/* Return Date */}
-            <div className="position-relative mb-3">
+            <div className="custom-input position-relative mb-3">
               <InputGroup className="custom-input">
-                <InputGroup.Text className="icon">
+                <InputGroup.Text>
                   <FaCalendarAlt />
                 </InputGroup.Text>
                 <DatePicker
@@ -728,7 +649,7 @@ const FlightSearch = () => {
                   {/* Leaving From */}
                   <div className="position-relative flex-grow-1">
                     <InputGroup className="custom-input">
-                      <InputGroup.Text className="icon">
+                      <InputGroup.Text>
                         <FaPlaneDeparture />
                       </InputGroup.Text>
                       <Form.Control
@@ -752,7 +673,7 @@ const FlightSearch = () => {
                   {/* Going To */}
                   <div className="flex-grow-1">
                     <InputGroup className="custom-input">
-                      <InputGroup.Text className="icon">
+                      <InputGroup.Text>
                         <FaPlaneArrival />
                       </InputGroup.Text>
                       <Form.Control
@@ -769,7 +690,7 @@ const FlightSearch = () => {
                   {/* Date Picker */}
                   <div className="flex-grow-1">
                     <InputGroup className="custom-input">
-                      <InputGroup.Text className="icon">
+                      <InputGroup.Text>
                         <FaCalendarAlt />
                       </InputGroup.Text>
                       <Form.Control
@@ -808,11 +729,11 @@ const FlightSearch = () => {
           {/* Email Field */}
           <div className="custom-input">
             <InputGroup>
-              <InputGroup.Text className="icon">@</InputGroup.Text>
+              <InputGroup.Text>@</InputGroup.Text>
               <Form.Control
                 type="email"
                 placeholder="Email"
-                // className="is-invalid"
+                className="is-invalid"
                 value={formData.email}
                 onChange={(e) =>
                   setFormData((prev) => ({
@@ -830,9 +751,9 @@ const FlightSearch = () => {
           </div>
 
           {/* Phone Field */}
-          <div className="position-relative">
-            <InputGroup className="custom-input">
-              <InputGroup.Text className="icon">
+          <div className="custom-input position-relative">
+            <InputGroup>
+              <InputGroup.Text>
                 <FaPhone />
               </InputGroup.Text>
               <Form.Control
@@ -857,25 +778,13 @@ const FlightSearch = () => {
             variant="primary"
             size="lg"
             onClick={submitForm}
-            disabled={diasabled}
           >
-            Send Enquiry
+            Search Flights
           </Button>
         </div>
       </div>
 
       {/* Main Content */}
-     
-{/* <FlightSearchComponent 
-  variant="full"
-  onSearch={(formData) => {
-    // Handle the search with your own logic
-    console.log("Search data:", formData);
-    // Or submit to your API
-    axios.post('/your-api-endpoint', formData);
-  }}
-/> */}
-    
       <div className="container ">
         <h2 className="fw-bold mt-5">Popular Flights near you</h2>
         <p className="text-muted  mb-4">
@@ -934,7 +843,7 @@ const FlightSearch = () => {
           className="flight-swiper"
           spaceBetween={10}
           breakpoints={{
-            320: { slidesPerView: 2 }, 
+            320: { slidesPerView: 2 }, // Minimum 2 slides on small screens
             640: { slidesPerView: 3 },
             1024: { slidesPerView: 4 },
           }}
@@ -1036,9 +945,7 @@ const FlightSearch = () => {
                       <span>{faq.question}</span>
                     </div>
                   </Accordion.Header>
-                  <Accordion.Body>
-                    <div dangerouslySetInnerHTML={{ __html: faq.ans }} />
-                  </Accordion.Body>
+                  <Accordion.Body>{faq.ans}</Accordion.Body>
                 </Accordion.Item>
               </Accordion>
             ))}
@@ -1074,18 +981,33 @@ const FlightSearch = () => {
             </Button>
           </div>
         </div>
-
-        <div className="container mt-5 d-flex flex-column align-items-center">
-          {metaData.map((item, index) => (
-            <div key={index}>
-              <h6 className="fw-bold mt-2 mb-0">{item.title}</h6>
-              <p className="text-dark" style={{ fontSize: "x-small" }}>
-                {item.destinations}
-              </p>
-            </div>
-          ))}
-        </div>
+      <div className="flex justify-center -mt-2 mb-4">
+     <div className="gif-container">
+  <Image
+    src={gif}
+    alt="Decorative animation"
+    width={800}
+    height={100}
+    className="w-full h-auto"
+    style={{
+      display: 'block',
+      margin: '0 auto',
+    }}
+  />
+</div>
       </div>
+
+      <div className="container mt-5 d-flex flex-column align-items-center">
+        {metaData.map((item, index) => (
+          <div key={index}>
+            <h6 className="fw-bold mt-2 mb-0">{item.title}</h6>
+            <p className="text-dark" style={{ fontSize: "x-small" }}>
+              {item.destinations}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
     </div>
   );
 };
@@ -1137,5 +1059,6 @@ const PrevArrow: React.FC<ArrowProps> = ({ className, style, onClick }) => (
     <FaChevronLeft size={20} />
   </div>
 );
+
 
 export default FlightSearch;

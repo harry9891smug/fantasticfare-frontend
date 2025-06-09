@@ -397,3 +397,262 @@
 .loaderGif {
     margin-bottom: 15px;
 }
+/* Forgot Password Styles */
+.forgotPasswordContainer {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.forgotTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+  color: #333;
+}
+
+.forgotSubtitle {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.tabSelector {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tabButton {
+  flex: 1;
+  padding: 12px 0;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  position: relative;
+}
+
+.tabButton.activeTab {
+  color: #019ee2;
+  font-weight: 600;
+}
+
+.tabButton.activeTab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #019ee2;
+}
+
+.phoneContainerN {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.countryCodeN {
+  width: 80px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.phoneNumberN {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Keep your existing styles and add these new ones */
+.backLink {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #333;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  color: #019ee2;
+}
+
+.successText {
+  color: #28a745;
+  font-size: 14px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.topError {
+  color: #dc3545;
+  font-size: 14px;
+  text-align: center;
+  margin: 10px 0;
+}
+/* OTP Verification Styles */
+.otpContainer {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.otpTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+  color: #333;
+}
+
+.otpSubtitle {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.otpEmail {
+  font-weight: 600;
+  color: #333;
+}
+
+.otpForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.otpInputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.otpInput {
+  width: 40px;
+  height: 50px;
+  text-align: center;
+  font-size: 18px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.otpInput:focus {
+  border-color: #019ee2;
+  outline: none;
+}
+
+.otpError {
+  color: #dc3545;
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+}
+
+.otpResend {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.resendButton {
+  background: none;
+  border: none;
+  color: #019ee2;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.resendButton:hover {
+  text-decoration: underline;
+}
+
+.resendButton:disabled {
+  color: #999;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.otpButton {
+  width: 100%;
+  padding: 12px;
+  background-color: #019ee2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.otpButton:hover {
+  background-color: #019ee2;
+}
+
+.otpBackLink {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #333;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.otpBackLink:hover {
+  color: #019ee2;
+}
+/* Set New Password Styles */
+.setPasswordContainer {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.setPasswordTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+  color: #333;
+}
+
+.passwordRequirement {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.authButtonReset {
+    width: 41%;
+    padding: 9px;
+    background: #019ee2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+/* You can reuse many of the existing styles from AuthPopup.module.css */

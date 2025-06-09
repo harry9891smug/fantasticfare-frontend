@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
 import "./assets/css/globl.css";
+import "./assets/css/flights.css";
 import Slider from "react-slick";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { FaPlaneDeparture, FaPlaneArrival, FaCalendarAlt, FaUsers, FaExchangeAlt } from "react-icons/fa";
@@ -22,6 +23,7 @@ import  TourSection from "./components/TourSection";
 import { usePathname } from 'next/navigation';
 import TipsSection from "./components/tipsArticle";
 import Link from "next/link";
+import FlightSearchComponent from './components/SharedFlightSearch';
 interface TravelTip {
   id: number;
   image: string;
@@ -123,86 +125,10 @@ export default function FlightSearch() {
       <hr className="my-4" />
 
       {/* Tabs */}
-      <div className="trip-type">
-    <a href="#" className="active">One Way</a>
-    <a href="#">Round Trip</a>
-    <a href="#">Multi-City</a>
-</div>
-
-      {/* Flight Search Form */}
-    <div className="bg-light p-4 rounded shadow">
-      <div className="d-flex align-items-center justify-content-center gap-3 flex-wrap">
-  {/* Leaving From */}
-  <div className="custom-input position-relative">
-    <InputGroup className="custom-input">
-      <InputGroup.Text><FaPlaneDeparture /></InputGroup.Text>
-      <Form.Control type="text" placeholder="Leaving From" />
-    </InputGroup>
-  </div>
-
-  {/* Swap Icon Inside a Circle */}
-  <div className="swap-icon-circle">
-    <FaExchangeAlt />
-  </div>
-
-  {/* Going To */}
-  <div className="custom-input position-relative">
-    <InputGroup className="custom-input">
-      <InputGroup.Text><FaPlaneArrival /></InputGroup.Text>
-      <Form.Control type="text" placeholder="Going To" />
-    </InputGroup>
-  </div>
-
-  {/* Date Picker */}
-  <div className="custom-input position-relative">
-    <InputGroup className="custom-input">
-      <InputGroup.Text><FaCalendarAlt /></InputGroup.Text>
-      <Form.Control type="date" />
-    </InputGroup>
-  </div>
-
-  {/* Travelers Dropdown */}
-  <div className="custom-input position-relative">
-  <InputGroup>
-    <InputGroup.Text><FaUsers /></InputGroup.Text>
-    <Form.Control
-      type="text"
-      readOnly
-      value={`${travelers.adults} Adults, ${travelers.children} Children`}
-      onClick={() => setShowTravelerDropdown(!showTravelerDropdown)}
-    />
-  </InputGroup>
-
-  {showTravelerDropdown && (
-    <div className="traveler-dropdown">
-      {(Object.keys(travelers) as Array<keyof Travelers>).map((type) => (
-        <div key={type} className="traveler-item">
-          <span className="text-capitalize">{type.replace(/([A-Z])/g, " $1")}</span>
-          <div className="traveler-controls">
-            <Button size="sm" onClick={() => handleTravelerChange(type, false)}>-</Button>
-            <span className="count">{travelers[type]}</span>
-            <Button size="sm" onClick={() => handleTravelerChange(type, true)}>+</Button>
-          </div>
-        </div>
-      ))}
-    </div>
-  )}
-</div>
-
-     </div>
-
-
-        {/* Checkboxes */}
-        <div className="d-flex gap-4 mt-3">
-          <Form.Check type="checkbox" label="Add a place to stay" />
-          <Form.Check type="checkbox" label="Add a car" />
-        </div>
-
-        {/* Search Button */}
-        <div className="text-center mt-4">
-          <Button variant="primary" size="lg">Search Flights</Button>
-        </div>
-      </div>
+     <FlightSearchComponent 
+  variant="full"
+  
+/>
     {/* </div> */}
 
     <hr className="my-4" />

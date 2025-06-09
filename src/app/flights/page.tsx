@@ -13,6 +13,7 @@ import {
   FaChevronRight,
   FaChevronLeft,
   FaAngleUp,
+  FaTimes
 } from "react-icons/fa";
 import Image from "next/image";
 import "slick-carousel/slick/slick.css";
@@ -483,6 +484,19 @@ const FlightSearch = () => {
                   onChange={(e) => handleAirportChange(e, "leavingFrom")}
                   name="leavingFrom"
                 />
+               
+                {
+                
+                formData.leavingFrom && (
+                              <Button
+                                variant="link"
+                                className="clear-btn"
+
+                                aria-label="Clear search"
+                              >
+                                <FaTimes />
+                              </Button>
+                            )}
               </InputGroup>
               {focusedField === "leavingFrom" &&
                 airportSuggestions.length > 0 && (

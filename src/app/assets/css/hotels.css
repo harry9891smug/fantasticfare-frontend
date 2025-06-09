@@ -24,7 +24,7 @@
   padding: 4px;
   width: 100%;
   position: relative;
-  border-bottom-width: medium;
+  border-bottom-width: thin;
 }
 
 .customh-input .icon {

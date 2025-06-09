@@ -454,7 +454,12 @@ const HotelDetails = () => {
           <h4>
             ${hotel.minRate}<small className="text-muted fs-6">/ night </small>
           </h4>
-          <button className="btn btn-primary mt-2">Select Room</button>
+          <button className="btn btn-primary mt-2" onClick={() => {
+    const el = document.querySelector('.rooms-container');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }}>Select Room</button>
         </div>
       </div>
 

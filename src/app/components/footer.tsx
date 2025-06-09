@@ -18,6 +18,7 @@ import andaman from "../assets/images/footer_images/Andaman.png";
 import bali from "../assets/images/footer_images/Bali.png";
 import NewYork from "../assets/images/footer_images/new-york.png";
 import SriLanka from "../assets/images/footer_images/sri-lanka.png";
+import CanadaFlag from "../assets/images/canada.png";
 import WatiWidget from './WatiWidget';
 import axios from "axios";
 interface Countries {
@@ -82,9 +83,9 @@ const Footer: React.FC = () => {
                   <li>
                     <Link href="/about-us">About</Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link href="/services">Services</Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link href="/contact-us">Contact</Link>
                   </li>
@@ -139,7 +140,19 @@ const Footer: React.FC = () => {
                   </a>
                 </li>
               </ul>
+            
             </div>
+              <div className="flag-container">
+    <a href="https://fantasticfare.ca" target="_blank" rel="noopener noreferrer">
+      <Image 
+        src={CanadaFlag} // Update with your actual image path
+        alt="Canada" 
+        width={40} // Slightly larger than social icons
+        height={35} // Standard flag aspect ratio
+        className="flag-image"
+      />
+    </a>
+  </div>
           </div>
 
           {/* <div className="background-border-shadow-1">

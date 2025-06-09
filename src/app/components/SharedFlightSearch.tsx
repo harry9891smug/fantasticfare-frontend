@@ -15,6 +15,8 @@ import { Form, Button, InputGroup } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
+import SuccessPopup from "../components/successPopup";
+
 
 interface Travelers {
   adults: number;
@@ -65,6 +67,14 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
     email: "",
     phone: ""
   });
+
+  // state to show Success popup
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState({
+      title: "",
+      content: "",
+      isSuccess: true,
+    });
 
   // State for airport suggestions
   const [airportSuggestions, setAirportSuggestions] = useState<AirportData[]>([]);
@@ -160,43 +170,50 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
   };
 
   // Form validation
-  const validateForm = () => {
-    let valid = true;
-    const newErrors = {
-      email: "",
-      phone: ""
-    };
-
-    if (!email) {
-      newErrors.email = "Please enter your email";
-      valid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Please enter a valid email";
-      valid = false;
-    }
-
-    if (!phone) {
-      newErrors.phone = "Please enter your phone number";
-      valid = false;
-    }
-
-    // Validate flight segments
-    for (const segment of flightSegments) {
-      if (!segment.from || !segment.to || !segment.date) {
-        valid = false;
-        break;
-      }
-    }
-
-    setFormErrors(newErrors);
-    return valid;
+ const validateForm = (email: string, phone: string, flightSegments: FlightSegment[]) => {
+  let valid = true;
+  const newErrors = {
+    email: "",
+    phone: "",
+    flightSegments: flightSegments.map(() => ({
+      from: "",
+      to: "",
+      date: ""
+    }))
   };
+
+  // Validate email
+  console.log("from",email)
+  if (!email) {
+    newErrors.email = "Please enter your email";
+    valid = false;
+  } else if (!/\S+@\S+\.\S+/.test(email)) {
+    newErrors.email = "Please enter a valid email";
+    valid = false;
+  }
+
+  // Validate phone
+    console.log("from",phone)
+
+  if (!phone) {
+    newErrors.phone = "Please enter your phone number";
+    valid = false;
+  } else if (!/^[\d\s+\-()]{10,}$/.test(phone)) {
+    newErrors.phone = "Please enter a valid phone number";
+    valid = false;
+  }
+  setFormErrors(newErrors);
+  return valid;
+};
+
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
+    console.log(e.preventDefault())
+    console.log("from is invalidate",email,phone,flightSegments)
+    if (!validateForm(email, phone,flightSegments)) {
+      
       return;
     }
 
@@ -215,14 +232,28 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
     }
 
     // Default submission behavior
+    console.log(formData)
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/flight-enquiry`,
         formData
       );
+      setPopupMessage({
+        title: "Success!",
+        content: "Your flight enquiry has been submitted successfully.",
+        isSuccess: true,
+      });
+      setShowPopup(true);
       console.log("Enquiry submitted:", response.data);
       // Handle success (show message, redirect, etc.)
     } catch (error) {
+      setPopupMessage({
+        title: "Error",
+        content:
+          "There was an error submitting your enquiry. Please try again.",
+        isSuccess: false,
+      });
+      setShowPopup(true);
       console.error("Error submitting form:", error);
       // Handle error (show error message)
     }
@@ -246,6 +277,13 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
 
   return (
     <div className={`flight-search-container ${variant}`} ref={filtersRef}>
+      <SuccessPopup
+              show={showPopup}
+              onClose={() => setShowPopup(false)}
+              title={popupMessage.title}
+              message={popupMessage.content}
+              isSuccess={popupMessage.isSuccess}
+            />
       {/* Tabs - Only show in full variant */}
       {variant === 'full' && (
         <div className="trip-type-container">
@@ -354,7 +392,7 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
         {tripType !== 'multi-city' && (
           <div className="d-flex align-items-center justify-content-center gap-3 flex-wrap">
             {/* Leaving From */}
-            <div className="custom-input position-relative">
+            <div className=" position-relative">
               <InputGroup className="custom-input">
                 <InputGroup.Text>
                   <FaPlaneDeparture />
@@ -362,7 +400,7 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
                 <Form.Control
                   type="text"
                   placeholder="Leaving From"
-                  value={flightSegments[0].from}
+                  value={flightSegments[0].from} 
                   onChange={(e) => handleAirportChange(e, 0, 'from')}
                 />
               </InputGroup>
@@ -387,7 +425,7 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
             </div>
 
             {/* Going To */}
-            <div className="custom-input position-relative">
+            <div className=" position-relative">
               <InputGroup className="custom-input">
                 <InputGroup.Text>
                   <FaPlaneArrival />
@@ -415,7 +453,7 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
             </div>
 
             {/* Departure Date */}
-            <div className="custom-input position-relative">
+            <div className="position-relative">
               <InputGroup className="custom-input">
                 <InputGroup.Text>
                   <FaCalendarAlt />
@@ -435,7 +473,7 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
 
             {/* Return Date (only for round-trip) */}
             {tripType === "round-trip" && (
-              <div className="custom-input position-relative">
+              <div className=" position-relative">
                 <InputGroup className="custom-input">
                   <InputGroup.Text>
                     <FaCalendarAlt />
@@ -614,7 +652,7 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
 
         {/* Search Button */}
         <div className="text-center mt-4">
-          <Button className="btn-search" variant="primary" size="lg" type="submit">
+          <Button className="btn-search" variant="primary" size="lg" type="submit" onClick={handleSubmit}>
             Search Flights
           </Button>
         </div>

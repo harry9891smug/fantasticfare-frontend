@@ -137,14 +137,9 @@
   padding: 4px;
   width: 100%;
   position: relative;
-  border-bottom-width: medium;
+  border-bottom-width: thin;
 }
-.custom-input .icon {
-  color: gray;
-  font-size: 14px;
-  margin-right: 17px;
-  margin-top: 9px;
-}
+
 .custom-input input {
   border: none;
   outline: none;

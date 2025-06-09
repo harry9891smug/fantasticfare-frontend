@@ -15,7 +15,6 @@ import {
   FaChevronLeft,
   FaAngleUp,
 } from "react-icons/fa";
-import FlightSearchComponent from '../components/SharedFlightSearch';
 import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -230,7 +229,12 @@ const FlightSearch = () => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/flights/airportSuggestions?area=${value}`
       );
-      setAirportSuggestions(response.data.data || []);
+      if(response.data.data.length != 0){
+       setAirportSuggestions(response.data.data || []);
+      }else{
+        setAirportSuggestions(response.data.suggestions|| []);
+      }
+      
     } catch (error) {
       console.error("Error fetching airport suggestions:", error);
     }
@@ -275,6 +279,7 @@ const FlightSearch = () => {
         }));
         return;
       }
+      console.log(formData)
       setIsdisabled(true);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/flight-enquiry`,

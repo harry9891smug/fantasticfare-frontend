@@ -4,6 +4,7 @@ import "./assets/css/footer.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Fantastic Fare",
@@ -39,7 +40,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             src="https://www.facebook.com/tr?id=2372744249761654&ev=PageView&noscript=1"
           />
         </noscript>
-
+  <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-N7J4FV7CBE"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-N7J4FV7CBE');
+          `}
+        </Script>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
           rel="icon"

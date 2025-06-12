@@ -23,8 +23,9 @@
   border-radius: 8px;
   padding: 4px;
   width: 100%;
+  flex-wrap: nowrap;
   position: relative;
-  border-bottom-width: medium;
+  border-bottom-width: thin;
 }
 
 .customh-input .icon {

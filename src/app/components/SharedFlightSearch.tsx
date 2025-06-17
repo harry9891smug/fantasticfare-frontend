@@ -213,14 +213,14 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
     console.log(e.preventDefault())
     console.log("from is invalidate",email,phone,flightSegments)
     if (!validateForm(email, phone,flightSegments)) {
-      
+                                                                                             
       return;
     }
 
     const formData = {
       tripType,
       cabinClass,
-      travelers,
+      "travellers":travelers,
       segments: flightSegments,
       email,
       phone
@@ -540,12 +540,10 @@ const FlightSearchComponent: React.FC<FlightSearchComponentProps> = ({
                       </div>
                     )}
                   </div>
-
                   {/* Swap Icon */}
                   <div className="swap-icon-circle" onClick={() => exchangeAreas(index)}>
                     <FaExchangeAlt />
                   </div>
-
                   {/* To */}
                   <div className="flex-grow-1 position-relative">
                     <InputGroup className="custom-input">

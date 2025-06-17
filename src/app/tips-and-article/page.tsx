@@ -11,6 +11,7 @@ interface Article {
   article_heading: string;
   article_description: string;
   article_image: string[];
+  article_slug:string;
   faqs: {
     question: string;
     answer: string;
@@ -47,6 +48,7 @@ const TipsArticlesSection = () => {
             article_description: "Always keep a copy of your passport, carry essential medicine, and know the local emergency numbers before you go.",
             article_image: ["/placeholder-image.jpg"],
             faqs: [],
+            article_slug:'testing',
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
           },
@@ -73,7 +75,8 @@ const TipsArticlesSection = () => {
       <h2>Tips & Articles</h2>
       <div className="tips-grid">
         {articles.slice(0, visible).map((article) => (
-          <div key={article._id} className="tip-card">
+          // <div key={article._id} className="tip-card">
+           <div key={article.article_slug} className="tip-card">
             {article.article_image?.length > 0 && (
               <Image 
                 src={article.article_image[0]} 
@@ -83,7 +86,7 @@ const TipsArticlesSection = () => {
                 style={{ objectFit: "cover" }}
               />
             )}
-            <h3 ><Link className="title-links" href={`/tips-and-article/${article._id}`}>{article.article_heading}</Link></h3>
+            <h3 ><Link className="title-links" href={`/tips-and-article/${article.article_slug}`}>{article.article_heading}</Link></h3>
         
             <p>
             {he.decode(
@@ -114,7 +117,7 @@ const TipsArticlesSection = () => {
           <h2 className="in-depth-title">Monthly Selections</h2>
           <div className="in-depth-layout">
             <div className="in-depth-left">
-              <h3><Link className="title-links" href={`/tips-and-article/${articles[0]._id}`}>{articles[0].article_heading}</Link></h3>
+              <h3><Link className="title-links" href={`/tips-and-article/${articles[0].article_slug}`}>{articles[0].article_heading}</Link></h3>
               {articles[0].article_image?.length > 0 && (
                 <Image 
                   src={articles[0].article_image[0]} 
@@ -137,8 +140,8 @@ const TipsArticlesSection = () => {
             <div className="in-depth-boxes">
               <div className="in-depth-row">
                 {articles.slice(1, 4).map((article) => (
-                  <div key={article._id} className="in-depth-box">
-                    <h4><Link className="title-links" href={`/tips-and-article/${article._id}`}>{article.article_heading}</Link></h4>
+                  <div key={article.article_slug} className="in-depth-box">
+                    <h4><Link className="title-links" href={`/tips-and-article/${article.article_slug}`}>{article.article_heading}</Link></h4>
                     {article.article_image?.length > 0 && (
                       <Image 
                         src={article.article_image[0]} 

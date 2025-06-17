@@ -162,7 +162,7 @@ export default function FlightSearch() {
               <div className="d-flex flex-column text-start">
                 <h6 className="mb-1"> 
                   <span className="city-name"> {dest.city}</span>,
-                  <span className="country-name">{dest.country}</span>
+                  {/* <span className="country-name">{dest.country}</span> */}
                 </h6>
                 <p className="price-text">{dest.price} Onwards</p>
               </div>

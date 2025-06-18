@@ -27,6 +27,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Tabs, Tab, Box } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import FlightComponent from "../components/FlightSearch";
+
 import {
   nearByFlights,
   trendingCities,
@@ -112,7 +114,7 @@ const FlightSearch = () => {
     cabinClass: cabinClass,
     tripType: "round-trip",
   } as FormData);
-  const [diasabled,setIsdisabled] = useState(false);
+  const [diasabled, setIsdisabled] = useState(false);
   const [sortDirection, setSortDirection] = useState("left");
   const [showTravelerDropdown, setShowTravelerDropdown] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
@@ -229,12 +231,11 @@ const FlightSearch = () => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/flights/airportSuggestions?area=${value}`
       );
-      if(response.data.data.length != 0){
-       setAirportSuggestions(response.data.data || []);
-      }else{
-        setAirportSuggestions(response.data.suggestions|| []);
+      if (response.data.data.length != 0) {
+        setAirportSuggestions(response.data.data || []);
+      } else {
+        setAirportSuggestions(response.data.suggestions || []);
       }
-      
     } catch (error) {
       console.error("Error fetching airport suggestions:", error);
     }
@@ -266,11 +267,10 @@ const FlightSearch = () => {
   const submitForm = async () => {
     try {
       if (!formData.email) {
-        console.log('herer')
+        console.log("herer");
         setPopupMessage({
           title: "Error",
-          content:
-            "Please Enter Email.",
+          content: "Please Enter Email.",
           isSuccess: false,
         });
         setFormErrors((prev) => ({
@@ -279,7 +279,7 @@ const FlightSearch = () => {
         }));
         return;
       }
-      console.log(formData)
+      console.log(formData);
       setIsdisabled(true);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/flight-enquiry`,
@@ -364,8 +364,9 @@ const FlightSearch = () => {
         message={popupMessage.content}
         isSuccess={popupMessage.isSuccess}
       />
+      <FlightComponent />
       {/* Tabs */}
-      <div className="trip-type-container">
+      <div className="hidden">
         <div className="trip-type">
           <button
             className={formData.tripType === "one-way" ? "active" : ""}
@@ -416,6 +417,7 @@ const FlightSearch = () => {
                             ...prev,
                             cabinClass: option.value,
                           }));
+                          setCabinClass(option.value);
                           setShowCabinDropdown(false);
                         }}
                       >
@@ -434,10 +436,7 @@ const FlightSearch = () => {
       {/* Flight Search Form  new */}
 
       {/* Flight Search Form */}
-      <div
-        className="p-4 rounded border border-primary"
-        style={{ borderWidth: "2px" }}
-      >
+      <div className="hidden">
         {/* Travelers Dropdown - Now appears consistently at the top for all trip types */}
         <div className="position-relative mb-3">
           <InputGroup className="custom-input">
@@ -804,15 +803,14 @@ const FlightSearch = () => {
         )}
 
         {/* Common Elements (checkboxes, email/phone, search button) */}
-        <div className="d-flex gap-4 mt-3">
+        <div className="d-flex gap-4 mt-3 mb-3">
           <Form.Check type="checkbox" label="Add a place to stay" />
           <Form.Check type="checkbox" label="Add a car" />
         </div>
-
-        <div className="d-flex align-items-center  gap-3 flex-wrap mt-3">
+        <div className="row">
           {/* Email Field */}
-          <div className="custom-input">
-            <InputGroup>
+          <div className="col-sm-4 col-lg-6">
+            <InputGroup className="custom-input">
               <InputGroup.Text className="icon">@</InputGroup.Text>
               <Form.Control
                 type="email"
@@ -827,7 +825,7 @@ const FlightSearch = () => {
                 }
               />
               {formErrors.email && (
-                <div className="invalid-feedback">
+                <div className="invalid-feedback d-block">
                   <strong>{formErrors.email}</strong>
                 </div>
               )}
@@ -835,7 +833,7 @@ const FlightSearch = () => {
           </div>
 
           {/* Phone Field */}
-          <div className="position-relative">
+          <div className="col-sm-4 col-lg-6">
             <InputGroup className="custom-input">
               <InputGroup.Text className="icon">
                 <FaPhone />
@@ -870,8 +868,8 @@ const FlightSearch = () => {
       </div>
 
       {/* Main Content */}
-     
-{/* <FlightSearchComponent 
+
+      {/* <FlightSearchComponent 
   variant="full"
   onSearch={(formData) => {
     // Handle the search with your own logic
@@ -880,7 +878,7 @@ const FlightSearch = () => {
     axios.post('/your-api-endpoint', formData);
   }}
 /> */}
-    
+
       <div className="container ">
         <h2 className="fw-bold mt-5">Popular Flights near you</h2>
         <p className="text-muted  mb-4">
@@ -939,7 +937,7 @@ const FlightSearch = () => {
           className="flight-swiper"
           spaceBetween={10}
           breakpoints={{
-            320: { slidesPerView: 2 }, 
+            320: { slidesPerView: 2 },
             640: { slidesPerView: 3 },
             1024: { slidesPerView: 4 },
           }}

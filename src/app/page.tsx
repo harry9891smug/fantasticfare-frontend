@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState,useMemo,useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
@@ -7,7 +7,13 @@ import "./assets/css/globl.css";
 import "./assets/css/flights.css";
 import Slider from "react-slick";
 import { Form, Button, InputGroup } from "react-bootstrap";
-import { FaPlaneDeparture, FaPlaneArrival, FaCalendarAlt, FaUsers, FaExchangeAlt } from "react-icons/fa";
+import {
+  FaPlaneDeparture,
+  FaPlaneArrival,
+  FaCalendarAlt,
+  FaUsers,
+  FaExchangeAlt,
+} from "react-icons/fa";
 import Img1 from "./assets/images/destinations/1.svg";
 import Img2 from "./assets/images/destinations/2.svg";
 import Img3 from "./assets/images/destinations/4.svg";
@@ -17,13 +23,14 @@ import Img6 from "./assets/images/destinations/3.svg";
 import border from "./assets/images/border.svg";
 import packageimg from "./assets/images/package-section.svg";
 import DiscountImage from "./assets/images/discount-image.svg";
-import PackageSection from "./components/PackageSection"; 
-import Destination from "./components/Destinations"; 
-import  TourSection from "./components/TourSection";
-import { usePathname } from 'next/navigation';
+import PackageSection from "./components/PackageSection";
+import Destination from "./components/Destinations";
+import TourSection from "./components/TourSection";
+import { usePathname } from "next/navigation";
 import TipsSection from "./components/tipsArticle";
 import Link from "next/link";
-import FlightSearchComponent from './components/SharedFlightSearch';
+import FlightComponent from "../app/components/FlightSearch";
+import FlightSearchComponent from "./components/SharedFlightSearch";
 interface TravelTip {
   id: number;
   image: string;
@@ -57,28 +64,64 @@ export default function FlightSearch() {
     infantsLap: 0,
   });
   const travelTips: TravelTip[] = [
-      { id: 1, image: "/assets/images/img101.png", title: "How to Save Money on Flights", description: "Learn the best ways to book affordable flights without compromising on comfort." },
-      { id: 2, image: "/assets/images/img102.png", title: "Best Packing Tips for Travelers", description: "Discover how to pack efficiently and avoid unnecessary baggage fees." },
-      { id: 3, image: "/assets/images/img103.png", title: "Top Travel Safety Tips", description: "Ensure a safe trip by following these essential travel safety guidelines." },
-      { id: 4, image: "/assets/images/img104.png", title: "How to Find the Best Hotels", description: "Get expert tips on booking hotels with the best value and amenities." },
-      { id: 5, image: "/assets/images/img105.png", title: "Solo Travel Tips for Beginners", description: "Explore the world confidently with these solo travel insights." },
-    ];
-  
-    const [selectedTip, setSelectedTip] = useState(travelTips[0]);
-    const [isScrolling, setIsScrolling] = useState(false);
-  
-  const countrySlider = useMemo(() => [
-    { id: 1, img: Img1, country: "France" },
-    { id: 2, img: Img6, country: "Japan" },
-    { id: 3, img: Img5, country: "Italy" },
-    { id: 4, img: Img3, country: "Switzerland" },
-  ], []);
-  
+    {
+      id: 1,
+      image: "/assets/images/img101.png",
+      title: "How to Save Money on Flights",
+      description:
+        "Learn the best ways to book affordable flights without compromising on comfort.",
+    },
+    {
+      id: 2,
+      image: "/assets/images/img102.png",
+      title: "Best Packing Tips for Travelers",
+      description:
+        "Discover how to pack efficiently and avoid unnecessary baggage fees.",
+    },
+    {
+      id: 3,
+      image: "/assets/images/img103.png",
+      title: "Top Travel Safety Tips",
+      description:
+        "Ensure a safe trip by following these essential travel safety guidelines.",
+    },
+    {
+      id: 4,
+      image: "/assets/images/img104.png",
+      title: "How to Find the Best Hotels",
+      description:
+        "Get expert tips on booking hotels with the best value and amenities.",
+    },
+    {
+      id: 5,
+      image: "/assets/images/img105.png",
+      title: "Solo Travel Tips for Beginners",
+      description:
+        "Explore the world confidently with these solo travel insights.",
+    },
+  ];
+
+  const [selectedTip, setSelectedTip] = useState(travelTips[0]);
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  const countrySlider = useMemo(
+    () => [
+      { id: 1, img: Img1, country: "France" },
+      { id: 2, img: Img6, country: "Japan" },
+      { id: 3, img: Img5, country: "Italy" },
+      { id: 4, img: Img3, country: "Switzerland" },
+    ],
+    []
+  );
+
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const handleBeforeChange = useCallback((oldIndex: number, newIndex: number) => {
-    setCurrentSlide(newIndex);
-  }, []);
+  const handleBeforeChange = useCallback(
+    (oldIndex: number, newIndex: number) => {
+      setCurrentSlide(newIndex);
+    },
+    []
+  );
 
   const settings = {
     dots: false,
@@ -88,9 +131,10 @@ export default function FlightSearch() {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    beforeChange: (oldIndex: number, newIndex: number) => setCurrentSlide(newIndex),
-    centerMode: true,  // Helps with spacing between images
-    centerPadding: "10px",  // Adjusts spacing
+    beforeChange: (oldIndex: number, newIndex: number) =>
+      setCurrentSlide(newIndex),
+    centerMode: true, // Helps with spacing between images
+    centerPadding: "10px", // Adjusts spacing
   };
 
   const [showTravelerDropdown, setShowTravelerDropdown] = useState(false);
@@ -100,15 +144,14 @@ export default function FlightSearch() {
     infantsSeat: number;
     infantsLap: number;
   };
-  
-  
+
   const handleTravelerChange = (type: keyof Travelers, increment: boolean) => {
     setTravelers((prev) => ({
       ...prev,
       [type]: Math.max(0, prev[type] + (increment ? 1 : -1)),
     }));
   };
-  
+
   const destinations = [
     { id: 1, img: Img1, city: "Paris", country: "France", price: "$599" },
     { id: 2, img: Img2, city: "Tokyo", country: "Japan", price: "$799" },
@@ -120,112 +163,145 @@ export default function FlightSearch() {
   return (
     <div className="container py-5">
       <h1 className="text-left fw-bold">Search Flights</h1>
-      <p className="text-left text-muted">Find the best flights with our easy-to-use search tool.</p>
+      <p className="text-left text-muted">
+        Find the best flights with our easy-to-use search tool.
+      </p>
 
       <hr className="my-4" />
 
       {/* Tabs */}
-     <FlightSearchComponent 
-  variant="full"
-  
-/>
-    {/* </div> */}
+      <FlightComponent />
+      {/* </div> */}
 
-    <hr className="my-4" />
-     {/* Travel Destinations Section */}
-     <div className="container text-center py-5">
-      {/* Title & Description */}
-      <h2 className="fw-bold">Explore the {`World's`} Most Beautiful Destinations</h2>
-      <p className="text-muted mx-auto mb-4" style={{ maxWidth: "600px" }}>
-        Discover breathtaking landscapes, stunning beaches, and unique cultural experiences.
-      </p>
+      <hr className="hidden my-4" />
+      {/* Travel Destinations Section */}
+      <div className="hidden container text-center py-5">
+        {/* Title & Description */}
+        <h2 className="fw-bold">
+          Explore the {`World's`} Most Beautiful Destinations
+        </h2>
+        <p className="text-muted mx-auto mb-4" style={{ maxWidth: "600px" }}>
+          Discover breathtaking landscapes, stunning beaches, and unique
+          cultural experiences.
+        </p>
 
-      {/* Bootstrap Grid for 2 Rows, 3 Columns */}
-      <div className="row g-3">
-        {destinations.map((dest) => (
-          <div key={dest.id} className="col-md-4">
-            <div className="destination-card p-3">
-              <Image
-                src={dest.img}
-                alt={`${dest.city}, ${dest.country}`}
-                width={320}
-                height={220}
-                className="img-fluid rounded"
-              />
-            </div>
+        {/* Bootstrap Grid for 2 Rows, 3 Columns */}
+        <div className="row g-3">
+          {destinations.map((dest) => (
+            <div key={dest.id} className="col-md-4">
+              <div className="destination-card p-3">
+                <Image
+                  src={dest.img}
+                  alt={`${dest.city}, ${dest.country}`}
+                  width={320}
+                  height={220}
+                  className="img-fluid rounded"
+                />
+              </div>
               {/* Flight Icon and Details */}
-            <div className="d-flex justify-content-center align-items-center">
-              {/* First Column: Flight Icon */}
-              <div className="flight-icon me-3">✈️</div>
+              <div className="d-flex justify-content-center align-items-center">
+                {/* First Column: Flight Icon */}
+                <div className="flight-icon me-3">✈️</div>
 
-              {/* Second Column: City & Price in Two Rows */}
-              <div className="d-flex flex-column text-start">
-                <h6 className="mb-1"> 
-                  <span className="city-name"> {dest.city}</span>,
-                  {/* <span className="country-name">{dest.country}</span> */}
-                </h6>
-                <p className="price-text">{dest.price} Onwards</p>
+                {/* Second Column: City & Price in Two Rows */}
+                <div className="d-flex flex-column text-start">
+                  <h6 className="mb-1">
+                    <span className="city-name"> {dest.city}</span>,
+                    <span className="country-name">{dest.country}</span>
+                  </h6>
+                  <p className="price-text">{dest.price} Onwards</p>
+                </div>
+
               </div>
             </div>
-            
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
 
-    <div className="section-container">
-  {/* Image goes to top on mobile */}
-  <div className="image-container">
-    <div className="border-wrapper">
-      <Image src={border} alt="Border Shape" layout="responsive" width={300} height={350} className="border-image" />
-      <div className="main-wrapper">
-        <Image src={packageimg} alt="Travel Destination" layout="responsive" width={300} height={350} className="main-image" />
-      </div>
-    </div>
-  </div>
-
-  <div className="text-container">
-    <h2 className="title">Unbeatable Deals on Must-Book Travel Packages, Crafted for Your Budget</h2>
-    <p className="description">
-      Explore the thrill of a lifetime with Fantastic Fare’s must-explore packages! Our top picks promise unforgettable adventures and hidden gems. Dive into your next exciting journey today!
-    </p>
-
-    {/* Slider */}
-    <div className="slider-container">
-      <Slider {...settings}>
-        {countrySlider.map((dest) => (
-          <div key={dest.id} className="slide">
-            <div className="image-wrapper">
-              <Image src={dest.img} alt={dest.country} width={500} height={500} className="slider-image" />
-              <span className="country-name">{dest.country}</span>
+      <div className="section-container">
+        {/* Image goes to top on mobile */}
+        <div className="image-container">
+          <div className="border-wrapper">
+            <Image
+              src={border}
+              alt="Border Shape"
+              layout="responsive"
+              width={300}
+              height={350}
+              className="border-image"
+            />
+            <div className="main-wrapper">
+              <Image
+                src={packageimg}
+                alt="Travel Destination"
+                layout="responsive"
+                width={300}
+                height={350}
+                className="main-image"
+              />
             </div>
           </div>
-        ))}
-      </Slider>
-    </div>
+        </div>
 
-   <Link href="/packages"> <button className="ultimate-btn">Ultimate Packages</button></Link>
-  </div>
-</div>
+        <div className="text-container">
+          <h2 className="title">
+            Unbeatable Deals on Must-Book Travel Packages, Crafted for Your
+            Budget
+          </h2>
+          <p className="description">
+            Explore the thrill of a lifetime with Fantastic Fare’s must-explore
+            packages! Our top picks promise unforgettable adventures and hidden
+            gems. Dive into your next exciting journey today!
+          </p>
 
+          {/* Slider */}
+          <div className="slider-container">
+            <Slider {...settings}>
+              {countrySlider.map((dest) => (
+                <div key={dest.id} className="slide">
+                  <div className="image-wrapper">
+                    <Image
+                      src={dest.img}
+                      alt={dest.country}
+                      width={500}
+                      height={500}
+                      className="slider-image"
+                    />
+                    <span className="country-name">{dest.country}</span>
+                  </div>
+                </div>
+              ))}
+            </Slider>
+          </div>
 
+          <Link href="/packages">
+            {" "}
+            <button className="ultimate-btn">Ultimate Packages</button>
+          </Link>
+        </div>
+      </div>
 
-<div className="discount-banner">
-  <Image src={DiscountImage} alt="Discount Banner" className="discount-image" />
-  <div className="discount-text">Save upto <br></br><span>30%</span></div>
-</div>
+      <div className="discount-banner">
+        <Image
+          src={DiscountImage}
+          alt="Discount Banner"
+          className="discount-image"
+        />
+        <div className="discount-text">
+          Save upto <br></br>
+          <span>30%</span>
+        </div>
+      </div>
 
-<PackageSection/>
+      <PackageSection />
 
+      <Destination />
+      {/* Section Header */}
 
-<Destination/>
- {/* Section Header */}
-   
       {/* Travel Tips Section */}
       <TipsSection />
 
-        <TourSection/>
- </div>
- 
+      <TourSection />
+    </div>
   );
 }

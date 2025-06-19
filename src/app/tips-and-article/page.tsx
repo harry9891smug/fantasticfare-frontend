@@ -30,7 +30,9 @@ const TipsArticlesSection = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/frontend/articles`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/frontend/articles`
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch articles");
@@ -39,13 +41,16 @@ const TipsArticlesSection = () => {
         const data = await response.json();
         setArticles(data.data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An unknown error occurred");
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred"
+        );
         // For now, we'll use mock data if API fails (remove this in production)
         setArticles([
           {
             _id: "1",
             article_heading: "Travel Safety Tips",
-            article_description: "Always keep a copy of your passport, carry essential medicine, and know the local emergency numbers before you go.",
+            article_description:
+              "Always keep a copy of your passport, carry essential medicine, and know the local emergency numbers before you go.",
             article_image: ["/placeholder-image.jpg"],
             faqs: [],
             article_slug:'testing',
@@ -78,32 +83,33 @@ const TipsArticlesSection = () => {
           // <div key={article._id} className="tip-card">
            <div key={article.article_slug} className="tip-card">
             {article.article_image?.length > 0 && (
-              <Image 
-                src={article.article_image[0]} 
-                alt={article.article_heading} 
-                width={300} 
-                height={200} 
+              <Image
+                src={article.article_image[0]}
+                alt={article.article_heading}
+                width={300}
+                height={200}
                 style={{ objectFit: "cover" }}
               />
             )}
             <h3 ><Link className="title-links" href={`/tips-and-article/${article.article_slug}`}>{article.article_heading}</Link></h3>
-        
             <p>
-            {he.decode(
-      (article?.article_description || "").replace(/<[^>]*>/g, "")
-    )
-      .split(" ")
-      .slice(0, 25)
-      .join(" ")}...
-  </p>
+              {he
+                .decode(
+                  (article?.article_description || "").replace(/<[^>]*>/g, "")
+                )
+                .split(" ")
+                .slice(0, 25)
+                .join(" ")}
+              ...
+            </p>
           </div>
         ))}
       </div>
 
       {visible < articles.length && (
         <div className="text-center text-link">
-          <button 
-            onClick={() => setVisible(articles.length)} 
+          <button
+            onClick={() => setVisible(articles.length)}
             className="read-more-btn"
           >
             Read More
@@ -119,22 +125,27 @@ const TipsArticlesSection = () => {
             <div className="in-depth-left">
               <h3><Link className="title-links" href={`/tips-and-article/${articles[0].article_slug}`}>{articles[0].article_heading}</Link></h3>
               {articles[0].article_image?.length > 0 && (
-                <Image 
-                  src={articles[0].article_image[0]} 
-                  alt={articles[0].article_heading} 
-                  width={500} 
-                  height={300} 
+                <Image
+                  src={articles[0].article_image[0]}
+                  alt={articles[0].article_heading}
+                  width={500}
+                  height={300}
                   style={{ objectFit: "cover" }}
                 />
               )}
-               <p>
-            {he.decode(
-      (articles[0]?.article_description || "").replace(/<[^>]*>/g, "")
-    )
-      .split(" ")
-      .slice(0, 80)
-      .join(" ")}...
-  </p>
+              <p>
+                {he
+                  .decode(
+                    (articles[0]?.article_description || "").replace(
+                      /<[^>]*>/g,
+                      ""
+                    )
+                  )
+                  .split(" ")
+                  .slice(0, 80)
+                  .join(" ")}
+                ...
+              </p>
             </div>
 
             <div className="in-depth-boxes">
@@ -143,22 +154,27 @@ const TipsArticlesSection = () => {
                   <div key={article.article_slug} className="in-depth-box">
                     <h4><Link className="title-links" href={`/tips-and-article/${article.article_slug}`}>{article.article_heading}</Link></h4>
                     {article.article_image?.length > 0 && (
-                      <Image 
-                        src={article.article_image[0]} 
-                        alt={article.article_heading} 
-                        width={200} 
-                        height={120} 
+                      <Image
+                        src={article.article_image[0]}
+                        alt={article.article_heading}
+                        width={200}
+                        height={120}
                         style={{ objectFit: "cover" }}
                       />
                     )}
-                     <p>
-            {he.decode(
-      (article?.article_description || "").replace(/<[^>]*>/g, "")
-    )
-      .split(" ")
-      .slice(0, 10)
-      .join(" ")}...
-  </p>
+                    <p>
+                      {he
+                        .decode(
+                          (article?.article_description || "").replace(
+                            /<[^>]*>/g,
+                            ""
+                          )
+                        )
+                        .split(" ")
+                        .slice(0, 10)
+                        .join(" ")}
+                      ...
+                    </p>
                   </div>
                 ))}
               </div>
@@ -166,24 +182,36 @@ const TipsArticlesSection = () => {
               <div className="in-depth-row">
                 {articles.slice(4, 7).map((article) => (
                   <div key={article._id} className="in-depth-box">
-                    <h4 ><Link className="title-links" href={`/tips-and-article/${articles[0]._id}`}>{article.article_heading}</Link></h4>
+                    <h4>
+                      <Link
+                        className="title-links"
+                        href={`/tips-and-article/${articles[0]._id}`}
+                      >
+                        {article.article_heading}
+                      </Link>
+                    </h4>
                     {article.article_image?.length > 0 && (
-                      <Image 
-                        src={article.article_image[0]} 
-                        alt={article.article_heading} 
-                        width={200} 
-                        height={120} 
+                      <Image
+                        src={article.article_image[0]}
+                        alt={article.article_heading}
+                        width={200}
+                        height={120}
                         style={{ objectFit: "cover" }}
                       />
                     )}
-                       <p>
-            {he.decode(
-      (article?.article_description || "").replace(/<[^>]*>/g, "")
-    )
-      .split(" ")
-      .slice(0, 10)
-      .join(" ")}...
-  </p>
+                    <p>
+                      {he
+                        .decode(
+                          (article?.article_description || "").replace(
+                            /<[^>]*>/g,
+                            ""
+                          )
+                        )
+                        .split(" ")
+                        .slice(0, 10)
+                        .join(" ")}
+                      ...
+                    </p>
                   </div>
                 ))}
               </div>

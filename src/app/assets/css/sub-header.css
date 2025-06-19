@@ -287,7 +287,8 @@
     margin-top: 10px;
   }
 }
-.phone-buttonN, .callback-button {
+.phone-buttonN,
+.callback-button {
   padding: 8px 12px;
   border: none;
   cursor: pointer;
@@ -299,17 +300,18 @@
 
 /* Call Button */
 .phone-buttonN {
-  background: transparent; 
-  color: #0389c6; 
-  border: 2px solid #0389c6; 
+  background: #0389c6;
+  color: #ffffff;
+  border: 1px solid #0389c6;
   padding: 8px 16px;
-  border-radius: 5px; 
-  cursor: pointer; 
+  border-radius: 5px;
+  cursor: pointer;
   text-decoration: none;
   transition: all 0.3s ease-in-out;
 }
 
 .phone-buttonN:hover {
-  background: #0389c6; 
+  background: #cf8701;
+  border: 1px solid #cf8701;
   color: white;
 }

@@ -171,9 +171,9 @@ const SubHeader = () => {
 
         {/* Phone Button - Right Side */}
         <div className="phone-button-container ms-auto">
-          <a 
-            href="tel:+18334227770" 
-            className="phone-buttonN d-flex align-items-center gap-2"
+          <a
+            href="tel:+18334227770"
+            className="phone-buttonN fs-7 d-flex align-items-center gap-2"
           >
             <svg
               width="20"

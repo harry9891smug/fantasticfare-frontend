@@ -9,6 +9,8 @@ import { Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import EnquiryModal from "./EnquiryModal";
+import "../assets/css/packages.css";
 type Package = {
   _id: string;
   package_heading: string;
@@ -22,8 +24,11 @@ const PackageSection = () => {
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+ const [showEnquiryModal, setShowEnquiryModal] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [visiblePackages, setVisiblePackages] = useState(6);
+    const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
+  
   const tabs = ["honeymoon", "adventure", "travel", "yatra", "family", "luxury"];
   const fetchPackages = async () => {
     try {
@@ -48,6 +53,17 @@ const PackageSection = () => {
   useEffect(() => {
     fetchPackages();
   }, []);
+
+   const openEnquiryModal = (pkg: Package) => {
+    setSelectedPackage(pkg);
+    setShowEnquiryModal(true);
+  };
+
+  const closeEnquiryModal = () => {
+    setShowEnquiryModal(false);
+    setSelectedPackage(null);
+  };
+
 
   return (
     <div className="package-section">
@@ -134,14 +150,26 @@ const PackageSection = () => {
             </span>
           </div>
           <div className="buttons">
-            <button className="phone-button">📞</button>
-            <button className="callback-button">Request Callback</button>
+              <a href="tel:+18334227770">
+                  <button className="phone-button">📞</button>
+                </a>
+              <button className="callback-button" onClick={() => openEnquiryModal(pkg)}>
+                  Request Callback
+                </button>
           </div>
         </div>
       </div>
     ))}
     
-   
+   {/* Enquiry Modal */}
+      {selectedPackage && (
+        <EnquiryModal
+          packageData={selectedPackage}
+          show={showEnquiryModal}
+          onClose={closeEnquiryModal}
+          countryOptions={countryOptions}
+        />
+      )}
   </>
 ) : (
   !loading && <p className="no-packages">No packages available.</p>

@@ -106,10 +106,10 @@ export default function FlightSearch() {
 
   const countrySlider = useMemo(
     () => [
-      { id: 1, img: Img1, country: "France" },
-      { id: 2, img: Img6, country: "Japan" },
-      { id: 3, img: Img5, country: "Italy" },
-      { id: 4, img: Img3, country: "Switzerland" },
+      { id: 1, img: Img1, country: "France" ,url:"France" },
+      { id: 2, img: Img6, country: "Japan" ,url:"Japan"},
+      { id: 3, img: Img5, country: "Italy" ,url:"Italy"},
+      { id: 4, img: Img3, country: "Switzerland" ,url:"Switzerland"},
     ],
     []
   );
@@ -267,7 +267,10 @@ export default function FlightSearch() {
                       height={500}
                       className="slider-image"
                     />
-                    <span className="country-name">{dest.country}</span>
+                      <Link href={`/country/${dest.url}`}>
+                    <span className="country-name" >
+                     {dest.country}</span>
+                     </Link>
                   </div>
                 </div>
               ))}

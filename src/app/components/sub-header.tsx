@@ -22,14 +22,28 @@ interface ApiResponse {
   data: RegionData[];
 }
 
+
+interface CrmPage {
+  _id: string;
+  page_name: string;
+  page_url: string;
+}
+
+interface CrmResponse {
+  status: boolean;
+  data: CrmPage[];
+}
 const SubHeader = () => {
   const [showViewDropdown, setShowViewDropdown] = useState(false);
   const [activeContinent, setActiveContinent] = useState<string | null>(null);
   const [regionsData, setRegionsData] = useState<ApiResponse | null>(null);
+  const [crmdata, setcrmdata] = useState<CrmResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState(false);
-
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [regionsLoading, setRegionsLoading] = useState(true);
+  const [crmLoading, setCrmLoading] = useState(true);
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
@@ -43,21 +57,35 @@ const SubHeader = () => {
   useEffect(() => {
     const fetchRegionsData = async () => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/global-links`
-        );
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/global-links`);
         if (!response.ok) throw new Error("Failed to fetch regions data");
         const data: ApiResponse = await response.json();
         setRegionsData(data);
       } catch (error) {
         console.error("Error fetching regions data:", error);
       } finally {
-        setLoading(false);
+        setRegionsLoading(false);
       }
     };
-
     fetchRegionsData();
   }, []);
+
+  useEffect(() => {
+    const fetchCrmData = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/crm/list-page`);
+        if (!response.ok) throw new Error("Failed to fetch Crm data");
+        const data: CrmResponse = await response.json();
+        setcrmdata(data);
+      } catch (error) {
+        console.error("Error fetching Crm data:", error);
+      } finally {
+        setCrmLoading(false);
+      }
+    };
+    fetchCrmData();
+  }, []);
+
 
   const toggleContinent = (continent: string) => {
     setActiveContinent(activeContinent === continent ? null : continent);
@@ -74,6 +102,50 @@ const SubHeader = () => {
               <span>Home</span>
             </Link>
           </li>
+          {crmdata?.data && crmdata.data.length > 0 && (
+            <li className="position-relative view-dropdown-item">
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={isMobile ? () => setShowDropdown(!showDropdown) : undefined}
+                onMouseEnter={!isMobile ? () => setShowDropdown(true) : undefined}
+              >
+                <span className="spandes">Pages</span>
+                <span className="dropdown-icon">
+                  <FaChevronDown />
+                </span>
+              </div>
+
+              {showDropdown && (
+                <div
+                  className="mega-dropdown"
+                  onMouseEnter={() => setShowDropdown(true)}
+                  onMouseLeave={() => setShowDropdown(false)}
+                >
+                  <div className="container">
+                    {crmLoading ? (
+                      <div className="loading-spinner">Loading pages...</div>
+                    ) : crmdata?.data?.length ? (
+                      <div className="country-list">
+                        {crmdata.data.map((page) => (
+                          <Link
+                            key={page._id}
+                            href={`/page/${page.page_url}`}
+                            className="country-item"
+                            style={{ fontSize: "17px" }}
+                          >
+                            {page.page_name}
+                          </Link>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="error-message">Failed to load Pages</div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </li>
+          )}
+
           <li>
             <Link href="/flights">
               <Image src={flights} alt="Flights" width={20} height={20} />

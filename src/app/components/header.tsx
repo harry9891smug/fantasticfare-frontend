@@ -108,7 +108,7 @@ const Header: React.FC = () => {
             <div className="d-flex flex-grow-1 align-items-center flex-lg-row">
               <form className="form-inline d-flex align-items-center flex-column my-lg-0 w-100 mx-lg-3">
                 <div className="search-box">
-                  <input type="text" placeholder="Search Country" />
+                  <input type="text" id="search_country" placeholder="Search Country" />
                 </div>
               </form>
 

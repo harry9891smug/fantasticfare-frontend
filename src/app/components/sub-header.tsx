@@ -95,56 +95,56 @@ const SubHeader = () => {
           {/* New View Dropdown */}
 
 {pathname === '/packages' && (
-      <li className="position-relative view-dropdown-item">
-  <div 
-    className="flex items-center gap-2 cursor-pointer"
-      onClick={isMobile ? handleToggle : undefined}
-        onMouseEnter={!isMobile ? () => setShowViewDropdown(true) : undefined}
+ <li className="position-relative view-dropdown-item">
+  <div
+    className="dropdown-hover-wrapper"
+    onMouseEnter={() => !isMobile && setShowViewDropdown(true)}
+    onMouseLeave={() => !isMobile && setShowViewDropdown(false)}
   >
-    <span className="spandes">More</span>
-    <span className="dropdown-icon">  <FaChevronDown /></span>
-  </div>
+    <div className="flex items-center gap-2 cursor-pointer">
+      <span className="spandes">More</span>
+      <span className="dropdown-icon"><FaChevronDown /></span>
+    </div>
 
-  {showViewDropdown && (
-  <div 
-    className="mega-dropdown"
-    onMouseEnter={() => setShowViewDropdown(true)}
-    onMouseLeave={() => setShowViewDropdown(false)}
-  >
-    <div className="container">
-      {loading ? (
-        <div className="loading-spinner">Loading destinations...</div>
-      ) : regionsData ? (
-        <div className="continent-container">
-          {regionsData.data.map((continent) => (
-            <div key={continent.continent_name} className="continent-column">
-              <h3 className="continent-title">{continent.continent_name}</h3>
-              {continent.regions.map((region) => (
-                <div key={region.region_name} className="region-group">
-                  <div className="region-title">{region.region_name}</div>
-                  <div className="country-list">
-                    {region.countries.map((country) => (
-                      <Link
-                        key={country}
-                        href={`/country/${country.toLowerCase().replace(/\s+/g, '-')}`}
-                        className="country-item"
-                      >
-                        {country}
-                      </Link>
-                    ))}
-                  </div>
+    {showViewDropdown && (
+      <div className="mega-dropdown">
+        <div className="container">
+          {loading ? (
+            <div className="loading-spinner">Loading destinations...</div>
+          ) : regionsData ? (
+            <div className="continent-container">
+              {regionsData.data.map((continent) => (
+                <div key={continent.continent_name} className="continent-column">
+                  <h3 className="continent-title">{continent.continent_name}</h3>
+                  {continent.regions.map((region) => (
+                    <div key={region.region_name} className="region-group">
+                      <div className="region-title">{region.region_name}</div>
+                      <div className="country-list">
+                        {region.countries.map((country) => (
+                          <Link
+                            key={country}
+                            href={`/country/${country.toLowerCase().replace(/\s+/g, '-')}`}
+                            className="country-item"
+                          >
+                            {country}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
-          ))}
+          ) : (
+            <div className="error-message">Failed to load destinations</div>
+          )}
         </div>
-      ) : (
-        <div className="error-message">Failed to load destinations</div>
-      )}
-    </div>
+      </div>
+    )}
   </div>
-)}
 </li>
+
+
           )}
         </ul>
         

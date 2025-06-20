@@ -18,6 +18,7 @@ interface Article {
   }[];
   createdAt: string;
   updatedAt: string;
+  article_slug:string;
 }
 
 const TipsArticlesSection = () => {
@@ -49,6 +50,7 @@ const TipsArticlesSection = () => {
             faqs: [],
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
+            article_slug:""
           },
           // Add more mock data as needed
         ]);
@@ -83,7 +85,7 @@ const TipsArticlesSection = () => {
                 style={{ objectFit: "cover" }}
               />
             )}
-            <h3 ><Link className="title-links" href={`/tips-and-article/${article._id}`}>{article.article_heading}</Link></h3>
+            <h3 ><Link className="title-links" href={`/tips-and-article/${article.article_slug}`}>{article.article_heading}</Link></h3>
         
             <p>
             {he.decode(

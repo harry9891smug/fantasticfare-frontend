@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, ChangeEvent, useEffect } from "react";
 import styles from "../../assets/css/myaccount.module.css";
-
+import Image from "next/image";
 interface User {
     _id: string;
     name: string;
@@ -22,6 +22,7 @@ const MyProfile = () => {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     const [formData, setFormData] = useState({
+        _id: "", 
         name: "",
         gender: "", // Add if available in API
         dob: "", // Add if available in API
@@ -29,7 +30,8 @@ const MyProfile = () => {
         email: "",
         mobile_number: "",
         address: "", // Add if available in API
-        role: ""
+        role: "",
+        profile_picture: null as File | null
     });
 
     const getAuthToken = () => {
@@ -64,6 +66,7 @@ const MyProfile = () => {
                 
                 if (data.status && data.user) {
                     setFormData({
+                        _id: data.user._id || "",
                         name: data.user.name || "",
                         gender: data.user.gender || "",
                         dob: data.user.dob || "",
@@ -71,7 +74,8 @@ const MyProfile = () => {
                         email: data.user.email || "",
                         mobile_number: data.user.mobile_number || "",
                         address: data.user.address || "",
-                        role: data.user.role || ""
+                        role: data.user.role || "",
+                        profile_picture: data.user.profile_picture || null
                     });
                 } else {
                     setError(data.message || "Failed to fetch user data");
@@ -97,57 +101,70 @@ const MyProfile = () => {
     };
 
     const handleSubmit = async (section: "basic" | "contact") => {
-        try {
-            const token = getAuthToken();
-            if (!token) {
-                setError("Authentication token not found");
-                return;
-            }
-
-            // Prepare the data to send based on the section
-            const dataToSend = section === "basic" 
-                ? { 
-                    name: formData.name,
-                    gender: formData.gender,
-                    dob: formData.dob,
-                    bio: formData.bio
-                } 
-                : { 
-                    email: formData.email, 
-                    mobile_number: formData.mobile_number,
-                    address: formData.address
-                };
-            
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/update`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataToSend)
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const result = await response.json();
-            
-            if (result.status) {
-                // Update successful
-                setSuccessMessage("Profile updated successfully");
-                setTimeout(() => setSuccessMessage(null), 3000);
-                
-                if (section === "basic") setIsEditingBasic(false);
-                if (section === "contact") setIsEditingContact(false);
-            } else {
-                setError(result.message || "Update failed");
-            }
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "An error occurred during update");
-            console.error(err);
+    try {
+        const token = getAuthToken();
+        if (!token) {
+            setError("Authentication token not found");
+            return;
         }
-    };
+
+        let body: FormData | string;
+        let headers: HeadersInit;
+
+        if (section === "basic") {
+            const formDataToSend = new FormData();
+            formDataToSend.append("name", formData.name);
+            formDataToSend.append("gender", formData.gender);
+            formDataToSend.append("dob", formData.dob);
+            formDataToSend.append("bio", formData.bio);
+            if (formData.profile_picture) {
+                formDataToSend.append("profile_picture", formData.profile_picture);
+            }
+
+            body = formDataToSend;
+            headers = {
+                'Authorization': `Bearer ${token}`
+                // Do NOT set 'Content-Type' when using FormData
+            };
+        } else {
+            // contact section (non-file)
+            body = JSON.stringify({
+                userId: formData._id,
+                email: formData.email,
+                mobile_number: formData.mobile_number,
+                address: formData.address
+            });
+            headers = {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            };
+        }
+console.log("Updating user with ID:", formData._id);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/update/${formData._id}`, {
+            method: 'PUT',
+            headers,
+            body
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const result = await response.json();
+
+        if (result.status) {
+            setSuccessMessage("Profile updated successfully");
+            setTimeout(() => setSuccessMessage(null), 3000);
+
+            if (section === "basic") setIsEditingBasic(false);
+            if (section === "contact") setIsEditingContact(false);
+        } else {
+            setError(result.message || "Update failed");
+        }
+    } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred during update");
+        console.error(err);
+    }
+};
+
 
     if (loading) return <div className={styles.profileContainer}>Loading...</div>;
     if (error) return <div className={styles.profileContainer}>Error: {error}</div>;
@@ -182,6 +199,38 @@ const MyProfile = () => {
                         readOnly={!isEditingBasic}
                     />
                 </div>
+                 <div>
+    <label>Profile Picture</label>
+   {isEditingBasic ? (
+    <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+                setFormData({ ...formData, profile_picture: e.target.files[0] });
+            }
+        }}
+        className={styles.inputField}
+    />
+) : (
+    <div className={styles.imagePreview}>
+        {/* Show current profile picture if you have it */}
+        <Image
+    src={
+    formData.profile_picture instanceof File
+      ? URL.createObjectURL(formData.profile_picture)
+      : formData.profile_picture || "/assets/images/account.svg"
+  }
+    alt="Profile"
+    width={100} // required
+    height={100} // required
+    style={{ objectFit: "cover", borderRadius: "50%" }} // optional
+/>
+    </div>
+)}
+
+</div>
+
                 <div>
                     <label>Gender</label>
                     {isEditingBasic ? (

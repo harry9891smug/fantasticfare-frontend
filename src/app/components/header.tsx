@@ -102,41 +102,42 @@ const Header: React.FC = () => {
 
 
               {user ? (
-                <div className="userMenu" onMouseEnter={() => setShowDropdown(true)}>
-                  <span className="greeting">Hi, {user.name.split(" ")[0]}</span>
-                
-                  <button className="notificationBtn">
-                    <Image src={bell} alt="Notifications" width={16} height={16} />
-                  </button>
-                
-                  <div className="profileActions">
-                    <div
-                      className="profileWrapper"
-                      onClick={() => setShowDropdown(!showDropdown)}
-                    >
-                      <Link href="/my-account">
-                        <Image
-                          src={user.profileImage || userIcon}
-                          alt="User Profile"
-                          width={40}
-                          height={40}
-                          className="userIcon"
-                        />
-                      </Link>
-                
-                      {showDropdown && (
-                      <div className="dropdownMenu" 
-                      onMouseEnter={() => setShowDropdown(true)}
-                      onMouseLeave={() => setShowDropdown(false)}>
-                        <button className="logoutBtn" onClick={handleLogout}>
-                          Logout
-                          <Image src={logoutIcon} alt="Logout" width={20} height={20} />
-                        </button>
-                      </div>
-                    )}
-                    </div>
-                  </div>
-                </div>
+         <div className="userMenu">
+  <span className="greeting">Hi, {user.name.split(" ")[0]}</span>
+
+  <button className="notificationBtn">
+    <Image src={bell} alt="Notifications" width={16} height={16} />
+  </button>
+
+  <div 
+    className="profileActionsWrapper" // New wrapper
+    onMouseEnter={() => setShowDropdown(true)}
+    onMouseLeave={() => setShowDropdown(false)}
+  >
+    <div className="profileWrapper">
+      <Link href="/my-account">
+        <Image
+          src={user.profileImage || userIcon}
+          alt="User Profile"
+          width={40}
+          height={40}
+          className="userIcon"
+        />
+      </Link>
+    </div>
+
+    {showDropdown && (
+      <div className="dropdownMenu">
+        <button className="logoutBtn" onClick={handleLogout}>
+          Logout
+          <Image src={logoutIcon} className="logoutIcon" alt="Logout" width={20} height={20} />
+        </button>
+      </div>
+    )}
+  </div>
+</div>
+
+
               ) : (
                 <a
                   href="#"

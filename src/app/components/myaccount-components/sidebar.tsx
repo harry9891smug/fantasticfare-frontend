@@ -6,7 +6,7 @@ import setting from '../../assets/images/settings.svg';
 import coupon from '../../assets/images/coupons.svg';
 import booking from '../../assets/images/event.svg';
 import communications from '../../assets/images/Letter.svg';
-import userIcon from "../../assets/images/male-user0.png";
+import userIcon from"../../assets/images/account.svg";
 import logoutIcon from "../../assets/images/logout.svg";
 import Image from "next/image";
 
@@ -16,7 +16,7 @@ interface SidebarProps {
     name: string;
     email: string;
     mobile_number: string;
-    profileImage?: string;
+    profile_picture?: string;
   } | null;
   setUser: (user: any) => void;
 }
@@ -29,12 +29,29 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelect, user, setUser }) => {
     window.dispatchEvent(new Event("storage"));
     window.location.href = window.location.origin;
   };
-
+console.log(user);
   return (
     <div className={styles.sidebar}>
       <div className={styles.profileSection}>
         <div className={styles.profileImage}>
-          <Image src={user?.profileImage || userIcon} alt="User Profile" className="userIcon" width={60} height={60} />
+          {user?.profile_picture ? (
+  <Image
+    src={user.profile_picture}
+    alt="User Profile"
+    width={60}
+    height={60}
+    className="userIcon"
+  />
+) : (
+  <Image
+    src={userIcon}
+    alt="Default User Icon"
+    width={60}
+    height={60}
+    className="userIcon"
+  />
+)}
+
         </div>
         <div className={styles.profileInfo}>
           <h4>{user?.name || "John Doe"}</h4>

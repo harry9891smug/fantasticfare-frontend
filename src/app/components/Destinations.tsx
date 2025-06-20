@@ -17,8 +17,8 @@ const featuredDestinations = [
   { id: 2, img: Img2, title: "France" },
   { id: 3, img: Img3, title: "Italy" },
   { id: 4, img: Img4, title: "Netherlands" },
-  { id: 4, img: Img5, title: "Paris" },
-  { id: 4, img: Img6, title: "China" },
+  { id: 5, img: Img5, title: "Paris" },
+  { id: 6, img: Img6, title: "China" },
 ];
 
 const FeaturedSection = () => {

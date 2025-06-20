@@ -2,7 +2,11 @@
 .navbar-custom {
   background: #ffffff;
   padding: 10px 0;
-  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: sticky;
+  z-index: 1030;
 }
 .navbar-toggler-iconct {
   display: inline-block;
@@ -38,7 +42,7 @@
   width: auto;
   max-width: 192px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   transition: all 0.3s ease;
 }
 
@@ -51,8 +55,6 @@
   cursor: pointer;
   z-index: 1021;
 }
-
-
 
 /* Phone button in header - Restored */
 .floating-call-button {
@@ -254,17 +256,17 @@
     width: auto;
     order: 1;
   }
-  
+
   .navbar-custom .search-box {
     margin: 0 20px;
   }
-  
+
   .userMenu {
     margin-left: auto;
   }
   .navbar-custom {
-  display: none;
-}
+    display: none;
+  }
   .floating-call-button {
     display: none; /* Hide on desktop */
   }
@@ -274,15 +276,15 @@
   .navbar-custom .navbar-collapse {
     padding-top: 15px;
   }
-  
+
   .navbar-custom .sign-in-box {
     margin: 10px 0;
   }
-  
+
   .navbar-custom .search-box {
     margin: 10px 0;
   }
-  
+
   .userMenu {
     margin: 10px 0 0;
     justify-content: flex-start;
@@ -296,31 +298,27 @@
     padding-left: 10px;
     margin-left: auto;
   }
-  
+
   .navbar-custom {
     padding: 4px 0;
   }
-  
+
   .navbar-custom .container {
     padding: 0 10px;
   }
-  
- 
-  
+
   .navbar-custom .navbar-toggler {
     order: 2;
   }
 }
 
 @media (max-width: 480px) {
- 
-  
   .greeting {
     font-size: 0.9rem;
   }
-  
+
   .floating-call-button {
-    padding-right:9px;
+    padding-right: 9px;
   }
 }
 @media (max-width: 768px) {

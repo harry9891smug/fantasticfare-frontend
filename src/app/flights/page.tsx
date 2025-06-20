@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
-import { Form, Button, InputGroup } from "react-bootstrap";
+import { Form, Button, InputGroup, ToastContainer } from "react-bootstrap";
 import gif from "../assets/images/app.gif";
 import {
   FaPlaneDeparture,
@@ -15,7 +15,6 @@ import {
   FaChevronLeft,
   FaAngleUp,
 } from "react-icons/fa";
-import FlightSearchComponent from '../components/SharedFlightSearch';
 import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -28,17 +27,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Tabs, Tab, Box } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import FlightComponent from "../components/FlightSearch";
+
 import {
   nearByFlights,
   trendingCities,
   topFlights,
   faqList,
   metaData,
+  cabinOptions,
 } from "../utils/utilityData";
 import { Chip, Stack, Grid } from "@mui/material";
 import Accordion from "react-bootstrap/Accordion";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-
+import { toast } from "react-toastify";
+import SuccessPopup from "../components/successPopup";
 interface ArrowProps {
   className?: string;
   style?: React.CSSProperties;
@@ -68,10 +71,10 @@ interface AirportData {
 }
 interface FormData {
   tripType: string;
-  leavingFrom: string[];
-  goingTo: string[];
-  startDate: Date;
-  returnDate: Date;
+  leavingFrom: string;
+  goingTo: string;
+  startDate: Date | null;
+  returnDate: Date | null;
   mobile_number: string;
   email: string;
   travellers: Travelers;
@@ -99,12 +102,6 @@ const FlightSearch = () => {
   >(null);
   const [formErrors, setFormErrors] = useState<FormData>({} as FormData);
 
-  const cabinOptions = [
-    { value: "Economy", label: "Economy" },
-    { value: "Premium economy", label: "Premium economy" },
-    { value: "Business class", label: "Business class" },
-    { value: "First class", label: "First class" },
-  ];
   const filtersRef = useRef<HTMLDivElement>(null);
   const [travelers, setTravelers] = useState<Travelers>({
     adults: 1,
@@ -114,12 +111,25 @@ const FlightSearch = () => {
   });
   const [formData, setFormData] = useState<FormData>({
     travellers: travelers,
-    cabinClass: "economy",
+    cabinClass: cabinClass,
     tripType: "round-trip",
   } as FormData);
+  const [diasabled, setIsdisabled] = useState(false);
   const [sortDirection, setSortDirection] = useState("left");
   const [showTravelerDropdown, setShowTravelerDropdown] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [flightSegments, setFlightSegments] = useState<FlightSegment[]>([
+    { from: "", to: "", date: "" },
+    { from: "", to: "", date: "" },
+  ]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState({
+    title: "",
+    content: "",
+    isSuccess: true,
+  });
 
   const dates: DateItem[] = [
     { day: "Tue, 11 Mar", price: "$4,708" },
@@ -130,8 +140,7 @@ const FlightSearch = () => {
     { day: "Sun, 16 Mar", price: "$4,325" },
     { day: "Mon, 17 Mar", price: "$4,399" },
   ];
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+
   const settings = {
     dots: false,
     infinite: true,
@@ -161,10 +170,6 @@ const FlightSearch = () => {
       });
     }
   };
-  const [flightSegments, setFlightSegments] = useState<FlightSegment[]>([
-    { from: "", to: "", date: "" },
-    { from: "", to: "", date: "" },
-  ]);
 
   const addFlightSegment = () => {
     setFlightSegments([...flightSegments, { from: "", to: "", date: "" }]);
@@ -226,25 +231,27 @@ const FlightSearch = () => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/flights/airportSuggestions?area=${value}`
       );
-      setAirportSuggestions(response.data.data || []);
+      if (response.data.data.length != 0) {
+        setAirportSuggestions(response.data.data || []);
+      } else {
+        setAirportSuggestions(response.data.suggestions || []);
+      }
     } catch (error) {
       console.error("Error fetching airport suggestions:", error);
     }
   };
   const handleAirportSelect = (airport: string) => {
     if (focusedField === "leavingFrom") {
-      document.querySelector<HTMLInputElement>(
-        'input[name="leavingFrom"]'
-      )!.value = airport;
+      setFormData((prev) => ({
+        ...prev,
+        leavingFrom: airport, // Now assigning a string
+      }));
     } else if (focusedField === "goingTo") {
-      document.querySelector<HTMLInputElement>('input[name="goingTo"]')!.value =
-        airport;
+      setFormData((prev) => ({
+        ...prev,
+        goingTo: airport, // Now assigning a string
+      }));
     }
-    setFormData((prev) => ({
-      ...prev,
-      [focusedField!]: airport,
-    }));
-
     setAirportSuggestions([]);
     setFocusedField(null);
   };
@@ -256,25 +263,85 @@ const FlightSearch = () => {
       goingTo: prev.leavingFrom,
     }));
   };
+
   const submitForm = async () => {
     try {
-      console.log(formData);
       if (!formData.email) {
+        console.log("herer");
+        setPopupMessage({
+          title: "Error",
+          content: "Please Enter Email.",
+          isSuccess: false,
+        });
         setFormErrors((prev) => ({
           ...prev,
           email: "Please Enter Email",
         }));
         return;
       }
+      console.log(formData);
+      setIsdisabled(true);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/flight-enquiry`,
         formData
       );
-
-      console.log("Enquiry submitted:", response.data);
+      setPopupMessage({
+        title: "Success!",
+        content: "Your flight enquiry has been submitted successfully.",
+        isSuccess: true,
+      });
+      setShowPopup(true);
+      resetFormFields();
     } catch (error) {
-      console.error("Error submitting form:", error);
+      setPopupMessage({
+        title: "Error",
+        content:
+          "There was an error submitting your enquiry. Please try again.",
+        isSuccess: false,
+      });
+      setShowPopup(true);
     }
+  };
+
+  const resetFormFields = () => {
+    setFormData({
+      tripType: formData.tripType,
+      leavingFrom: "",
+      goingTo: "",
+      startDate: null,
+      returnDate: null,
+      mobile_number: "",
+      email: "",
+      travellers: {
+        adults: 1,
+        children: 0,
+        infantsSeat: 0,
+        infantsLap: 0,
+      },
+      cabinClass: cabinClass,
+    });
+
+    setTravelers({
+      adults: 1,
+      children: 0,
+      infantsSeat: 0,
+      infantsLap: 0,
+    });
+
+    if (formData.tripType === "multi-city") {
+      setFlightSegments([{ from: "", to: "", date: "" }]);
+    }
+
+    // Clear input field references
+    const leavingFromInput = document.querySelector<HTMLInputElement>(
+      'input[name="leavingFrom"]'
+    );
+    const goingToInput = document.querySelector<HTMLInputElement>(
+      'input[name="goingTo"]'
+    );
+
+    if (leavingFromInput) leavingFromInput.value = "";
+    if (goingToInput) goingToInput.value = "";
   };
 
   const [value, setValue] = useState(0);
@@ -283,15 +350,526 @@ const FlightSearch = () => {
     setValue(newValue);
   };
 
-const handleClick = () => {
-  console.log("You clicked the Chip.");
-};
-
+  const handleClick = () => {
+    console.log("You clicked the Chip.");
+  };
 
   return (
     <div className="container py-5">
-     
-<FlightSearchComponent 
+      {/* Add the popup near the top of your return statement */}
+      <SuccessPopup
+        show={showPopup}
+        onClose={() => setShowPopup(false)}
+        title={popupMessage.title}
+        message={popupMessage.content}
+        isSuccess={popupMessage.isSuccess}
+      />
+      <FlightComponent />
+      {/* Tabs */}
+      <div className="hidden">
+        <div className="trip-type">
+          <button
+            className={formData.tripType === "one-way" ? "active" : ""}
+            onClick={() => {
+              setFormData((prev) => ({ ...prev, tripType: "one-way" }));
+            }}
+          >
+            One Way
+          </button>
+          <button
+            className={formData.tripType === "round-trip" ? "active" : ""}
+            onClick={() => {
+              setFormData((prev) => ({ ...prev, tripType: "round-trip" }));
+            }}
+          >
+            Round Trip
+          </button>
+          <button
+            className={formData.tripType === "multi-city" ? "active" : ""}
+            onClick={() => {
+              setFormData((prev) => ({ ...prev, tripType: "multi-city" }));
+            }}
+          >
+            Multi-City
+          </button>
+
+          {/* Cabin Class Dropdown */}
+          <div className="cabin-dropdown-container">
+            <button
+              className="cabin-dropdown-trigger"
+              onClick={() => setShowCabinDropdown(!showCabinDropdown)}
+            >
+              <span>{cabinClass}</span>
+              {showCabinDropdown ? <FaChevronUp /> : <FaChevronDown />}
+            </button>
+
+            {showCabinDropdown && (
+              <div className="cabin-dropdown-menu">
+                <ul>
+                  {cabinOptions.map((option) => (
+                    <li key={option.value}>
+                      <button
+                        className={
+                          formData.cabinClass === option.value ? "selected" : ""
+                        }
+                        onClick={() => {
+                          setFormData((prev) => ({
+                            ...prev,
+                            cabinClass: option.value,
+                          }));
+                          setCabinClass(option.value);
+                          setShowCabinDropdown(false);
+                        }}
+                      >
+                        {option.label}
+                        {formData.cabinClass === option.value && <FaCheck />}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Flight Search Form  new */}
+
+      {/* Flight Search Form */}
+      <div className="hidden">
+        {/* Travelers Dropdown - Now appears consistently at the top for all trip types */}
+        <div className="position-relative mb-3">
+          <InputGroup className="custom-input">
+            <InputGroup.Text className="icon">
+              <FaUsers />
+            </InputGroup.Text>
+            <Form.Control
+              type="text"
+              readOnly
+              value={`${travelers.adults} Adults, ${travelers.children} Children`}
+              onClick={() => setShowTravelerDropdown(!showTravelerDropdown)}
+            />
+          </InputGroup>
+
+          {showTravelerDropdown && (
+            <div className="traveler-dropdown">
+              {Object.entries(travelers).map(([type, count]) => (
+                <div key={type}>
+                  <span className="text-capitalize">
+                    {type.replace(/([A-Z])/g, " $1")}
+                  </span>
+                  <div className="traveler-controls">
+                    <Button
+                      size="sm"
+                      onClick={() =>
+                        handleTravelerChange(type as keyof Travelers, false)
+                      }
+                    >
+                      -
+                    </Button>
+                    <span className="count">{count}</span>
+                    <Button
+                      size="sm"
+                      onClick={() =>
+                        handleTravelerChange(type as keyof Travelers, true)
+                      }
+                    >
+                      +
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* One-Way Trip Form */}
+        {formData.tripType === "one-way" && (
+          <div className="d-flex align-items-center  gap-3 flex-wrap">
+            {/* Leaving From */}
+            <div className=" position-relative mb-3">
+              <InputGroup className="custom-input">
+                <InputGroup.Text className="icon">
+                  <FaPlaneDeparture />
+                </InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  placeholder="Leaving From"
+                  value={formData.leavingFrom}
+                  onChange={(e) => handleAirportChange(e, "leavingFrom")}
+                  name="leavingFrom"
+                />
+              </InputGroup>
+              {focusedField === "leavingFrom" &&
+                airportSuggestions.length > 0 && (
+                  <div className="autocomplete-dropdown">
+                    {airportSuggestions.map((airportData, index) => (
+                      <div
+                        key={index}
+                        className="autocomplete-item"
+                        onClick={() =>
+                          handleAirportSelect(
+                            `${airportData.iata}-${airportData.city}(${airportData.country})`
+                          )
+                        }
+                      >
+                        {airportData.iata}-{airportData.city}(
+                        {airportData.country})
+                      </div>
+                    ))}
+                  </div>
+                )}
+            </div>
+
+            {/* Swap Icon */}
+            <div className="swap-icon-circle" onClick={exchangeAreas}>
+              <FaExchangeAlt />
+            </div>
+
+            {/* Going To */}
+            <div className="position-relative mb-3">
+              <InputGroup className="custom-input">
+                <InputGroup.Text className="icon">
+                  <FaPlaneArrival />
+                </InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  placeholder="Going To"
+                  value={formData.goingTo}
+                  onChange={(e) => handleAirportChange(e, "goingTo")}
+                  name="goingTo"
+                />
+              </InputGroup>
+              {focusedField === "goingTo" && airportSuggestions.length > 0 && (
+                <div className="autocomplete-dropdown">
+                  {airportSuggestions.map((airportData, index) => (
+                    <div
+                      key={index}
+                      className="autocomplete-item"
+                      onClick={() =>
+                        handleAirportSelect(
+                          `${airportData.iata}-${airportData.city}(${airportData.country})`
+                        )
+                      }
+                    >
+                      {airportData.iata}-{airportData.city}(
+                      {airportData.country})
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Date Picker */}
+            <div className="position-relative mb-3">
+              <InputGroup className="custom-input">
+                <InputGroup.Text className="icon">
+                  <FaCalendarAlt />
+                </InputGroup.Text>
+                <DatePicker
+                  selected={formData.startDate}
+                  onChange={(date: Date | null) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      startDate: date,
+                    }))
+                  }
+                  customInput={<Form.Control type="text" readOnly />}
+                  dateFormat="MM-dd-yyyy"
+                  minDate={new Date()}
+                  placeholderText="Select Date"
+                />
+              </InputGroup>
+            </div>
+          </div>
+        )}
+
+        {/* Round-Trip Form */}
+        {formData.tripType === "round-trip" && (
+          <div className="d-flex gap-3 flex-wrap">
+            {/* Leaving From */}
+            <div className="position-relative mb-3">
+              <InputGroup className="custom-input">
+                <InputGroup.Text className="icon">
+                  <FaPlaneDeparture />
+                </InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  placeholder="Leaving From"
+                  value={formData.leavingFrom}
+                  onChange={(e) => handleAirportChange(e, "leavingFrom")}
+                  name="leavingFrom"
+                />
+              </InputGroup>
+              {focusedField === "leavingFrom" &&
+                airportSuggestions.length > 0 && (
+                  <div className="autocomplete-dropdown">
+                    {airportSuggestions.map((airportData, index) => (
+                      <div
+                        key={index}
+                        className="autocomplete-item"
+                        onClick={() =>
+                          handleAirportSelect(
+                            `${airportData.iata}-${airportData.city}(${airportData.country})`
+                          )
+                        }
+                      >
+                        {airportData.iata}-{airportData.city}(
+                        {airportData.country})
+                      </div>
+                    ))}
+                  </div>
+                )}
+            </div>
+
+            {/* Swap Icon */}
+            <div className="swap-icon-circle" onClick={exchangeAreas}>
+              <FaExchangeAlt />
+            </div>
+
+            {/* Going To */}
+            <div className="position-relative mb-3">
+              <InputGroup className="custom-input">
+                <InputGroup.Text className="icon">
+                  <FaPlaneArrival />
+                </InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  placeholder="Going To"
+                  value={formData.goingTo}
+                  onChange={(e) => handleAirportChange(e, "goingTo")}
+                  name="goingTo"
+                />
+              </InputGroup>
+              {focusedField === "goingTo" && airportSuggestions.length > 0 && (
+                <div className="autocomplete-dropdown">
+                  {airportSuggestions.map((airportData, index) => (
+                    <div
+                      key={index}
+                      className="autocomplete-item"
+                      onClick={() =>
+                        handleAirportSelect(
+                          `${airportData.iata}-${airportData.city}(${airportData.country})`
+                        )
+                      }
+                    >
+                      {airportData.iata}-{airportData.city}(
+                      {airportData.country})
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Departure Date */}
+            <div className="position-relative mb-3">
+              <InputGroup className="custom-input">
+                <InputGroup.Text className="icon">
+                  <FaCalendarAlt />
+                </InputGroup.Text>
+                <DatePicker
+                  selected={formData.startDate}
+                  onChange={(date: Date | null) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      startDate: date,
+                    }))
+                  }
+                  customInput={<Form.Control type="text" readOnly />}
+                  dateFormat="MM-dd-yyyy"
+                  minDate={new Date()}
+                  placeholderText="Select Date"
+                />
+              </InputGroup>
+            </div>
+
+            {/* Return Date */}
+            <div className="position-relative mb-3">
+              <InputGroup className="custom-input">
+                <InputGroup.Text className="icon">
+                  <FaCalendarAlt />
+                </InputGroup.Text>
+                <DatePicker
+                  selected={formData.returnDate}
+                  onChange={(date: Date | null) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      returnDate: date,
+                    }))
+                  }
+                  customInput={<Form.Control type="text" readOnly />}
+                  dateFormat="MM-dd-yyyy"
+                  minDate={
+                    !formData.startDate ? new Date() : formData.startDate
+                  }
+                  placeholderText="Select Date"
+                />
+              </InputGroup>
+            </div>
+          </div>
+        )}
+
+        {/* Multi-City Form */}
+        {formData.tripType === "multi-city" && (
+          <>
+            {/* Flight Segments */}
+            {flightSegments.map((segment, index) => (
+              <div key={index} className="flight-segment mb-4">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <h5>Flight {index + 1}</h5>
+                  {flightSegments.length > 1 && (
+                    <Button
+                      variant="link"
+                      className="text-danger"
+                      onClick={() => removeFlightSegment(index)}
+                    >
+                      Remove
+                    </Button>
+                  )}
+                </div>
+
+                <div className="d-flex align-items-center justify-content-center gap-3 flex-wrap">
+                  {/* Leaving From */}
+                  <div className="position-relative flex-grow-1">
+                    <InputGroup className="custom-input">
+                      <InputGroup.Text className="icon">
+                        <FaPlaneDeparture />
+                      </InputGroup.Text>
+                      <Form.Control
+                        type="text"
+                        placeholder="Leaving From"
+                        value={segment.from}
+                        onChange={(e) =>
+                          updateFlightSegment(index, "from", e.target.value)
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+
+                  {/* Swap Icon - only show if not the last segment */}
+                  {index < flightSegments.length - 1 && (
+                    <div className="swap-icon-circle">
+                      <FaExchangeAlt />
+                    </div>
+                  )}
+
+                  {/* Going To */}
+                  <div className="flex-grow-1">
+                    <InputGroup className="custom-input">
+                      <InputGroup.Text className="icon">
+                        <FaPlaneArrival />
+                      </InputGroup.Text>
+                      <Form.Control
+                        type="text"
+                        placeholder="Going To"
+                        value={segment.to}
+                        onChange={(e) =>
+                          updateFlightSegment(index, "to", e.target.value)
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+
+                  {/* Date Picker */}
+                  <div className="flex-grow-1">
+                    <InputGroup className="custom-input">
+                      <InputGroup.Text className="icon">
+                        <FaCalendarAlt />
+                      </InputGroup.Text>
+                      <Form.Control
+                        type="date"
+                        value={segment.date}
+                        onChange={(e) =>
+                          updateFlightSegment(index, "date", e.target.value)
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* Add Another Flight button */}
+            <div className=" mt-3">
+              <Button
+                variant="outline-primary"
+                onClick={addFlightSegment}
+                className="btn-add-more"
+              >
+                + Add another flight
+              </Button>
+            </div>
+          </>
+        )}
+
+        {/* Common Elements (checkboxes, email/phone, search button) */}
+        <div className="d-flex gap-4 mt-3 mb-3">
+          <Form.Check type="checkbox" label="Add a place to stay" />
+          <Form.Check type="checkbox" label="Add a car" />
+        </div>
+        <div className="row">
+          {/* Email Field */}
+          <div className="col-sm-4 col-lg-6">
+            <InputGroup className="custom-input">
+              <InputGroup.Text className="icon">@</InputGroup.Text>
+              <Form.Control
+                type="email"
+                placeholder="Email"
+                // className="is-invalid"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    email: e.target.value,
+                  }))
+                }
+              />
+              {formErrors.email && (
+                <div className="invalid-feedback d-block">
+                  <strong>{formErrors.email}</strong>
+                </div>
+              )}
+            </InputGroup>
+          </div>
+
+          {/* Phone Field */}
+          <div className="col-sm-4 col-lg-6">
+            <InputGroup className="custom-input">
+              <InputGroup.Text className="icon">
+                <FaPhone />
+              </InputGroup.Text>
+              <Form.Control
+                type="tel"
+                placeholder="Phone Number"
+                value={formData.mobile_number}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    mobile_number: e.target.value,
+                  }))
+                }
+              />
+            </InputGroup>
+          </div>
+        </div>
+
+        {/* Search Button */}
+        <div className="text-center mt-4">
+          <Button
+            className="btn-search"
+            variant="primary"
+            size="lg"
+            onClick={submitForm}
+            disabled={diasabled}
+          >
+            Send Enquiry
+          </Button>
+        </div>
+      </div>
+
+      {/* Main Content */}
+
+      {/* <FlightSearchComponent 
   variant="full"
   onSearch={(formData) => {
     // Handle the search with your own logic
@@ -299,8 +877,8 @@ const handleClick = () => {
     // Or submit to your API
     axios.post('/your-api-endpoint', formData);
   }}
-/>
-    
+/> */}
+
       <div className="container ">
         <h2 className="fw-bold mt-5">Popular Flights near you</h2>
         <p className="text-muted  mb-4">
@@ -359,7 +937,7 @@ const handleClick = () => {
           className="flight-swiper"
           spaceBetween={10}
           breakpoints={{
-            320: { slidesPerView: 2 }, 
+            320: { slidesPerView: 2 },
             640: { slidesPerView: 3 },
             1024: { slidesPerView: 4 },
           }}
@@ -461,7 +1039,9 @@ const handleClick = () => {
                       <span>{faq.question}</span>
                     </div>
                   </Accordion.Header>
-                  <Accordion.Body>{faq.ans}</Accordion.Body>
+                  <Accordion.Body>
+                    <div dangerouslySetInnerHTML={{ __html: faq.ans }} />
+                  </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
             ))}
@@ -497,33 +1077,18 @@ const handleClick = () => {
             </Button>
           </div>
         </div>
-      <div className="flex justify-center -mt-2 mb-4">
-     <div className="gif-container">
-  <Image
-    src={gif}
-    alt="Decorative animation"
-    width={800}
-    height={100}
-    className="w-full h-auto"
-    style={{
-      display: 'block',
-      margin: '0 auto',
-    }}
-  />
-</div>
-      </div>
 
-      <div className="container mt-5 d-flex flex-column align-items-center">
-        {metaData.map((item, index) => (
-          <div key={index}>
-            <h6 className="fw-bold mt-2 mb-0">{item.title}</h6>
-            <p className="text-dark" style={{ fontSize: "x-small" }}>
-              {item.destinations}
-            </p>
-          </div>
-        ))}
+        <div className="container mt-5 d-flex flex-column align-items-center">
+          {metaData.map((item, index) => (
+            <div key={index}>
+              <h6 className="fw-bold mt-2 mb-0">{item.title}</h6>
+              <p className="text-dark" style={{ fontSize: "x-small" }}>
+                {item.destinations}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
     </div>
   );
 };
@@ -575,6 +1140,5 @@ const PrevArrow: React.FC<ArrowProps> = ({ className, style, onClick }) => (
     <FaChevronLeft size={20} />
   </div>
 );
-
 
 export default FlightSearch;

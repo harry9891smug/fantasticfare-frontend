@@ -33,10 +33,10 @@
 
 /* Icon Styling */
 .sub-header li img {
-  width: 20px;
-  height: 20px;
-  margin-bottom: 0px;
-  transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
+    width: 25px;
+    height: 25px;
+    margin-bottom: 0px;
+    transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
 }
 
 /* Text Styling */
@@ -133,11 +133,15 @@
 }
 
 /* Mega Dropdown Container */
+.dropdown-hover-wrapper {
+  position: relative; /* must be relative */
+  display: inline-block;
+}
 .mega-dropdown {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 107%;
+  top: 100%;
   width: 1040px;
   max-width: 95vw;
   background: white;
@@ -150,8 +154,8 @@
 /* Scrollable Flex Container for Continents */
 .continent-container {
   display: flex;
+  
   gap: 12px;
-  overflow-x: auto;
   padding-bottom: 15px;
   scrollbar-width: thin;
   scrollbar-color: #ff4500 #f8f9fa;

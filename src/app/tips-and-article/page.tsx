@@ -92,6 +92,7 @@ const TipsArticlesSection = () => {
               />
             )}
             <h3 ><Link className="title-links" href={`/tips-and-article/${article.article_slug}`}>{article.article_heading}</Link></h3>
+        
             <p>
               {he
                 .decode(

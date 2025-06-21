@@ -78,7 +78,7 @@ export default function FlightSearch() {
     setCurrentSlide(newIndex);
   }, []);
 
-  const settings = {
+  const settings = useMemo(() =>({
     dots: false,
     infinite: true,
     speed: 300,
@@ -89,7 +89,7 @@ export default function FlightSearch() {
     beforeChange: (oldIndex: number, newIndex: number) => setCurrentSlide(newIndex),
     centerMode: true,  // Helps with spacing between images
     centerPadding: "10px",  // Adjusts spacing
-  };
+  }),[]);
 
   const [showTravelerDropdown, setShowTravelerDropdown] = useState(false);
   type Travelers = {
@@ -131,78 +131,78 @@ export default function FlightSearch() {
 
       {/* Flight Search Form */}
     <div className="bg-light p-4 rounded shadow">
-      <div className="d-flex align-items-center justify-content-center gap-3 flex-wrap">
-  {/* Leaving From */}
-  <div className="custom-input position-relative">
-    <InputGroup className="custom-input">
-      <InputGroup.Text><FaPlaneDeparture /></InputGroup.Text>
-      <Form.Control type="text" placeholder="Leaving From" />
-    </InputGroup>
-  </div>
-
-  {/* Swap Icon Inside a Circle */}
-  <div className="swap-icon-circle">
-    <FaExchangeAlt />
-  </div>
-
-  {/* Going To */}
-  <div className="custom-input position-relative">
-    <InputGroup className="custom-input">
-      <InputGroup.Text><FaPlaneArrival /></InputGroup.Text>
-      <Form.Control type="text" placeholder="Going To" />
-    </InputGroup>
-  </div>
-
-  {/* Date Picker */}
-  <div className="custom-input position-relative">
-    <InputGroup className="custom-input">
-      <InputGroup.Text><FaCalendarAlt /></InputGroup.Text>
-      <Form.Control type="date" />
-    </InputGroup>
-  </div>
-
-  {/* Travelers Dropdown */}
-  <div className="custom-input position-relative">
-  <InputGroup>
-    <InputGroup.Text><FaUsers /></InputGroup.Text>
-    <Form.Control
-      type="text"
-      readOnly
-      value={`${travelers.adults} Adults, ${travelers.children} Children`}
-      onClick={() => setShowTravelerDropdown(!showTravelerDropdown)}
-    />
-  </InputGroup>
-
-  {showTravelerDropdown && (
-    <div className="traveler-dropdown">
-      {(Object.keys(travelers) as Array<keyof Travelers>).map((type) => (
-        <div key={type} className="traveler-item">
-          <span className="text-capitalize">{type.replace(/([A-Z])/g, " $1")}</span>
-          <div className="traveler-controls">
-            <Button size="sm" onClick={() => handleTravelerChange(type, false)}>-</Button>
-            <span className="count">{travelers[type]}</span>
-            <Button size="sm" onClick={() => handleTravelerChange(type, true)}>+</Button>
-          </div>
-        </div>
-      ))}
+  <div className="search-form-container">
+    {/* Leaving From */}
+    <div className="position-relative flex-grow-1">
+      <InputGroup className="custom-input">
+        <InputGroup.Text className="icon"><FaPlaneDeparture /></InputGroup.Text>
+        <Form.Control type="text" placeholder="Leaving From" />
+      </InputGroup>
     </div>
-  )}
-</div>
 
-     </div>
-
-
-        {/* Checkboxes */}
-        <div className="d-flex gap-4 mt-3">
-          <Form.Check type="checkbox" label="Add a place to stay" />
-          <Form.Check type="checkbox" label="Add a car" />
-        </div>
-
-        {/* Search Button */}
-        <div className="text-center mt-4">
-          <Button variant="primary" size="lg">Search Flights</Button>
-        </div>
+    {/* Swap Icon Inside a Circle - now responsive */}
+    <div className="swap-icon-container d-flex justify-content-center my-2 my-md-0">
+      <div className="swap-icon-circle">
+        <FaExchangeAlt className="swap-icon" />
       </div>
+    </div>
+
+    {/* Going To */}
+    <div className="position-relative flex-grow-1">
+      <InputGroup className="custom-input">
+        <InputGroup.Text className="icon"><FaPlaneArrival /></InputGroup.Text>
+        <Form.Control type="text" placeholder="Going To" />
+      </InputGroup>
+    </div>
+
+    {/* Date Picker - now full width on mobile */}
+    <div className="position-relative flex-grow-1 date-picker-wrapper">
+      <InputGroup className="custom-input">
+        <InputGroup.Text className="icon"><FaCalendarAlt /></InputGroup.Text>
+        <Form.Control type="date" placeholder="Select date" />
+      </InputGroup>
+    </div>
+
+    {/* Travelers Dropdown */}
+    <div className="position-relative flex-grow-1">
+      <InputGroup className="custom-input">
+        <InputGroup.Text className="icon"><FaUsers /></InputGroup.Text>
+        <Form.Control
+          type="text"
+          readOnly
+          value={`${travelers.adults} Adults, ${travelers.children} Children`}
+          onClick={() => setShowTravelerDropdown(!showTravelerDropdown)}
+        />
+      </InputGroup>
+
+      {showTravelerDropdown && (
+        <div className="traveler-dropdown">
+          {(Object.keys(travelers) as Array<keyof Travelers>).map((type) => (
+            <div key={type} className="traveler-item">
+              <span className="text-capitalize">{type.replace(/([A-Z])/g, " $1")}</span>
+              <div className="traveler-controls">
+                <Button size="sm" onClick={() => handleTravelerChange(type, false)}>-</Button>
+                <span className="count">{travelers[type]}</span>
+                <Button size="sm" onClick={() => handleTravelerChange(type, true)}>+</Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+
+  {/* Checkboxes - now stacked on mobile */}
+  <div className="d-flex flex-column flex-md-row gap-3 mt-3">
+    <Form.Check type="checkbox" label="Add a place to stay" />
+    <Form.Check type="checkbox" label="Add a car" />
+  </div>
+
+  {/* Search Button - full width on mobile */}
+  <div className="text-center mt-4">
+    <Button variant="primary" size="lg">Search Flights</Button>
+  </div>
+</div>
     {/* </div> */}
 
     <hr className="my-4" />

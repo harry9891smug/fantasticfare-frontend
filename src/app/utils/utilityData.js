@@ -5,6 +5,12 @@ import Img4 from "../assets/images/destinations/4.svg";
 import Img5 from "../assets/images/destinations/5.svg";
 import Img6 from "../assets/images/destinations/3.svg";
 
+import Hotel1 from "../assets/images/first-up.svg";
+import Hotel2 from "../assets/images/second-down.svg";
+import Hotel3 from "../assets/images/middle.svg";
+import Hotel4 from "../assets/images/third-up.png";
+import Hotel5 from "../assets/images/thiird-down.svg";
+
 export const cabinOptions = [
   { value: "Economy", label: "Economy" },
   { value: "Premium economy", label: "Premium economy" },
@@ -199,3 +205,70 @@ export const metaData = [
       "Mahabaleshwar Resorts, Resorts In Agra, Resorts In Bhimtal, Resorts In Bordi, GraResorts In Br Hills, Resorts In Chikmagalur, Resorts In Cochin, Resorts In Darjeeling, Resorts In Dehradun, Resorts In Dharamshala, Resorts In Gorai, Resorts In Jaipur, Resorts In Jaisalmer, Resorts In Jodhpur, Resorts In Kanakapura, Resorts In Kollam, Resorts In Kotagiri, Resorts In Lucknow, Resorts In Madikeri, Resorts In Mahabaleshwar, Resorts In Masinagudi, Resorts In Matheran, Resorts In Mount Abu, Resorts In Mumbai, Resorts In Munnar, Resorts In Mussoorie, Resorts In Mysore, Resorts In Nainital, Resorts In Neemrana, Resorts In Kodaikanal",
   },
 ];
+
+export const recommendedHotels = [
+  {
+    name: "Taj Ecotica Resort & Spa, Goa",
+    rating: "5-star Resort - Branellin",
+    price: "$0000 + $000 taxes & fees / night",
+    discount: "Additional bank discounts",
+    images: [Hotel1, Hotel2, Hotel3], // multiple images here
+  },
+  {
+    name: "ITC Grand Goa, a Luxury Collection Resort & Spa",
+    rating: "5-star Resort - Anestim",
+    price: "$0000 + $000 taxes & fees / night",
+    discount: "No cost EMI from €8,850",
+    images: [Hotel2, Hotel4, Hotel5],
+  },
+  {
+    name: "The LaLiT Golf & Spa Resort, Goa",
+    rating: "5-star Resort - Canacona",
+    price: "$0000 + taxes & fees / night",
+    discount: "30% off No cost EMI from €3,924",
+    ratings: "4.5 600+ ratings",
+    images: [Hotel3, Hotel1, Hotel5],
+  },
+  {
+    name: "Novotel Goa Dona Sylvia Resort",
+    rating: "4-star Hotel - Canbellin",
+    price: "$0000 + taxes & fees / night",
+    discount: "23% off No cost EMI from €2,028",
+    ratings: "4.5 250+ ratings",
+    images: [Hotel4, Hotel3, Hotel2],
+  },
+];
+
+export const popularDestinations = [
+  {
+    name: "Mumbai",
+    location: "Maharashtra, India",
+    price: "$6,019",
+    category: "avg. nightly price",
+    images: [Hotel1, Hotel2, Hotel3],
+  },
+  {
+    name: "Goa",
+    location: "Goa, India",
+    price: "$5,200",
+    category: "avg. nightly price",
+    images: [Hotel2, Hotel3, Hotel4],
+  },
+  {
+    name: "Delhi",
+    location: "Delhi, India",
+    price: "$4,800",
+    category: "avg. nightly price",
+    images: [Hotel5, Hotel3, Hotel1],
+  }
+];
+
+export const travelDeals = [
+    { title: "Well Furnished Apartment", location: "100 Smart Street, LA, USA", price: "$1000 – 5000 USD", images: [Hotel1, Hotel4, Hotel5], },
+    { title: "Blue Door Villa Modern", location: "100 Smart Street, LA, USA", price: "$1000 – 5000 USD",images: [Hotel3, Hotel4, Hotel5],},
+    { title: "Beach House Apartment", location: "100 Smart Street, LA, USA", price: "$1000 – 5000 USD" , images: [Hotel1, Hotel2, Hotel3],},
+    { title: "Country Boys Hostel", location: "100 Smart Street, LA, USA", price: "$1000 – 5000 USD", images: [Hotel2, Hotel3, Hotel4], },
+    { title: "Large Family Flat on Rent", location: "100 Smart Street, LA, USA", price: "$1000 – 5000 USD", images: [Hotel3, Hotel4, Hotel5], }
+  ];
+
+  export const categories = ["Beach", "Culture", "Adventure", "Family", "Wellness & Relaxation"];

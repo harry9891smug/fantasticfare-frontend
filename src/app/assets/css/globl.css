@@ -1,13 +1,38 @@
 /* General Styling */
-.custom-input {
-    width: 283px; /* Increase width as needed */
-    max-width: 100%;
+.search-form-container {
+   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
 
-/* Adjusting Input Group (Icon + Input Alignment) */
-.custom-input .input-group-text {
-    padding: 12px;
+.custom-input {
+   display: flex;
+  align-items: center;
+  border-bottom: 1px solid #0c8ac6;
+  border-radius: 8px;
+  padding: 4px;
+  width: 100%;
+  position: relative;
+  border-bottom-width: thin;
 }
+
+.custom-input .icon {
+  color: gray;
+  font-size: 14px;
+  margin-right: 17px;
+  margin-top: 9px;
+}
+
+.custom-input input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+  background: transparent;
+}
+
 
 /* Ensure the Swap Icon Stays Aligned */
 .swap-icon-circle {
@@ -15,15 +40,7 @@
     min-height: 50px;
 }
 
-.custom-input .form-control, 
-.custom-input .input-group-text {
-    border: none;
-    border-bottom: 2px solid #0e87c8;
-    border-radius: 0;
-    padding: 10px;
-    font-size: 16px;
-    background: transparent;
-}
+
 
 /* Form Container - Ensures Everything Stays in a Single Row */
 .form-container {
@@ -154,6 +171,22 @@
 }
 
 @media (max-width: 768px) {
+  .search-form-container {
+    flex-direction: column;
+    align-items: stretch; /* Makes children take full width */
+    gap: 10px;
+  }
+
+  /* Optional: Make all direct children full width */
+  .search-form-container > * {
+    width: 100%;
+  }
+
+  /* Specific adjustment for the swap icon */
+  .search-form-container .swap-icon-circle {
+    margin: 10px auto; /* Centers the swap icon vertically */
+    transform: rotate(90deg); /* Makes it vertical for mobile */
+  }
     .form-container {
         flex-direction: column;
         gap: 10px;
@@ -357,7 +390,6 @@
   }
   
   .country-name {
-    position: absolute;
     bottom: 10px;
     left: 15px;
     color: white;

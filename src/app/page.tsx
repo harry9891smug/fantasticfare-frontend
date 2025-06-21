@@ -211,6 +211,7 @@ export default function FlightSearch() {
                   </h6>
                   <p className="price-text">{dest.price} Onwards</p>
                 </div>
+
               </div>
             </div>
           ))}

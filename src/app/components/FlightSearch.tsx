@@ -15,6 +15,7 @@ import {
 import { cabinOptions } from "../utils/utilityData";
 import "../assets/css/flightcomponent.css";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import SuccessPopup from "./successPopup";
 

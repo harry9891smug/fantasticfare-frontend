@@ -65,6 +65,7 @@
     object-fit: cover;
     border-radius: 10px;
     display: block;
+     transition: transform 0.4s ease-in-out;
 }
 
 /* Slide Title */
@@ -135,7 +136,9 @@
     background: #ff6600;
     opacity: 1;
 }
-
+.featured-destination-card:hover .featured-destination-image {
+  transform: scale(1.05); /* Zoom-in effect */
+}
 /* --- Responsive Styles --- */
 
 /* Tablet View (<= 1024px) */

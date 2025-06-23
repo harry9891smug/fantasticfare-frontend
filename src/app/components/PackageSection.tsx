@@ -17,6 +17,7 @@ type Package = {
   package_image: string[];
   total_price: string;
   discounted_price: string;
+  package_tags: string[];
 };
 
 const PackageSection = () => {
@@ -30,6 +31,8 @@ const PackageSection = () => {
     const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   
   const tabs = ["honeymoon", "adventure", "travel", "yatra", "family", "luxury"];
+  const [tabs, setTabs] = useState<string[]>([]);
+
   const fetchPackages = async () => {
     try {
       setLoading(true);
@@ -40,6 +43,10 @@ const PackageSection = () => {
       const data = await response.json();
       if (data.status && data.data) {
         setPackages(data.data);
+        const allTags = data.data.flatMap((pkg: Package) => pkg.package_tags || []);
+        const uniqueTags = Array.from(new Set(allTags));
+        setTabs(uniqueTags);
+        if (uniqueTags.length > 0) setActiveTab(uniqueTags[0]);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error occurred");
@@ -70,16 +77,15 @@ const PackageSection = () => {
       <h2 className="package-title">Our Special Packages</h2>
       <hr className="full-width-line" />
       <div className="tabs">
-        {tabs.map((tab) => (
+       {tabs.map((tag) => (
           <button
-            key={tab}
-            className={`tab ${activeTab === tab ? "active" : ""}`}
-            onClick={() => setActiveTab(tab)}
+            key={tag}
+            className={`tab ${activeTab === tag ? "active" : ""}`}
+            onClick={() => setActiveTab(tag)}
           >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            {tag.charAt(0).toUpperCase() + tag.slice(1)}
           </button>
         ))}
-        
       </div>
   
         <a className="view-all text-decoration-none" href="packages">View All</a>
@@ -94,7 +100,9 @@ const PackageSection = () => {
       {!loading && packages.length > 0 ? (
   <>
     {/* Show only the first 'visiblePackages' items */}
-    {packages.slice(0, visiblePackages).map((pkg) => (
+    {packages.filter((pkg) => pkg.package_tags?.includes(activeTab))
+  .slice(0, visiblePackages)
+  .map((pkg) => (
       <div key={pkg._id} className="package-card">
         {pkg.package_image?.length > 0 ? (
           <Swiper

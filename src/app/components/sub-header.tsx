@@ -22,7 +22,6 @@ interface ApiResponse {
   data: RegionData[];
 }
 
-
 interface CrmPage {
   _id: string;
   page_name: string;
@@ -57,7 +56,9 @@ const SubHeader = () => {
   useEffect(() => {
     const fetchRegionsData = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/global-links`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/global-links`
+        );
         if (!response.ok) throw new Error("Failed to fetch regions data");
         const data: ApiResponse = await response.json();
         setRegionsData(data);
@@ -73,7 +74,9 @@ const SubHeader = () => {
   useEffect(() => {
     const fetchCrmData = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/crm/list-page`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/crm/list-page`
+        );
         if (!response.ok) throw new Error("Failed to fetch Crm data");
         const data: CrmResponse = await response.json();
         setcrmdata(data);
@@ -86,14 +89,18 @@ const SubHeader = () => {
     fetchCrmData();
   }, []);
 
-
   const toggleContinent = (continent: string) => {
     setActiveContinent(activeContinent === continent ? null : continent);
+  };
+  const formatSlug = (slug: string) => {
+    return slug
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
   return (
     <nav className="sub-header ">
-      <div className="container d-flex justify-content-between align-items-center position-relative">
+      <div className="container d-flex justify-content-between align-items-center position-relative p-1">
         {/* Navigation Links - Centered */}
         <ul className="d-flex mb-0 position-absolute start-50 translate-middle-x">
           <li>
@@ -105,14 +112,24 @@ const SubHeader = () => {
           {crmdata?.data && crmdata.data.length > 0 && (
             <li className="position-relative view-dropdown-item">
               <div
-                className="flex items-center gap-2 cursor-pointer"
-                onClick={isMobile ? () => setShowDropdown(!showDropdown) : undefined}
-                onMouseEnter={!isMobile ? () => setShowDropdown(true) : undefined}
+                className="d-flex align-items-center cursor-pointer"
+                onClick={
+                  isMobile ? () => setShowDropdown(!showDropdown) : undefined
+                }
+                onMouseEnter={
+                  !isMobile ? () => setShowDropdown(true) : undefined
+                }
               >
-                <span className="spandes">Pages</span>
-                <span className="dropdown-icon">
+                <Link
+                  href="/flights"
+                  className="d-flex flex-column align-items-center text-center"
+                >
+                  <Image src={flights} alt="Flights" width={30} height={30} />
+                  <span>Flights</span>
+                </Link>
+                {/* <span className="dropdown-icon">
                   <FaChevronDown />
-                </span>
+                </span> */}
               </div>
 
               {showDropdown && (
@@ -123,7 +140,7 @@ const SubHeader = () => {
                 >
                   <div className="container">
                     {crmLoading ? (
-                      <div className="loading-spinner">Loading pages...</div>
+                      <div className="loading-spinner">Loading Tours...</div>
                     ) : crmdata?.data?.length ? (
                       <div className="country-list">
                         {crmdata.data.map((page) => (
@@ -133,7 +150,7 @@ const SubHeader = () => {
                             className="country-item"
                             style={{ fontSize: "17px" }}
                           >
-                            {page.page_name}
+                            {formatSlug(page.page_url)}
                           </Link>
                         ))}
                       </div>
@@ -145,13 +162,13 @@ const SubHeader = () => {
               )}
             </li>
           )}
-
+          {/* 
           <li>
             <Link href="/flights">
               <Image src={flights} alt="Flights" width={20} height={20} />
               Flights
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link href="/hotels" className="flex items-center gap-2">
               <Image src={hotels} alt="Hotels" width={20} height={20} />
@@ -166,57 +183,73 @@ const SubHeader = () => {
           </li>
           {/* New View Dropdown */}
 
-{pathname === '/packages' && (
- <li className="position-relative view-dropdown-item">
-  <div
-    className="dropdown-hover-wrapper"
-    onMouseEnter={() => !isMobile && setShowViewDropdown(true)}
-    onMouseLeave={() => !isMobile && setShowViewDropdown(false)}
-  >
-    <div className="flex items-center gap-2 cursor-pointer">
-      <span className="spandes">More</span>
-      <span className="dropdown-icon"><FaChevronDown /></span>
-    </div>
-
-    {showViewDropdown && (
-      <div className="mega-dropdown">
-        <div className="container">
-          {loading ? (
-            <div className="loading-spinner">Loading destinations...</div>
-          ) : regionsData ? (
-            <div className="continent-container">
-              {regionsData.data.map((continent) => (
-                <div key={continent.continent_name} className="continent-column">
-                  <h3 className="continent-title">{continent.continent_name}</h3>
-                  {continent.regions.map((region) => (
-                    <div key={region.region_name} className="region-group">
-                      <div className="region-title">{region.region_name}</div>
-                      <div className="country-list">
-                        {region.countries.map((country) => (
-                          <Link
-                            key={country}
-                            href={`/country/${country.toLowerCase().replace(/\s+/g, '-')}`}
-                            className="country-item"
-                          >
-                            {country}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+          {pathname === "/packages" && (
+            <li className="position-relative view-dropdown-item">
+              <div
+                className="dropdown-hover-wrapper"
+                onMouseEnter={() => !isMobile && setShowViewDropdown(true)}
+                onMouseLeave={() => !isMobile && setShowViewDropdown(false)}
+              >
+                <div className="flex items-center gap-2 cursor-pointer">
+                  <span className="spandes">More</span>
+                  <span className="dropdown-icon">
+                    <FaChevronDown />
+                  </span>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="error-message">Failed to load destinations</div>
-          )}
-        </div>
-      </div>
-    )}
-  </div>
-</li>
 
-
+                {showViewDropdown && (
+                  <div className="mega-dropdown">
+                    <div className="container">
+                      {regionsLoading ? (
+                        <div className="loading-spinner">
+                          Loading destinations...
+                        </div>
+                      ) : regionsData ? (
+                        <div className="continent-container">
+                          {regionsData.data.map((continent) => (
+                            <div
+                              key={continent.continent_name}
+                              className="continent-column"
+                            >
+                              <h3 className="continent-title">
+                                {continent.continent_name}
+                              </h3>
+                              {continent.regions.map((region) => (
+                                <div
+                                  key={region.region_name}
+                                  className="region-group"
+                                >
+                                  <div className="region-title">
+                                    {region.region_name}
+                                  </div>
+                                  <div className="country-list">
+                                    {region.countries.map((country) => (
+                                      <Link
+                                        key={country}
+                                        href={`/country/${country
+                                          .toLowerCase()
+                                          .replace(/\s+/g, "-")}`}
+                                        className="country-item"
+                                      >
+                                        {country}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="error-message">
+                          Failed to load destinations
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </li>
           )}
         </ul>
 

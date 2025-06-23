@@ -352,10 +352,7 @@ const FlightComponent: React.FC = () => {
           </div>
         </div>
       </div>
-      <div
-        className="px-4 py-2 rounded border border-primary"
-        style={{ borderWidth: "2px" }}
-      >
+      <div className="px-4 py-2 rounded bg-white shadow">
         {/* Travelers Dropdown - Now appears consistently at the top for all trip types */}
         <div className="custom-responsive-width position-relative mb-3">
           <InputGroup className="custom-responsive-width d-flex p-1 align-items-center bg-white border-bottom border-primary rounded  position-relative">

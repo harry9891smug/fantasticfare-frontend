@@ -57,9 +57,8 @@ const HotelSearchComponent = ({
   const [isLoading, setIsLoading] = useState(false);
   const [suggestion_type, setSuggestionType] = useState("");
   const searchRef = useRef<HTMLDivElement>(null);
-  const router = useRouter()
-  ;const [travellerError, setTravellerError] = useState<string>('');
-
+  const router = useRouter();
+  const [travellerError, setTravellerError] = useState<string>("");
 
   useEffect(() => {
     if (initialData?.locationId && initialData.locationName) {
@@ -123,21 +122,21 @@ const HotelSearchComponent = ({
   }, []);
 
   const handleTravelerChange = (type: TravelerType, increment: boolean) => {
-  setTravelers(prev => {
-    const totalTravelers = prev.adults + prev.children;
-    setTravellerError('');
+    setTravelers((prev) => {
+      const totalTravelers = prev.adults + prev.children;
+      setTravellerError("");
 
-    if (increment) {
-      if (totalTravelers >= 9) {
-        setTravellerError('You can max select 9 Travellers.')
-      return prev;
+      if (increment) {
+        if (totalTravelers >= 9) {
+          setTravellerError("You can max select 9 Travellers.");
+          return prev;
+        }
+        return { ...prev, [type]: prev[type] + 1 };
+      } else {
+        return { ...prev, [type]: Math.max(0, prev[type] - 1) };
       }
-      return { ...prev, [type]: prev[type] + 1 };
-    } else {
-      return { ...prev, [type]: Math.max(0, prev[type] - 1) };
-    }
-  });
-};
+    });
+  };
 
   const handleSuggestionSelect = (suggestion: Suggestion) => {
     setSelectedLocation(suggestion);
@@ -177,7 +176,7 @@ const HotelSearchComponent = ({
   };
 
   return (
-    <div className={`hotel-search-container ${compact ? "compact" : ""}`}>
+    <div className={`hotel-search-container-form ${compact ? "compact" : ""}`}>
       <div
         className={`row g-3 ${
           compact ? "align-items-end" : "justify-content-center"
@@ -188,7 +187,10 @@ const HotelSearchComponent = ({
         )}
 
         {/* Search Input with Suggestions */}
-        <div className={`${compact ? 'col-md-4' : 'col-md-3'} position-relative`} ref={searchRef}>
+        <div
+          className={`${compact ? "col-md-4" : "col-md-3"} position-relative`}
+          ref={searchRef}
+        >
           <InputGroup className="customh-input">
             <InputGroup.Text className="icon">
               <FaSearch />
@@ -259,37 +261,39 @@ const HotelSearchComponent = ({
         </div>
 
         {/* Date Range Picker */}
-       <div className={`${compact ? 'col-md-3' : 'col-md-3'}`}>
-        <InputGroup className="customh-input mb-2">
-          <InputGroup.Text className="icon">
-            <FaCalendarAlt />
-          </InputGroup.Text>
-          <DatePicker
-            selected={dateRange[0]}
-            onChange={(date) => setDateRange([date, dateRange[1]])}
-            placeholderText="Check-in"
-            className="form-control date-picker"
-            minDate={new Date()}
-          />
-        </InputGroup>
-      </div>
-      <div className="col-md-3">
-           <InputGroup className="customh-input mb-2">
-          <InputGroup.Text className="icon">
-            <FaCalendarAlt />
-          </InputGroup.Text>
-          <DatePicker
-            selected={dateRange[1]}
-            onChange={(date) => setDateRange([dateRange[0], date])}
-            placeholderText="Check-out"
-            className="form-control date-picker"
-            minDate={dateRange[0] || new Date()}
-          />
-        </InputGroup>
-      </div>
+        <div className={`${compact ? "col-md-3" : "col-md-3"}`}>
+          <InputGroup className="customh-input mb-2">
+            <InputGroup.Text className="icon">
+              <FaCalendarAlt />
+            </InputGroup.Text>
+            <DatePicker
+              selected={dateRange[0]}
+              onChange={(date) => setDateRange([date, dateRange[1]])}
+              placeholderText="Check-in"
+              className="form-control date-picker"
+              minDate={new Date()}
+            />
+          </InputGroup>
+        </div>
+        <div className="col-md-3">
+          <InputGroup className="customh-input mb-2">
+            <InputGroup.Text className="icon">
+              <FaCalendarAlt />
+            </InputGroup.Text>
+            <DatePicker
+              selected={dateRange[1]}
+              onChange={(date) => setDateRange([dateRange[0], date])}
+              placeholderText="Check-out"
+              className="form-control date-picker"
+              minDate={dateRange[0] || new Date()}
+            />
+          </InputGroup>
+        </div>
 
         {/* Travelers Dropdown */}
-        <div className={`${compact ? 'col-md-2' : 'col-md-3'} position-relative`}>
+        <div
+          className={`${compact ? "col-md-2" : "col-md-3"} position-relative`}
+        >
           <InputGroup className="customh-input">
             <InputGroup.Text className="icon">
               <FaUsers />
@@ -348,7 +352,10 @@ const HotelSearchComponent = ({
                 </div>
               </div>
               {travellerError && (
-                <div className="traveller-error" style={{ color: 'red', marginTop: '0.5rem' }}>
+                <div
+                  className="traveller-error"
+                  style={{ color: "red", marginTop: "0.5rem" }}
+                >
                   {travellerError}
                 </div>
               )}
@@ -358,10 +365,7 @@ const HotelSearchComponent = ({
 
         {compact && (
           <div className="col-md-12 text-center mt-3">
-            <Button
-              className="btn btn-primary search-btn"
-              onClick={handleSearch}
-            >
+            <Button className="search-btn" onClick={handleSearch}>
               Search Hotels
             </Button>
           </div>
@@ -370,7 +374,7 @@ const HotelSearchComponent = ({
 
       {!compact && (
         <div className="text-center mt-4">
-          <Button className="btn btn-primary search-btn" onClick={handleSearch}>
+          <Button className="search-btn" onClick={handleSearch}>
             Search Hotels
           </Button>
         </div>

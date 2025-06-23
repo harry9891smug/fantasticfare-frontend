@@ -3,7 +3,15 @@
   background: #fff;
   padding: 20px;
   border-radius: 10px;
-  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+  max-width: 1200px; /* Increased width */
+  margin: 27px auto;
+}
+
+.hotel-search-container-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-width: 1200px; /* Increased width */
   margin: 27px auto;
 }
@@ -14,7 +22,6 @@
   font-weight: 600;
 }
 
-  
 .customh-input {
   display: flex;
   align-items: center;
@@ -29,10 +36,10 @@
 }
 
 .customh-input .icon {
-   color: gray;
-   font-size: 14px;
-   margin-right: 17px;
-   margin-top: 9px;
+  color: gray;
+  font-size: 14px;
+  margin-right: 17px;
+  margin-top: 9px;
 }
 
 .customh-input input {
@@ -151,9 +158,16 @@
 
 /* Button Styles */
 .search-btn {
-  padding: 0.75rem 2rem;
   font-weight: 500;
-  border-radius: 2rem;
+  border: none;
+  color: white;
+  font-size: 0.75rem !important;
+  background-color: #0c8ac6;
+}
+
+.search-btn:hover,
+.search-btn:active {
+  background-color: #cf8701;
 }
 
 .clear-btn {
@@ -254,7 +268,7 @@
   .room-col {
     margin-bottom: 1.5rem;
   }
-  
+
   .room-box.full {
     height: auto;
   }
@@ -264,11 +278,11 @@
   .hotel-title {
     font-size: 1.75rem;
   }
-  
+
   .main-title {
     font-size: 1.5rem;
   }
-  
+
   .search-btn {
     width: 100%;
   }

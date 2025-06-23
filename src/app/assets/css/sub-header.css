@@ -319,3 +319,9 @@
   border: 1px solid #cf8701;
   color: white;
 }
+.view-dropdown-item a {
+  width: 70px;
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+}

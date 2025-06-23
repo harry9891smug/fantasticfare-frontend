@@ -61,7 +61,7 @@ const SubHeader = () => {
         if (!response.ok) throw new Error("Failed to fetch regions data");
         const data: ApiResponse = await response.json();
         setRegionsData(data);
-      
+
       } catch (error) {
         console.error("Error fetching regions data:", error);
       } finally {
@@ -91,6 +91,11 @@ const SubHeader = () => {
   const toggleContinent = (continent: string) => {
     setActiveContinent(activeContinent === continent ? null : continent);
   };
+  const formatSlug = (slug: string) => {
+    return slug
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  }
 
   return (
     <nav className="sub-header ">
@@ -110,10 +115,16 @@ const SubHeader = () => {
                 onClick={isMobile ? () => setShowDropdown(!showDropdown) : undefined}
                 onMouseEnter={!isMobile ? () => setShowDropdown(true) : undefined}
               >
-                <span className="spandes">Flights</span>
-                <span className="dropdown-icon">
+                <Link
+                  href="/flights"
+                  className="flex flex-col items-center text-center"
+                >
+                  <Image src={flights} alt="Flights" width={30} height={30} />
+                  <span>Flights</span>
+                </Link>
+                {/* <span className="dropdown-icon">
                   <FaChevronDown />
-                </span>
+                </span> */}
               </div>
 
               {showDropdown && (
@@ -124,7 +135,7 @@ const SubHeader = () => {
                 >
                   <div className="container">
                     {crmLoading ? (
-                      <div className="loading-spinner">Loading Flights...</div>
+                      <div className="loading-spinner">Loading Tours...</div>
                     ) : crmdata?.data?.length ? (
                       <div className="country-list">
                         {crmdata.data.map((page) => (
@@ -134,7 +145,7 @@ const SubHeader = () => {
                             className="country-item"
                             style={{ fontSize: "17px" }}
                           >
-                            {page.page_name}
+                            {formatSlug(page.page_url)}
                           </Link>
                         ))}
                       </div>
@@ -146,13 +157,13 @@ const SubHeader = () => {
               )}
             </li>
           )}
-
+          {/* 
           <li>
             <Link href="/flights">
               <Image src={flights} alt="Flights" width={20} height={20} />
               Flights
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link href="/hotels" className="flex items-center gap-2">
               <Image src={hotels} alt="Hotels" width={20} height={20} />

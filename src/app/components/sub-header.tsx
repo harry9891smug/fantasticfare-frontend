@@ -109,7 +109,7 @@ const SubHeader = () => {
                 onClick={isMobile ? () => setShowDropdown(!showDropdown) : undefined}
                 onMouseEnter={!isMobile ? () => setShowDropdown(true) : undefined}
               >
-                <span className="spandes">Pages</span>
+                <span className="spandes">Flights</span>
                 <span className="dropdown-icon">
                   <FaChevronDown />
                 </span>
@@ -123,7 +123,7 @@ const SubHeader = () => {
                 >
                   <div className="container">
                     {crmLoading ? (
-                      <div className="loading-spinner">Loading pages...</div>
+                      <div className="loading-spinner">Loading Flights...</div>
                     ) : crmdata?.data?.length ? (
                       <div className="country-list">
                         {crmdata.data.map((page) => (

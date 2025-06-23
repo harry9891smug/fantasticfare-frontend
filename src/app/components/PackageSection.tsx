@@ -30,7 +30,6 @@ const PackageSection = () => {
   const [visiblePackages, setVisiblePackages] = useState(6);
     const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   
-  const tabs = ["honeymoon", "adventure", "travel", "yatra", "family", "luxury"];
   const [tabs, setTabs] = useState<string[]>([]);
 
   const fetchPackages = async () => {

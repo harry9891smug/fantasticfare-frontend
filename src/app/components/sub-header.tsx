@@ -60,8 +60,8 @@ const SubHeader = () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/global-links`);
         if (!response.ok) throw new Error("Failed to fetch regions data");
         const data: ApiResponse = await response.json();
-        console.log(data,'datadatadatadata')
         setRegionsData(data);
+      
       } catch (error) {
         console.error("Error fetching regions data:", error);
       } finally {
@@ -110,7 +110,7 @@ const SubHeader = () => {
                 onClick={isMobile ? () => setShowDropdown(!showDropdown) : undefined}
                 onMouseEnter={!isMobile ? () => setShowDropdown(true) : undefined}
               >
-                <span className="spandes">Pages</span>
+                <span className="spandes">Flights</span>
                 <span className="dropdown-icon">
                   <FaChevronDown />
                 </span>
@@ -124,7 +124,7 @@ const SubHeader = () => {
                 >
                   <div className="container">
                     {crmLoading ? (
-                      <div className="loading-spinner">Loading pages...</div>
+                      <div className="loading-spinner">Loading Flights...</div>
                     ) : crmdata?.data?.length ? (
                       <div className="country-list">
                         {crmdata.data.map((page) => (
@@ -182,7 +182,7 @@ const SubHeader = () => {
                 {showViewDropdown && (
                   <div className="mega-dropdown">
                     <div className="container">
-                      {loading ? (
+                      {regionsLoading ? (
                         <div className="loading-spinner">Loading destinations...</div>
                       ) : regionsData ? (
                         <div className="continent-container">

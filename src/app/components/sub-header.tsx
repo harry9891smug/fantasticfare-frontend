@@ -60,6 +60,7 @@ const SubHeader = () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/global-links`);
         if (!response.ok) throw new Error("Failed to fetch regions data");
         const data: ApiResponse = await response.json();
+        console.log(data,'datadatadatadata')
         setRegionsData(data);
       } catch (error) {
         console.error("Error fetching regions data:", error);
@@ -166,55 +167,55 @@ const SubHeader = () => {
           </li>
           {/* New View Dropdown */}
 
-{pathname === '/packages' && (
- <li className="position-relative view-dropdown-item">
-  <div
-    className="dropdown-hover-wrapper"
-    onMouseEnter={() => !isMobile && setShowViewDropdown(true)}
-    onMouseLeave={() => !isMobile && setShowViewDropdown(false)}
-  >
-    <div className="flex items-center gap-2 cursor-pointer">
-      <span className="spandes">More</span>
-      <span className="dropdown-icon"><FaChevronDown /></span>
-    </div>
-
-    {showViewDropdown && (
-      <div className="mega-dropdown">
-        <div className="container">
-          {loading ? (
-            <div className="loading-spinner">Loading destinations...</div>
-          ) : regionsData ? (
-            <div className="continent-container">
-              {regionsData.data.map((continent) => (
-                <div key={continent.continent_name} className="continent-column">
-                  <h3 className="continent-title">{continent.continent_name}</h3>
-                  {continent.regions.map((region) => (
-                    <div key={region.region_name} className="region-group">
-                      <div className="region-title">{region.region_name}</div>
-                      <div className="country-list">
-                        {region.countries.map((country) => (
-                          <Link
-                            key={country}
-                            href={`/country/${country.toLowerCase().replace(/\s+/g, '-')}`}
-                            className="country-item"
-                          >
-                            {country}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+          {pathname === '/packages' && (
+            <li className="position-relative view-dropdown-item">
+              <div
+                className="dropdown-hover-wrapper"
+                onMouseEnter={() => !isMobile && setShowViewDropdown(true)}
+                onMouseLeave={() => !isMobile && setShowViewDropdown(false)}
+              >
+                <div className="flex items-center gap-2 cursor-pointer">
+                  <span className="spandes">More</span>
+                  <span className="dropdown-icon"><FaChevronDown /></span>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="error-message">Failed to load destinations</div>
-          )}
-        </div>
-      </div>
-    )}
-  </div>
-</li>
+
+                {showViewDropdown && (
+                  <div className="mega-dropdown">
+                    <div className="container">
+                      {loading ? (
+                        <div className="loading-spinner">Loading destinations...</div>
+                      ) : regionsData ? (
+                        <div className="continent-container">
+                          {regionsData.data.map((continent) => (
+                            <div key={continent.continent_name} className="continent-column">
+                              <h3 className="continent-title">{continent.continent_name}</h3>
+                              {continent.regions.map((region) => (
+                                <div key={region.region_name} className="region-group">
+                                  <div className="region-title">{region.region_name}</div>
+                                  <div className="country-list">
+                                    {region.countries.map((country) => (
+                                      <Link
+                                        key={country}
+                                        href={`/country/${country.toLowerCase().replace(/\s+/g, '-')}`}
+                                        className="country-item"
+                                      >
+                                        {country}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="error-message">Failed to load destinations</div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </li>
 
 
           )}

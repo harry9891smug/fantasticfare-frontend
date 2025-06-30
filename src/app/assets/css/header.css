@@ -181,16 +181,16 @@
 }
 
 .dropdownMenu {
-    position: absolute;
-    top: 59px;
-    right: 72px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 8px 16px #00000014;
-    padding: 5px;
-    min-width: 103px;
-    z-index: 1022;
+  position: absolute;
+  top: 59px;
+  right: 72px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px #00000014;
+  padding: 5px;
+  min-width: 103px;
+  z-index: 1022;
 }
 
 .logoutBtn {
@@ -221,14 +221,14 @@
 
 /* Sign In Box */
 .navbar-custom .sign-in-box {
-  border: 1px solid #000000;
-  border-radius: 16px;
+  background-color: #0389c6;
+  border-radius: 6px;
   padding: 8px 15px;
   display: flex;
   align-items: center;
   margin-left: auto;
   text-decoration: none;
-  color: #000000;
+  color: #ffffff;
   white-space: nowrap;
 }
 
@@ -237,11 +237,11 @@
 }
 
 .navbar-custom .sign-in-box:hover {
-  background-color: #f8f9fa;
+  background-color: #cf8701;
 }
 
 .navbar-custom .sign-in-box .btn {
-  color: #000000;
+  color: #ffffff;
   font-size: 13px;
   padding: 0;
   background: none;

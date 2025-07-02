@@ -99,7 +99,7 @@ const SubHeader = () => {
   };
 
   return (
-    <nav className="sub-header ">
+    <nav className="sub-header">
       <div className="container d-flex justify-content-between align-items-center position-relative p-1">
         {/* Navigation Links - Centered */}
         <ul className="d-flex mb-0 position-absolute start-50 translate-middle-x">

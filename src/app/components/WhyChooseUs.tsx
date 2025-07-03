@@ -36,7 +36,7 @@ const WhyChooseUs = () => {
           </p>
         </div>
 
-        <div className="divider"></div>
+        {/* <div className="divider"></div> */}
 
         {/* Feature 2 */}
         <div className="feature">
@@ -49,7 +49,7 @@ const WhyChooseUs = () => {
           </p>
         </div>
 
-        <div className="divider"></div>
+        {/* <div className="divider"></div> */}
 
         {/* Feature 3 */}
         <div className="feature">
@@ -62,7 +62,7 @@ const WhyChooseUs = () => {
           </p>
         </div>
 
-        <div className="divider"></div>
+        {/* <div className="divider"></div> */}
 
         {/* Feature 4 */}
         <div className="feature">

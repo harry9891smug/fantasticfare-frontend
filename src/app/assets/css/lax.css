@@ -1,0 +1,425 @@
+/* lax.css */
+
+.tab-heading {
+  margin-bottom: 20px;
+}
+
+.btn.active-tab {
+  background-color: #ff6600;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 6px 16px;
+  border: none;
+}
+
+.flight-card {
+  background-color: #fff;
+  transition: box-shadow 0.3s ease;
+}
+
+.flight-card:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.airline-meta {
+  transform: translateY(-20px);
+  white-space: nowrap;
+}
+
+.airline-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+.viewButton{
+    background-color: #008bc2;
+    border: none;
+}
+.viewButton:hover{
+    background-color: #d78311;
+    border: none;
+}
+.airline-name {
+  font-size: 12px;
+  color: #000;
+  line-height: 1.1;
+}
+
+.airport-code {
+  font-size: 28px;
+  font-weight: 300;
+  color: #000;
+}
+
+.airport-city {
+  font-size: 12px;
+  color: #555;
+}
+
+
+.gap-2 {
+  gap: 0.5rem; /* equivalent to Bootstrap's spacing utility */
+}
+
+.route-divider {
+  width: 30%;
+}
+
+.route-class {
+  font-size: 13px;
+  color: #555;
+  font-weight: normal;
+}
+
+.route-date {
+  font-size: 12px;
+  color: #666;
+}
+
+.divider-img {
+  max-width: 100%;
+  height: auto;
+}
+.info-card {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Section Headings --- */
+.text-section h2 {
+  font-size: 32px;
+  color: #1d1d1f;
+  margin-bottom: 10px;
+}
+
+.text-section h4 {
+  font-size: 22px;
+  color: #4f4f4f;
+  margin-bottom: 20px;
+}
+
+.text-section p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* --- Highlighted words --- */
+.text-section strong {
+  color: #000;
+}
+
+/* --- Info Boxes --- */
+.row.text-center .col-md-3 {
+  padding: 15px;
+}
+
+.row.text-center .border {
+  background-color: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.row.text-center .border:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+}
+
+.row.text-center p {
+  margin: 0;
+}
+
+.row.text-center .fw-semibold {
+  font-size: 14px;
+  color: #333;
+}
+
+.row.text-center .text-primary {
+  color: #1d8dd7 !important;
+  font-size: 16px;
+}
+
+.row.text-center .fst-italic {
+  font-style: italic;
+  font-size: 14px;
+}
+/* === Additional Info Section === */
+.additional-info-section {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.additional-info-section h5 {
+  font-size: 20px;
+  color: #1d1d1f;
+}
+
+.additional-info-section p {
+  font-size: 15px;
+  color: #555;
+}
+
+.info-list {
+  padding-left: 20px;
+  margin-top: 15px;
+}
+
+.info-list li {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.info-list li strong {
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.info-list.bordered {
+  border-left: 2px dotted #1d8dd7;
+  padding-left: 15px;
+  margin-top: 20px;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #ccc !important;
+}
+.why-choose-us {
+  max-width: 1140px;
+  margin: auto;
+  background: white;
+  padding: 40px 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.why-choose-us h2 {
+  font-size: 28px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.why-choose-us p {
+  color: #b8b1b1;
+  font-size: 16px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.divider-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 20px 0;
+}
+
+.divider-top {
+  margin-bottom: 30px;
+}
+
+.divider-bottom {
+  margin-top: 30px;
+}
+
+/* Features Grid */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.feature {
+  flex: 1;
+  min-width: 200px;
+  text-align: center;
+}
+
+.feature img {
+  width: 50px;
+  height: 50px;
+  margin-top: 9px;
+}
+
+.feature h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.feature p {
+  font-size: 14px;
+  color: #b8b1b1;
+}
+
+/* Icon wrappers */
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  height: 55px;
+  width: 55px;
+}
+
+.icon-rating {
+  background: #64b5f6;
+}
+
+.icon-customers {
+  background: #ff9800;
+}
+
+.icon-offers {
+  background: #ff5252;
+}
+
+.icon-support {
+  background: #4caf50;
+}
+
+.icon-wrapper img {
+  width: 30px;
+  height: 30px;
+}
+
+/* Vertical Divider */
+.divider {
+  width: 1px;
+  height: 112px;
+  background: #ddd;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .divider {
+    display: none; /* Hide vertical dividers on small screens */
+  }
+
+  .why-choose-us h2 {
+    font-size: 22px;
+  }
+
+  .why-choose-us p {
+    font-size: 14px;
+  }
+
+  .feature h3 {
+    font-size: 15px;
+  }
+
+  .feature p {
+    font-size: 13px;
+  }
+
+  .icon-wrapper {
+    height: 45px;
+    width: 45px;
+  }
+
+  .icon-wrapper img {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* FAQ Section */
+.accordion-item {
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 10px !important;
+  background-color: #fff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.accordion-button {
+  padding: 1rem;
+  font-weight: 500;
+  font-size: 15px;
+  background-color: #f9f9f9 !important;
+  border-radius: 10px !important;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #eef6ff !important;
+  color: #1a1a1a;
+  box-shadow: none;
+}
+
+.accordion-body {
+  font-size: 14px;
+  color: #444;
+  background-color: #fff;
+  padding: 1rem 1.25rem;
+}
+
+/* FAQ Number Circle */
+.faq-number {
+  background-color: #1d8dd7;
+  color: #fff;
+  font-size: 12px;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* === FAQ Sidebar Box === */
+.faq-box {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* === Updated Button Color === */
+.btn-orange {
+  background-color: #ff5a00;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.btn-orange:hover {
+  background-color: #1d8dd7;
+}
+.footer-links h6 {
+  font-size: 16px;
+  color: #1d1d1f;
+  margin-bottom: 8px;
+}
+
+.footer-links p {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+}

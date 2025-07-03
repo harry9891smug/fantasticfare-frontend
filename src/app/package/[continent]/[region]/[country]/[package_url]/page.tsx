@@ -1,3 +1,5 @@
+
+
 "use client";
 import { useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
@@ -7,21 +9,23 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../../assets/css/package_details.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+// import "../../assets/css/package_details.css";
+import "../../../../../assets/css/package_details.css";
+
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import "react-toastify/dist/ReactToastify.css";
-import "../../assets/css/articledetails.css";
+import "../../../../../assets/css/articledetails.css"
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import he from "he";
 import { FaMapMarkedAlt, FaLightbulb, FaBed } from "react-icons/fa";
-import EnquiryModal from "../../components/EnquiryModal";
+import EnquiryModal from "../../../../../components/EnquiryModal";
 
 interface Packages {
   _id: string;
@@ -111,7 +115,7 @@ interface Package {
   meta_description: string;
   status: number;
   country_name: {
-    name: string;
+    name: string,
   };
   created_by: string;
   createdAt: string;
@@ -141,7 +145,7 @@ const schema = yup.object().shape({
 
 const PackageDetails: React.FC = () => {
   const params = useParams();
-  const { id } = params;
+  const { continent,region,country,package_url } = params;
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [showEnquiryModal, setShowEnquiryModal] = useState(false);
   const [packages, setPackages] = useState<Packages[]>([]);
@@ -154,8 +158,7 @@ const PackageDetails: React.FC = () => {
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const {
     register,
-    handleSubmit,
-    control,
+    handleSubmit, control,
     formState: { errors },
     reset,
   } = useForm({
@@ -164,9 +167,7 @@ const PackageDetails: React.FC = () => {
   const fetchPackages = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/list-package?country=${101}`
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/list-package?country=${101}`);
       if (!response.ok) throw new Error("Failed to fetch packages.");
 
       const data = await response.json();
@@ -179,41 +180,42 @@ const PackageDetails: React.FC = () => {
       setLoading(false);
     }
   };
+  const sanitize = (str) => {
+  if (str.includes(' ')) return str;
+    return str.replace(/-/g, ' ');
+};
   useEffect(() => {
     const fetchPackage = async () => {
+        const continent_name = sanitize(continent);
+        const region_name = sanitize(region);
+        const country_name = sanitize(country);
+        // console.log(continent_name,region_name,country_name)
+        // return false;
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/package_view/${id}`
-        );
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-package/${continent_name}/${region_name}/${country_name}/${package_url}`);
         if (!response.ok) {
           throw new Error("Failed to fetch package");
         }
         const data = await response.json();
         if (data.status && data.data) {
           setPackageData(data.data);
-          if (
-            data.data.itineraries &&
-            data.data.itineraries.length > 0 &&
-            data.data.itineraries[0].days.length > 0
-          ) {
+          if (data.data.itineraries && data.data.itineraries.length > 0 && data.data.itineraries[0].days.length > 0) {
             setExpandedDay(data.data.itineraries[0].days[0].day_name);
           }
         }
         // data?.data?.country
         fetchPackages();
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred"
-        );
+        setError(err instanceof Error ? err.message : "An unknown error occurred");
       } finally {
         setLoading(false);
       }
     };
 
-    if (id) {
+    if (package_url) {
       fetchPackage();
     }
-  }, [id]);
+  }, [package_url]);
 
   const toggleAccordion = (dayName: string) => {
     setExpandedDay(expandedDay === dayName ? null : dayName);
@@ -221,9 +223,7 @@ const PackageDetails: React.FC = () => {
   useEffect(() => {
     const fetchCountryCodes = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/country-code`
-        );
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/country-code`);
         const data = await res.json();
         if (data.status && Array.isArray(data.countryCodes)) {
           const formatted = data.countryCodes.map((code: string) => ({
@@ -243,19 +243,16 @@ const PackageDetails: React.FC = () => {
   const onSubmit = async (data: any) => {
     setFormSubmitting(true);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/package-enquiry`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...data,
-            package_id: id,
-          }),
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/package-enquiry`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          package_id: selectedPackage?._id,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to submit enquiry");
@@ -273,32 +270,24 @@ const PackageDetails: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className="container py-5 text-center">
-        Loading package details...
-      </div>
-    );
+    return <div className="container py-5 text-center">Loading package details...</div>;
   }
 
   if (error) {
-    return (
-      <div className="container py-5 text-center text-danger">
-        Error: {error}
-      </div>
-    );
+    return <div className="container py-5 text-center text-danger">Error: {error}</div>;
   }
 
   if (!packageData) {
     return <div className="container py-5 text-center">Package not found</div>;
   }
 
-  const inclusions =
-    packageData?.inclusion?.find((item) => item.type === "inclusion")
-      ?.description || [];
+  const inclusions = packageData?.inclusion
+    ?.find(item => item.type === "inclusion")
+    ?.description || [];
 
-  const exclusions =
-    packageData?.inclusion?.find((item) => item.type === "exclusion")
-      ?.description || [];
+  const exclusions = packageData?.inclusion
+    ?.find(item => item.type === "exclusion")
+    ?.description || [];
 
   const openEnquiryModal = (pkg: Package) => {
     setSelectedPackage(pkg);
@@ -335,12 +324,7 @@ const PackageDetails: React.FC = () => {
                     width={400}
                     height={250}
                     className="card-img-top"
-                    style={{
-                      position: "relative",
-                      zIndex: 10,
-                      overflow: "visible",
-                      objectFit: "cover",
-                    }}
+                    style={{ objectFit: "cover" }}
                   />
                 </SwiperSlide>
               ))}
@@ -349,10 +333,7 @@ const PackageDetails: React.FC = () => {
         <div className="package-details">
           <h2 className="package-title">{packageData.package_name}</h2>
           <div className="package-duration">
-            <span>
-              {(packageData.itineraries?.[0]?.days?.length || 0) - 1}N/
-              {packageData.itineraries?.[0]?.days?.length || 0}D
-            </span>
+            <span>{(packageData.itineraries?.[0]?.days?.length || 0) - 1}N/{(packageData.itineraries?.[0]?.days?.length || 0) }D</span>
           </div>
           <div className="package-inclusions">
             {/* <div className="inclusion">
@@ -362,7 +343,7 @@ const PackageDetails: React.FC = () => {
             {Array.isArray(packageData.addons) &&
               packageData.addons.map((addon, index) => (
                 <div className="inclusion">
-                  <i className={addon.addon_icon}>{}</i>
+                  <i className={addon.addon_icon}>{ }</i>
                   <span>{addon.addon_name}</span>
                 </div>
               ))}
@@ -377,9 +358,7 @@ const PackageDetails: React.FC = () => {
           </div>
           <div className="package-price-container">
             <div className="package-price">
-              <div className="offered-price">
-                USD {packageData.discounted_price || packageData.total_price}
-              </div>
+              <div className="offered-price">USD {packageData.discounted_price || packageData.total_price}</div>
               {packageData.discounted_price && (
                 <>
                   <div className="original-price">
@@ -388,9 +367,7 @@ const PackageDetails: React.FC = () => {
                 </>
               )}
               <div className="enquire-btn">
-                <button onClick={() => openEnquiryModal(packageData)}>
-                  Enquire Now
-                </button>
+                <button onClick={() => openEnquiryModal(packageData)}>Enquire Now</button>
               </div>
             </div>
             <div className="rating">
@@ -436,20 +413,11 @@ const PackageDetails: React.FC = () => {
             </div>
 
             {/* Itinerary Tab */}
-            <div
-              id="itinerary"
-              className={`tab-content ${
-                activeTab === "itinerary" ? "active" : ""
-              }`}
-            >
+            <div id="itinerary" className={`tab-content ${activeTab === "itinerary" ? "active" : ""}`}>
               {packageData.itineraries?.[0]?.days?.length > 0 ? (
                 <>
                   {/* Carousel Slider */}
-                  <div
-                    id="carouselExampleIndicators"
-                    className="carousel slide"
-                    data-ride="carousel"
-                  >
+                  <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
                     <ol className="carousel-indicators">
                       {packageData.itineraries[0].days.map((_, index) => (
                         <li
@@ -464,9 +432,7 @@ const PackageDetails: React.FC = () => {
                       {packageData.itineraries[0].days.map((day, index) => (
                         <div
                           key={index}
-                          className={`carousel-item ${
-                            index === 0 ? "active" : ""
-                          }`}
+                          className={`carousel-item ${index === 0 ? "active" : ""}`}
                         >
                           {day.day_images?.length > 0 ? (
                             <Image
@@ -490,10 +456,7 @@ const PackageDetails: React.FC = () => {
                       role="button"
                       data-slide="prev"
                     >
-                      <span
-                        className="carousel-control-prev-icon"
-                        aria-hidden="true"
-                      ></span>
+                      <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                       <span className="sr-only">Previous</span>
                     </a>
                     <a
@@ -502,10 +465,7 @@ const PackageDetails: React.FC = () => {
                       role="button"
                       data-slide="next"
                     >
-                      <span
-                        className="carousel-control-next-icon"
-                        aria-hidden="true"
-                      ></span>
+                      <span className="carousel-control-next-icon" aria-hidden="true"></span>
                       <span className="sr-only">Next</span>
                     </a>
                   </div>
@@ -514,54 +474,37 @@ const PackageDetails: React.FC = () => {
 
                   <div className="accordions">
                     {packageData.itineraries[0].days.map((day, index) => (
-                      <div
-                        className={`accordion ${
-                          expandedDay === day.day_name ? "active" : ""
-                        }`}
-                        key={index}
-                      >
+                      <div className={`accordion ${expandedDay === day.day_name ? 'active' : ''}`} key={index}>
                         <button
                           className="accordion-button"
                           onClick={() => toggleAccordion(day.day_name)}
                           aria-expanded={expandedDay === day.day_name}
                         >
                           <span className="day-title">Day {index + 1}</span>
-                          <span className="accordion-tab-title">
-                            {day.day_name}
-                          </span>
-                          <span
-                            className={`accordion-arrow ${
-                              expandedDay === day.day_name ? "expanded" : ""
-                            }`}
-                          >
+                          <span className="accordion-tab-title">{day.day_name}</span>
+                          <span className={`accordion-arrow ${expandedDay === day.day_name ? 'expanded' : ''}`}>
                             {/* {expandedDay === day.day_name ? '▼' : '►'} */}
                           </span>
                         </button>
                         <div
-                          className={`accordion-content ${
-                            expandedDay === day.day_name ? "expanded" : ""
-                          }`}
+                          className={`accordion-content ${expandedDay === day.day_name ? 'expanded' : ''}`}
                           style={{
-                            display:
-                              expandedDay === day.day_name ? "block" : "none",
+                            display: expandedDay === day.day_name ? 'block' : 'none'
                           }}
                         >
                           {/* Rest of your accordion content remains the same */}
                           {day.day_images?.length > 0 && (
                             <div className="image-row">
-                              {day.day_images
-                                .slice(0, 3)
-                                .map((img, imgIndex) => (
-                                  <Image
-                                    key={imgIndex}
-                                    src={img}
-                                    alt={`${day.day_name} Image ${
-                                      imgIndex + 1
-                                    }`}
-                                    width={200}
-                                    height={150}
-                                  />
-                                ))}
+                              {day.day_images.slice(0, 3).map((img, imgIndex) => (
+
+                                <Image
+                                  key={imgIndex}
+                                  src={img}
+                                  alt={`${day.day_name} Image ${imgIndex + 1}`}
+                                  width={200}
+                                  height={150}
+                                />
+                              ))}
                             </div>
                           )}
                           <div className="day-title-section">
@@ -586,12 +529,7 @@ const PackageDetails: React.FC = () => {
             </div>
 
             {/* Activities Tab */}
-            <div
-              id="activities"
-              className={`tab-content ${
-                activeTab === "activities" ? "active" : ""
-              }`}
-            >
+            <div id="activities" className={`tab-content ${activeTab === "activities" ? "active" : ""}`}>
               {packageData.activities?.length > 0 ? (
                 packageData.activities.map((activityGroup, groupIndex) => (
                   <div className="" key={groupIndex}>
@@ -606,9 +544,7 @@ const PackageDetails: React.FC = () => {
                                 className=""
                                 key={imgIndex}
                                 src={img}
-                                alt={`Activity ${dayIndex + 1} Image ${
-                                  imgIndex + 1
-                                }`}
+                                alt={`Activity ${dayIndex + 1} Image ${imgIndex + 1}`}
                                 width={200}
                                 height={250}
                               />
@@ -625,10 +561,7 @@ const PackageDetails: React.FC = () => {
             </div>
 
             {/* Stay Tab */}
-            <div
-              id="stay"
-              className={`tab-content ${activeTab === "stay" ? "active" : ""}`}
-            >
+            <div id="stay" className={`tab-content ${activeTab === "stay" ? "active" : ""}`}>
               {packageData.stays?.length > 0 ? (
                 packageData.stays.map((stayGroup, groupIndex) => (
                   <div key={groupIndex}>
@@ -649,21 +582,17 @@ const PackageDetails: React.FC = () => {
                         </div>
                         {day.hotel_images?.length > 0 && (
                           <div className="image-row">
-                            {day.hotel_images
-                              .slice(0, 2)
-                              .map((img, imgIndex) => (
-                                <div className="image-container" key={imgIndex}>
-                                  <Image
-                                    src={img}
-                                    alt={`${day.hotel_name} Image ${
-                                      imgIndex + 1
-                                    }`}
-                                    width={300}
-                                    height={200}
-                                  />
-                                  <p className="hotel-info">{day.hotel_name}</p>
-                                </div>
-                              ))}
+                            {day.hotel_images.slice(0, 2).map((img, imgIndex) => (
+                              <div className="image-container" key={imgIndex}>
+                                <Image
+                                  src={img}
+                                  alt={`${day.hotel_name} Image ${imgIndex + 1}`}
+                                  width={300}
+                                  height={200}
+                                />
+                                <p className="hotel-info">{day.hotel_name}</p>
+                              </div>
+                            ))}
                           </div>
                         )}
                         <div className="inclusions">
@@ -691,25 +620,14 @@ const PackageDetails: React.FC = () => {
           <div className="price-section">
             <h2 className="package-title">{packageData.package_name}</h2>
             <div className="price-details">
-              <span className="current-price">
-                USD {packageData.discounted_price || packageData.total_price}
-              </span>
+              <span className="current-price">USD {packageData.discounted_price || packageData.total_price}</span>
               {packageData.discounted_price && (
                 <>
-                  <span className="original-price">
-                    USD {packageData.total_price}
-                  </span>
+                  <span className="original-price">USD {packageData.total_price}</span>
                   <div className="save-badge">
                     <span className="save-text">SAVE</span>
                     <span className="save-percent">
-                      Upto{" "}
-                      {Math.round(
-                        ((parseFloat(packageData.total_price) -
-                          parseFloat(packageData.discounted_price)) /
-                          parseFloat(packageData.total_price)) *
-                          100
-                      )}
-                      %
+                      Upto {Math.round((parseFloat(packageData.total_price) - parseFloat(packageData.discounted_price)) / parseFloat(packageData.total_price) * 100)}%
                     </span>
                   </div>
                 </>
@@ -772,21 +690,15 @@ const PackageDetails: React.FC = () => {
                         placeholder="+1"
                         classNamePrefix="react-select"
                         className={`${errors.country_code ? "is-invalid" : ""}`}
-                        value={countryOptions.find(
-                          (option) => option.value === field.value
-                        )}
-                        onChange={(selectedOption) =>
-                          field.onChange(selectedOption?.value)
-                        }
+                        value={countryOptions.find((option) => option.value === field.value)}
+                        onChange={(selectedOption) => field.onChange(selectedOption?.value)}
                         styles={{
                           control: (base, state) => ({
                             ...base,
-                            width: "90px", // Set width here
-                            height: "35px", // Set height here
-                            borderColor: errors.country_code
-                              ? "#dc3545"
-                              : "#ced4da",
-                            minHeight: "40px", // Makes sure height isn't overridden
+                            width: "90px",        // Set width here
+                            height: "35px",        // Set height here
+                            borderColor: errors.country_code ? "#dc3545" : "#ced4da",
+                            minHeight: "40px",     // Makes sure height isn't overridden
                           }),
                           menu: (base) => ({
                             ...base,
@@ -811,9 +723,7 @@ const PackageDetails: React.FC = () => {
                   />
                 </div>
                 {errors.mobile_number && (
-                  <p className="error-message">
-                    {errors.mobile_number.message}
-                  </p>
+                  <p className="error-message">{errors.mobile_number.message}</p>
                 )}
               </div>
 
@@ -827,9 +737,7 @@ const PackageDetails: React.FC = () => {
                     className={errors.travel_date ? "error" : ""}
                   />
                   {errors.travel_date && (
-                    <p className="error-message">
-                      {errors.travel_date.message}
-                    </p>
+                    <p className="error-message">{errors.travel_date.message}</p>
                   )}
                 </div>
                 <div className="form-group">
@@ -842,9 +750,7 @@ const PackageDetails: React.FC = () => {
                     min="1"
                   />
                   {errors.traveller_count && (
-                    <p className="error-message">
-                      {errors.traveller_count.message}
-                    </p>
+                    <p className="error-message">{errors.traveller_count.message}</p>
                   )}
                 </div>
               </div>
@@ -883,12 +789,7 @@ const PackageDetails: React.FC = () => {
             <ul className="package-list">
               {inclusions.map((item, index) => (
                 <li key={index}>
-                  <Image
-                    src="/images/images/check.svg"
-                    alt="✔"
-                    width={16}
-                    height={16}
-                  />
+                  <Image src="/images/images/check.svg" alt="✔" width={16} height={16} />
                   {item.trim()}
                 </li>
               ))}
@@ -901,12 +802,7 @@ const PackageDetails: React.FC = () => {
             <ul className="package-list">
               {exclusions.map((item, index) => (
                 <li key={index}>
-                  <Image
-                    src="/images/images/cross.svg"
-                    alt="✘"
-                    width={16}
-                    height={16}
-                  />
+                  <Image src="/images/images/cross.svg" alt="✘" width={16} height={16} />
                   {item.trim()}
                 </li>
               ))}

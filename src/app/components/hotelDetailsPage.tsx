@@ -1,13 +1,21 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, useRouter} from 'next/navigation';
-import Image from 'next/image';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../assets/css/details.css';
-import { FiMapPin, FiStar, FiPhone, FiWifi } from 'react-icons/fi';
-import { FaSwimmingPool, FaSpa, FaDumbbell, FaParking, FaUtensils, FaRegStar, FaStarHalfAlt } from 'react-icons/fa';
-import { Row, Col } from 'react-bootstrap';
+import React, { useState, useEffect, useMemo } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../assets/css/details.css";
+import { FiMapPin, FiStar, FiPhone, FiWifi } from "react-icons/fi";
+import {
+  FaSwimmingPool,
+  FaSpa,
+  FaDumbbell,
+  FaParking,
+  FaUtensils,
+  FaRegStar,
+  FaStarHalfAlt,
+} from "react-icons/fa";
+import { Row, Col } from "react-bootstrap";
 import AuthPopup from "./apppopup";
 interface Hotel {
   code: number;
@@ -40,7 +48,7 @@ interface Hotel {
     phoneType: string;
   }>;
   rooms?: Room[];
-  
+
   checkInx?: string;
 
   checkOut?: string;
@@ -116,8 +124,8 @@ const HotelDetails = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [filters, setFilters] = useState({
-    roomType: '',
-    breakfast: ''
+    roomType: "",
+    breakfast: "",
   });
   const router = useRouter();
   const [showLoginPopup, setShowLoginPopup] = useState(false);
@@ -127,31 +135,32 @@ const HotelDetails = () => {
 
   const handleBookClick = async (room: Room) => {
     // Check if we have a token in localStorage
-    const authToken = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    
+    const authToken =
+      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
     if (!authToken) {
       // No token found - show login popup
       setSelectedRoom(room);
       setShowLoginPopup(true);
       return;
     }
-  
+
     // Optional: Basic token validation
     try {
       setIsAuthenticating(true);
-      
+
       // Simple check if token exists and looks valid
-      if (authToken && authToken.split('.').length === 3) {
+      if (authToken && authToken.split(".").length === 3) {
         // Token exists and has JWT structure (header.payload.signature)
         proceedToBooking(room);
       } else {
         // Token exists but is malformed
-        localStorage.removeItem('authToken');
+        localStorage.removeItem("authToken");
         setSelectedRoom(room);
         setShowLoginPopup(true);
       }
     } catch (error) {
-      console.error('Error verifying token:', error);
+      console.error("Error verifying token:", error);
       setSelectedRoom(room);
       setShowLoginPopup(true);
     } finally {
@@ -160,45 +169,48 @@ const HotelDetails = () => {
   };
 
   const proceedToBooking = (room: Room) => {
-    sessionStorage.setItem(`booking_${hotelId}`, JSON.stringify({
-      hotel,
-      room
-    }));
-    router.push(`/booking/${hotelId}`); 
+    sessionStorage.setItem(
+      `booking_${hotelId}`,
+      JSON.stringify({
+        hotel,
+        room,
+      })
+    );
+    router.push(`/booking/${hotelId}`);
     // window.open(`/booking/${hotelId}`, '_blank', 'noopener,noreferrer');
-
   };
 
-
- const handleLoginSuccess = async () => {
-  if (selectedRoom) {
-    try {
-      proceedToBooking(selectedRoom);
-    } catch (error) {
-      console.error('Booking failed after login:', error);
-      setAuthError('Failed to proceed with booking');
+  const handleLoginSuccess = async () => {
+    if (selectedRoom) {
+      try {
+        proceedToBooking(selectedRoom);
+      } catch (error) {
+        console.error("Booking failed after login:", error);
+        setAuthError("Failed to proceed with booking");
+      }
     }
-  }
-};
+  };
   useEffect(() => {
     const abortController = new AbortController();
-    
+
     const fetchHotelData = async () => {
       try {
         setLoading(true);
         setError(null);
-  
 
         // Fetch hotel details
-        const hotelRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/hotel-details`, {
-          method: "POST",
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ hotel_id: hotelId }),
-          signal: abortController.signal
-        });
-        
-        if (!hotelRes.ok) throw new Error('Failed to fetch hotel details');
-        
+        const hotelRes = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/hotel-details`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ hotel_id: hotelId }),
+            signal: abortController.signal,
+          }
+        );
+
+        if (!hotelRes.ok) throw new Error("Failed to fetch hotel details");
+
         const hotelJson = await hotelRes.json();
         const hotelData: HotelData = hotelJson.data?.hotel || hotelJson.hotel;
         let cachedRating: string | null = null;
@@ -207,129 +219,177 @@ const HotelDetails = () => {
         // Fetch room rates
         const searchSession = sessionStorage.getItem(`hotel_${hotelId}`);
         let availableRoomDetails: Room[] = [];
-  
+
         if (searchSession) {
           const parsed = JSON.parse(searchSession);
-          cachedRating = parsed?.hotel?.rating ? parseFloat(parsed.hotel.rating).toString() : null;
-           checkInx = parsed?.checkIN;
-           checkOut = parsed?.checkOut;
-          const validRateKeys = parsed.rooms
-            ?.map((room: any) => room.rates?.[0]?.rateKey)
-            ?.filter(Boolean) || [];
-  
+          cachedRating = parsed?.hotel?.rating
+            ? parseFloat(parsed.hotel.rating).toString()
+            : null;
+          checkInx = parsed?.checkIN;
+          checkOut = parsed?.checkOut;
+          const validRateKeys =
+            parsed.rooms
+              ?.map((room: any) => room.rates?.[0]?.rateKey)
+              ?.filter(Boolean) || [];
+
           if (validRateKeys.length > 0) {
             try {
-              const ratesRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/checkFare`, {
-                method: 'POST',
-                headers: { 
-                  'Content-Type': 'application/json',
-                  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZWVhNTA5OTUwMzllOTk5ZGZkYTljYSIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNzQ1NTc0MTExLCJleHAiOjE3NDU1OTIxMTF9.x_09fZRiZvgFadL-14icvjNZ_fPsWQFzG9hpF2kmVWw'
-                },
-                body: JSON.stringify({
-                  rooms: validRateKeys.slice(0, 10).map((rateKey: string) => ({ rateKey }))
-                }),
-                signal: abortController.signal
-              });
-      
-              if (!ratesRes.ok) throw new Error('Failed to fetch room rates');
-      
+              const ratesRes = await fetch(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/hotels/checkFare`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZWVhNTA5OTUwMzllOTk5ZGZkYTljYSIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNzQ1NTc0MTExLCJleHAiOjE3NDU1OTIxMTF9.x_09fZRiZvgFadL-14icvjNZ_fPsWQFzG9hpF2kmVWw",
+                  },
+                  body: JSON.stringify({
+                    rooms: validRateKeys
+                      .slice(0, 10)
+                      .map((rateKey: string) => ({ rateKey })),
+                  }),
+                  signal: abortController.signal,
+                }
+              );
+
+              if (!ratesRes.ok) throw new Error("Failed to fetch room rates");
+
               const ratesJson = await ratesRes.json();
-              const availableRoomsData: Room[] = ratesJson.data?.hotel?.rooms || ratesJson.rooms || [];
-  
-              const normalizeCode = (str: string = '') => str.replace(/[\s_\-.]/g, '').toLowerCase();
-              const availableRoomsMap = availableRoomsData.reduce((acc: Record<string, Room>, avRoom) => {
-                const key = normalizeCode(avRoom.code);
-                if (key) acc[key] = avRoom;
-                return acc;
-              }, {});
-  
-              availableRoomDetails = hotelData.rooms
-                ?.map(room => {
-                  const normalizedCode = normalizeCode(room.roomCode);
-                  const matchedRoom = availableRoomsMap[normalizedCode];
-                  if (!matchedRoom) return null;
-  
-                  const images = hotelData.images?.filter(img => img.roomCode === room.roomCode) || [];
-          
-                  return {
-                    code: room.roomCode || '',
-                    name: room.description || '',
-                    rates: matchedRoom.rates || [],
-                    roomFacilities: room.roomFacilities?.map(fac => fac.description?.content || '') || [],
-                    size: room.roomFacilities?.find(fac => fac.facilityCode === 295)?.number?.toString(),
-                    images: images.map(img => ({
-                      path: img.path || '',
-                      roomCode: img.roomCode || '',
-                      roomType: img.roomType || ''
-                    }))
-                  };
-                })
-                .filter((room): room is Room => room !== null) || [];
+              const availableRoomsData: Room[] =
+                ratesJson.data?.hotel?.rooms || ratesJson.rooms || [];
+
+              const normalizeCode = (str: string = "") =>
+                str.replace(/[\s_\-.]/g, "").toLowerCase();
+              const availableRoomsMap = availableRoomsData.reduce(
+                (acc: Record<string, Room>, avRoom) => {
+                  const key = normalizeCode(avRoom.code);
+                  if (key) acc[key] = avRoom;
+                  return acc;
+                },
+                {}
+              );
+
+              availableRoomDetails =
+                hotelData.rooms
+                  ?.map((room) => {
+                    const normalizedCode = normalizeCode(room.roomCode);
+                    const matchedRoom = availableRoomsMap[normalizedCode];
+                    if (!matchedRoom) return null;
+
+                    const images =
+                      hotelData.images?.filter(
+                        (img) => img.roomCode === room.roomCode
+                      ) || [];
+
+                    return {
+                      code: room.roomCode || "",
+                      name: room.description || "",
+                      rates: matchedRoom.rates || [],
+                      roomFacilities:
+                        room.roomFacilities?.map(
+                          (fac) => fac.description?.content || ""
+                        ) || [],
+                      size: room.roomFacilities
+                        ?.find((fac) => fac.facilityCode === 295)
+                        ?.number?.toString(),
+                      images: images.map((img) => ({
+                        path: img.path || "",
+                        roomCode: img.roomCode || "",
+                        roomType: img.roomType || "",
+                      })),
+                    };
+                  })
+                  .filter((room): room is Room => room !== null) || [];
             } catch (err) {
-              console.error('Error fetching room rates:', err);
+              console.error("Error fetching room rates:", err);
             }
           } // Closing brace for if(validRateKeys.length > 0)
         } // Closing brace for if(searchSession)
-  
+
         // Calculate min and max rates
-        const rates = availableRoomDetails.flatMap(room => room.rates.map(rate => parseFloat(rate.net || '0')));
-        const minRate = rates.length ? Math.min(...rates).toString() : '0';
-        const maxRate = rates.length ? Math.max(...rates).toString() : '0';
-  
+        const rates = availableRoomDetails.flatMap((room) =>
+          room.rates.map((rate) => parseFloat(rate.net || "0"))
+        );
+        const minRate = rates.length ? Math.min(...rates).toString() : "0";
+        const maxRate = rates.length ? Math.max(...rates).toString() : "0";
+
         // Transform data
         const transformedHotel: Hotel = {
-          
           code: hotelData.code || 0,
-          name: hotelData.name?.content || 'Hotel',
-          description: hotelData.description?.content || 'No description available',
-          categoryName: hotelData.category?.description?.content || 'Hotel',
-          destinationName: hotelData.destination?.name?.content || hotelData.city?.content || 'City',
-          zoneName: hotelData.zone?.name || hotelData.city?.content || 'Zone',
-          latitude: hotelData.coordinates?.latitude?.toString() || '0',
-          longitude: hotelData.coordinates?.longitude?.toString() || '0',
+          name: hotelData.name?.content || "Hotel",
+          description:
+            hotelData.description?.content || "No description available",
+          categoryName: hotelData.category?.description?.content || "Hotel",
+          destinationName:
+            hotelData.destination?.name?.content ||
+            hotelData.city?.content ||
+            "City",
+          zoneName: hotelData.zone?.name || hotelData.city?.content || "Zone",
+          latitude: hotelData.coordinates?.latitude?.toString() || "0",
+          longitude: hotelData.coordinates?.longitude?.toString() || "0",
           minRate,
           maxRate,
-          currency: 'USD',
+          currency: "USD",
           rating: cachedRating ?? "0",
           checkInx: checkInx ?? "0",
           checkOut: checkOut ?? "0",
           // Ensure rating is always a string
-          stars: hotelData.category?.code ? parseInt(hotelData.category.code) / 10 : 3,
-          images: hotelData.images?.map(img => ({
-            src: img.path ? `https://photos.hotelbeds.com/giata/${img.path}` : '',
-            type: img.type?.code || ''
-          })) || [],
+          stars: hotelData.category?.code
+            ? parseInt(hotelData.category.code) / 10
+            : 3,
+          images:
+            hotelData.images?.map((img) => ({
+              src: img.path
+                ? `https://photos.hotelbeds.com/giata/${img.path}`
+                : "",
+              type: img.type?.code || "",
+            })) || [],
           amenities: (hotelData.facilities || [])
-            .filter(fac => fac?.facilityGroupCode === 60)
-            .map(fac => fac?.description?.content || '')
+            .filter((fac) => fac?.facilityGroupCode === 60)
+            .map((fac) => fac?.description?.content || "")
             .filter(Boolean) as string[],
           facilities: (hotelData.facilities || [])
-            .filter(fac => fac?.facilityGroupCode !== 60)
-            .map(fac => fac?.description?.content || '')
+            .filter((fac) => fac?.facilityGroupCode !== 60)
+            .map((fac) => fac?.description?.content || "")
             .filter(Boolean) as string[],
           policies: {
-            checkIn: (hotelData.facilities || []).find(f => f?.facilityCode === 260 && f?.facilityGroupCode === 70)?.timeFrom || '2 PM',
-            checkOut: (hotelData.facilities || []).find(f => f?.facilityCode === 390 && f?.facilityGroupCode === 70)?.timeTo || '12 Noon',
-            pets: (hotelData.facilities || []).find(f => f?.facilityCode === 287) ? 'Allowed' : 'Not allowed',
-            paymentMethods: ['Credit Card', 'Cash']
+            checkIn:
+              (hotelData.facilities || []).find(
+                (f) => f?.facilityCode === 260 && f?.facilityGroupCode === 70
+              )?.timeFrom || "2 PM",
+            checkOut:
+              (hotelData.facilities || []).find(
+                (f) => f?.facilityCode === 390 && f?.facilityGroupCode === 70
+              )?.timeTo || "12 Noon",
+            pets: (hotelData.facilities || []).find(
+              (f) => f?.facilityCode === 287
+            )
+              ? "Allowed"
+              : "Not allowed",
+            paymentMethods: ["Credit Card", "Cash"],
           },
-          phones: (hotelData.phones || []).map(phone => ({
-            phoneNumber: phone.phoneNumber || '',
-            phoneType: phone.phoneType || ''
+          phones: (hotelData.phones || []).map((phone) => ({
+            phoneNumber: phone.phoneNumber || "",
+            phoneType: phone.phoneType || "",
           })),
-          rooms: availableRoomDetails
+          rooms: availableRoomDetails,
         };
-  
+
         // Cache to localStorage
-        localStorage.setItem(`hotel_${hotelId}_full`, JSON.stringify({
-          data: transformedHotel,
-          timestamp: Date.now()
-        }));
-  
+        localStorage.setItem(
+          `hotel_${hotelId}_full`,
+          JSON.stringify({
+            data: transformedHotel,
+            timestamp: Date.now(),
+          })
+        );
+
         setHotel(transformedHotel);
       } catch (err) {
         if (!abortController.signal.aborted) {
-          setError(err instanceof Error ? err.message : 'An unknown error occurred');
+          setError(
+            err instanceof Error ? err.message : "An unknown error occurred"
+          );
         }
       } finally {
         if (!abortController.signal.aborted) {
@@ -337,7 +397,7 @@ const HotelDetails = () => {
         }
       }
     };
-  
+
     fetchHotelData();
     return () => abortController.abort();
   }, [hotelId]);
@@ -345,74 +405,97 @@ const HotelDetails = () => {
   // Filter rooms
   const filteredRooms = useMemo(() => {
     if (!hotel?.rooms) return [];
-    
-    return hotel.rooms.filter(room => {
+
+    return hotel.rooms.filter((room) => {
       // Room type filter
-      const typeMatch = !filters.roomType || 
-                       room.name?.toLowerCase().includes(filters.roomType.toLowerCase());
-      
+      const typeMatch =
+        !filters.roomType ||
+        room.name?.toLowerCase().includes(filters.roomType.toLowerCase());
+
       // Breakfast filter
-      const hasBreakfast = room.rates?.some(rate => 
-        rate.boardName?.toLowerCase().includes('breakfast'));
-      
-      if (filters.breakfast === 'with-breakfast') {
+      const hasBreakfast = room.rates?.some((rate) =>
+        rate.boardName?.toLowerCase().includes("breakfast")
+      );
+
+      if (filters.breakfast === "with-breakfast") {
         return typeMatch && hasBreakfast;
-      } else if (filters.breakfast === 'without-breakfast') {
+      } else if (filters.breakfast === "without-breakfast") {
         return typeMatch && !hasBreakfast;
       }
-      
+
       return typeMatch;
     });
   }, [hotel?.rooms, filters]);
 
   const getRoomImage = (roomCode: string) => {
-    if (!hotel) return 'https://photos.hotelbeds.com/giata/01/017573/017573a_hb_a_037.jpg';
-    
-    const roomWithImages = hotel.rooms?.find(r => r.code === roomCode);
+    if (!hotel)
+      return "https://photos.hotelbeds.com/giata/01/017573/017573a_hb_a_037.jpg";
+
+    const roomWithImages = hotel.rooms?.find((r) => r.code === roomCode);
     if (roomWithImages?.images?.length) {
       return `https://photos.hotelbeds.com/giata/${roomWithImages.images[0].path}`;
     }
-    
-    const roomImage = hotel.images?.find(img => img.type === 'HAB');
-    return roomImage?.src || 'https://photos.hotelbeds.com/giata/01/017573/017573a_hb_a_037.jpg';
+
+    const roomImage = hotel.images?.find((img) => img.type === "HAB");
+    return (
+      roomImage?.src ||
+      "https://photos.hotelbeds.com/giata/01/017573/017573a_hb_a_037.jpg"
+    );
   };
 
-  const nextSlide = () => setCurrentSlide(prev => (prev === 2 ? 0 : prev + 1));
-  const prevSlide = () => setCurrentSlide(prev => (prev === 0 ? 2 : prev - 1));
+  const nextSlide = () =>
+    setCurrentSlide((prev) => (prev === 2 ? 0 : prev + 1));
+  const prevSlide = () =>
+    setCurrentSlide((prev) => (prev === 0 ? 2 : prev - 1));
   const goToSlide = (index: number) => setCurrentSlide(index);
 
-  if (loading) return <div className="container py-4 text-center">Loading hotel details...</div>;
-  if (error) return <div className="container py-4 alert alert-danger">Error: {error}</div>;
-  if (!hotel) return <div className="container py-4 alert alert-warning">No hotel data found</div>;
+  if (loading)
+    return (
+      <div className="container py-4 text-center">Loading hotel details...</div>
+    );
+  if (error)
+    return (
+      <div className="container py-4 alert alert-danger">Error: {error}</div>
+    );
+  if (!hotel)
+    return (
+      <div className="container py-4 alert alert-warning">
+        No hotel data found
+      </div>
+    );
 
   // Extract rules from hotel data
   const rules = [
-    `Check-in from ${hotel.policies?.checkIn || '2 PM'}`,
-    `Check-out until ${hotel.policies?.checkOut || '12 Noon'}`,
-    hotel.policies?.pets === 'Allowed' ? 'Pets allowed' : 'No pets allowed',
-    'Valid ID required at check-in'
+    `Check-in from ${hotel.policies?.checkIn || "2 PM"}`,
+    `Check-out until ${hotel.policies?.checkOut || "12 Noon"}`,
+    hotel.policies?.pets === "Allowed" ? "Pets allowed" : "No pets allowed",
+    "Valid ID required at check-in",
   ];
 
   // Display first 5 images or default image
   const displayedImages = hotel.images?.slice(0, 5) || [];
-  const mainImage = displayedImages[0]?.src || 'https://photos.hotelbeds.com/giata/01/017573/017573a_hb_a_037.jpg';
+  const mainImage =
+    displayedImages[0]?.src ||
+    "https://photos.hotelbeds.com/giata/01/017573/017573a_hb_a_037.jpg";
 
   // Get unique room types for filter dropdown
-  const uniqueRoomTypes = Array.from(new Set(hotel?.rooms?.map(room => room.name).filter(Boolean)) || []);
+  const uniqueRoomTypes = Array.from(
+    new Set(hotel?.rooms?.map((room) => room.name).filter(Boolean)) || []
+  );
 
   return (
     <div className="container py-4">
-        {showLoginPopup && (
-      <AuthPopup
-        onClose={() => {
-          setShowLoginPopup(false);
-          setAuthError(null);
-          setSelectedRoom(null);
-        }}
-        onSuccess={handleLoginSuccess}
-        error={authError}
-      />
-    )}
+      {showLoginPopup && (
+        <AuthPopup
+          onClose={() => {
+            setShowLoginPopup(false);
+            setAuthError(null);
+            setSelectedRoom(null);
+          }}
+          onSuccess={handleLoginSuccess}
+          error={authError}
+        />
+      )}
       {/* Title & Price */}
       <div className="d-flex justify-content-between flex-wrap mb-4">
         <div className="pe-md-5">
@@ -423,51 +506,63 @@ const HotelDetails = () => {
           </div>
           <div className="d-flex align-items-center gap-1">
             <FiMapPin size={14} />
-            <span className="text-muted">{hotel.destinationName} | {hotel.zoneName}</span>
+            <span className="text-muted">
+              {hotel.destinationName} | {hotel.zoneName}
+            </span>
           </div>
           <div className="d-flex align-items-center mt-2">
-  {[1, 2, 3, 4, 5].map((star) => {
-    const numericRating = parseFloat(hotel.rating || "0");
-    // Show full star if rating is within 0.25 of the star value
-    const showFullStar = numericRating >= star - 0.25;
-    // Show half star if rating is within 0.25-0.75 of the star value
-    const showHalfStar = !showFullStar && numericRating >= star - 0.75;
-    
-    return (
-      <span key={star}>
-        {showFullStar ? (
-          <FiStar className="text-warning" />
-        ) : showHalfStar ? (
-          <FaStarHalfAlt className="text-warning" />
-        ) : (
-          <FaRegStar className="text-warning" />
-        )}
-      </span>
-    );
-  })}
-  <span className="ms-2 badge bg-light text-dark">
-    {parseFloat(hotel.rating || "0").toFixed(1)} / 5
-  </span>
-</div>
+            {[1, 2, 3, 4, 5].map((star) => {
+              const numericRating = parseFloat(hotel.rating || "0");
+              // Show full star if rating is within 0.25 of the star value
+              const showFullStar = numericRating >= star - 0.25;
+              // Show half star if rating is within 0.25-0.75 of the star value
+              const showHalfStar =
+                !showFullStar && numericRating >= star - 0.75;
+
+              return (
+                <span key={star}>
+                  {showFullStar ? (
+                    <FiStar className="text-warning" />
+                  ) : showHalfStar ? (
+                    <FaStarHalfAlt className="text-warning" />
+                  ) : (
+                    <FaRegStar className="text-warning" />
+                  )}
+                </span>
+              );
+            })}
+            <span className="ms-2 badge bg-light text-dark">
+              {parseFloat(hotel.rating || "0").toFixed(1)} / 5
+            </span>
+          </div>
         </div>
         <div className="text-end mt-3 mt-md-0">
           <h4>
-            ${hotel.minRate}<small className="text-muted fs-6">/ night </small>
+            ${hotel.minRate}
+            <small className="text-muted fs-6">/ night </small>
           </h4>
-          <button className="btn btn-primary mt-2" onClick={() => {
-    const el = document.querySelector('.rooms-container');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  }}>Select Room</button>
+          <button
+            className="btn btn-primary mt-2"
+            onClick={() => {
+              const el = document.querySelector(".rooms-container");
+              if (el) {
+                el.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+          >
+            Select Room
+          </button>
         </div>
       </div>
 
       {/* Anchor Nav */}
       <ul className="custom-tabs nav flex-wrap gap-3 mb-4">
-        {['amenities', 'about', 'rules', 'reviews', 'rooms'].map((section) => (
+        {["amenities", "about", "rules", "reviews", "rooms"].map((section) => (
           <li key={section} className="nav-item">
-            <a href={`#${section}`} className="nav-link custom-tab-link text-capitalize">
+            <a
+              href={`#${section}`}
+              className="nav-link custom-tab-link text-capitalize"
+            >
               {section}
             </a>
           </li>
@@ -516,23 +611,31 @@ const HotelDetails = () => {
           <div id="amenities" className="mb-5">
             <h5 className="fw-bold">Amenities</h5>
             <Row>
-              {(showAllAmenities ? hotel.amenities : hotel.amenities?.slice(0, 12)).map((amenity, index) => (
+              {(showAllAmenities
+                ? hotel.amenities
+                : hotel.amenities?.slice(0, 12)
+              ).map((amenity, index) => (
                 <Col xs={6} md={4} key={index} className="mb-2">
                   <div className="amenity-item">
-                    {amenity === 'Pool' && <FaSwimmingPool className="me-2" />}
-                    {amenity === 'Wifi' && <FiWifi className="me-2" />}
-                    {amenity === 'Gym' && <FaDumbbell className="me-2" />}
-                    {amenity === 'Spa' && <FaSpa className="me-2" />}
-                    {amenity === 'Parking' && <FaParking className="me-2" />}
-                    {amenity === 'Restaurant' && <FaUtensils className="me-2" />}
+                    {amenity === "Pool" && <FaSwimmingPool className="me-2" />}
+                    {amenity === "Wifi" && <FiWifi className="me-2" />}
+                    {amenity === "Gym" && <FaDumbbell className="me-2" />}
+                    {amenity === "Spa" && <FaSpa className="me-2" />}
+                    {amenity === "Parking" && <FaParking className="me-2" />}
+                    {amenity === "Restaurant" && (
+                      <FaUtensils className="me-2" />
+                    )}
                     {amenity}
                   </div>
                 </Col>
               ))}
             </Row>
             {hotel.amenities && hotel.amenities.length > 12 && (
-              <button className="custom-btn" onClick={() => setShowAllAmenities(!showAllAmenities)}>
-                {showAllAmenities ? 'Hide Amenities' : 'View All Amenities'}
+              <button
+                className="custom-btn"
+                onClick={() => setShowAllAmenities(!showAllAmenities)}
+              >
+                {showAllAmenities ? "Hide Amenities" : "View All Amenities"}
               </button>
             )}
             <hr />
@@ -541,7 +644,7 @@ const HotelDetails = () => {
           {/* Section: About */}
           <div id="about" className="mb-5">
             <h5 className="fw-bold">About the Hotel</h5>
-            <p>{hotel.description}</p>
+            <p style={{ textAlign: "justify" }}>{hotel.description}</p>
             <hr />
           </div>
 
@@ -553,8 +656,11 @@ const HotelDetails = () => {
                 <li key={idx}>📝 {rule}</li>
               ))}
             </ul>
-            <button className="custom-btn" onClick={() => setShowAllRules(!showAllRules)}>
-              {showAllRules ? 'Hide Rules' : 'View All Rules'}
+            <button
+              className="custom-btn"
+              onClick={() => setShowAllRules(!showAllRules)}
+            >
+              {showAllRules ? "Hide Rules" : "View All Rules"}
             </button>
             <hr />
           </div>
@@ -588,7 +694,10 @@ const HotelDetails = () => {
                     loading="lazy"
                   ></iframe>
                 ) : (
-                  <div className="d-flex align-items-center justify-content-center bg-light" style={{height: '100%'}}>
+                  <div
+                    className="d-flex align-items-center justify-content-center bg-light"
+                    style={{ height: "100%" }}
+                  >
                     <p>Location not available</p>
                   </div>
                 )}
@@ -605,7 +714,8 @@ const HotelDetails = () => {
               <ul className="list-unstyled">
                 {hotel.phones?.map((phone, idx) => (
                   <li key={idx}>
-                    <strong>{phone.phoneType || 'Phone'}:</strong> {phone.phoneNumber || 'N/A'}
+                    <strong>{phone.phoneType || "Phone"}:</strong>{" "}
+                    {phone.phoneNumber || "N/A"}
                   </li>
                 ))}
               </ul>
@@ -613,15 +723,18 @@ const HotelDetails = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Reviews Section */}
-      <div className='row mb-4'>
+      <div className="row mb-4">
         <div className="reviews-container">
           <div id="reviews" className="mb-4">
             <h5 className="fw-bold">Reviews</h5>
           </div>
 
-          <div className="reviews-slider" style={{ transform: `translateX(-${currentSlide * 100}%)` }}> 
+          <div
+            className="reviews-slider"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
             {/* Review cards would go here */}
           </div>
 
@@ -632,9 +745,9 @@ const HotelDetails = () => {
             </button>
             <div className="slider-dots">
               {[0, 1, 2].map((index) => (
-                <span 
+                <span
                   key={index}
-                  className={`dot ${currentSlide === index ? 'active' : ''}`}
+                  className={`dot ${currentSlide === index ? "active" : ""}`}
                   onClick={() => goToSlide(index)}
                 ></span>
               ))}
@@ -649,14 +762,16 @@ const HotelDetails = () => {
       {/* Rooms Section */}
       <div className="rooms-container">
         <h5 className="fw-bold mb-4">Rooms Available</h5>
-        
+
         {/* Filters */}
         <div className="filter-container d-flex align-items-center gap-3 mb-4">
           <div className="position-relative">
-            <select 
-              className="form-select capsule-select" 
+            <select
+              className="form-select capsule-select"
               value={filters.roomType}
-              onChange={(e) => setFilters({...filters, roomType: e.target.value})}
+              onChange={(e) =>
+                setFilters({ ...filters, roomType: e.target.value })
+              }
             >
               <option value="">All Room Types</option>
               {uniqueRoomTypes.map((type, idx) => (
@@ -666,12 +781,14 @@ const HotelDetails = () => {
               ))}
             </select>
           </div>
-          
+
           <div className="position-relative">
-            <select 
-              className="form-select capsule-select" 
+            <select
+              className="form-select capsule-select"
               value={filters.breakfast}
-              onChange={(e) => setFilters({...filters, breakfast: e.target.value})}
+              onChange={(e) =>
+                setFilters({ ...filters, breakfast: e.target.value })
+              }
             >
               <option value="">All Options</option>
               <option value="with-breakfast">With Breakfast</option>
@@ -680,9 +797,9 @@ const HotelDetails = () => {
           </div>
 
           {(filters.roomType || filters.breakfast) && (
-            <button 
+            <button
               className="btn btn-outline-secondary ms-2"
-              onClick={() => setFilters({ roomType: '', breakfast: '' })}
+              onClick={() => setFilters({ roomType: "", breakfast: "" })}
             >
               Clear Filters
             </button>
@@ -699,49 +816,75 @@ const HotelDetails = () => {
                   <div className="row g-4 align-items-start">
                     {/* Image Column - Left */}
                     <div className="col-md-4">
-                      <div className="room-image-container" style={{ height: '51%' }}>
+                      <div
+                        className="room-image-container"
+                        style={{ height: "51%" }}
+                      >
                         <Image
                           src={getRoomImage(room.code)}
-                          alt={room.name || 'Room image'}
+                          alt={room.name || "Room image"}
                           width={300}
                           height={225}
                           className="rounded-3 img-fluid"
-                          style={{ objectFit: 'cover', height: '100%', width: '100%' }}
+                          style={{
+                            objectFit: "cover",
+                            height: "100%",
+                            width: "100%",
+                          }}
                         />
                       </div>
                     </div>
 
                     {/* Details Column - Right */}
                     <div className="col-md-8">
-                      <h5 className="card-title fw-bold mb-2">{room.name || 'Room'}</h5>
+                      <h5 className="card-title fw-bold mb-2">
+                        {room.name || "Room"}
+                      </h5>
                       <p className="text-muted mb-3">
-                        {room.size || 'N/A'} sq.ft · Standard
+                        {room.size || "N/A"} sq.ft · Standard
                       </p>
-                      
+
                       <div className="amenities bg-light p-3 rounded">
                         <div className="row">
                           <div className="col-6">
-                            {(room.roomFacilities || []).slice(0, 3).map((facility, idx) => (
-                              <div className="d-flex align-items-center mb-2" key={idx}>
-                                <i className="fas fa-check text-primary me-2" style={{ width: '20px' }}></i>
-                                <span>{facility}</span>
-                              </div>
-                            ))}
+                            {(room.roomFacilities || [])
+                              .slice(0, 3)
+                              .map((facility, idx) => (
+                                <div
+                                  className="d-flex align-items-center mb-2"
+                                  key={idx}
+                                >
+                                  <i
+                                    className="fas fa-check text-primary me-2"
+                                    style={{ width: "20px" }}
+                                  ></i>
+                                  <span>{facility}</span>
+                                </div>
+                              ))}
                           </div>
                           <div className="col-6">
-                            {(room.roomFacilities || []).slice(3, 6).map((facility, idx) => (
-                              <div className="d-flex align-items-center mb-2" key={idx}>
-                                <i className="fas fa-check text-primary me-2" style={{ width: '20px' }}></i>
-                                <span>{facility}</span>
-                              </div>
-                            ))}
-                            {room.roomFacilities && room.roomFacilities.length > 6 && (
-                              <div className="d-flex align-items-center">
-                                <a href="#" className="text-primary small">
-                                  + {room.roomFacilities.length - 6} more
-                                </a>
-                              </div>
-                            )}
+                            {(room.roomFacilities || [])
+                              .slice(3, 6)
+                              .map((facility, idx) => (
+                                <div
+                                  className="d-flex align-items-center mb-2"
+                                  key={idx}
+                                >
+                                  <i
+                                    className="fas fa-check text-primary me-2"
+                                    style={{ width: "20px" }}
+                                  ></i>
+                                  <span>{facility}</span>
+                                </div>
+                              ))}
+                            {room.roomFacilities &&
+                              room.roomFacilities.length > 6 && (
+                                <div className="d-flex align-items-center">
+                                  <a href="#" className="text-primary small">
+                                    + {room.roomFacilities.length - 6} more
+                                  </a>
+                                </div>
+                              )}
                           </div>
                         </div>
                       </div>
@@ -756,30 +899,40 @@ const HotelDetails = () => {
                           <div className="plan-card p-3 border rounded h-100">
                             <div className="d-flex flex-column h-100">
                               <div>
-                                <h6 className="fw-bold mb-2">{rate.boardName || 'Room Only'}</h6>
+                                <h6 className="fw-bold mb-2">
+                                  {rate.boardName || "Room Only"}
+                                </h6>
                                 <p className="small text-muted mb-1">
-                                  {rate.cancellationPolicies[0]?.amount === '0' 
-                                    ? 'Free Cancellation' 
-                                    : 'Cancellation charges apply'}
+                                  {rate.cancellationPolicies[0]?.amount === "0"
+                                    ? "Free Cancellation"
+                                    : "Cancellation charges apply"}
                                 </p>
                               </div>
                               <div className="mt-auto">
                                 <h5 className="mb-1">${rate.net}</h5>
-                                <p className="small text-muted mb-1">+ $000 taxes & fees</p>
-                                <button className="btn btn-primary w-100"  key={room.code}
-           onClick={() => handleBookClick(room)}
-           disabled={isAuthenticating}
-         >
-           {isAuthenticating ? 'Checking...' : 'Book Now'}</button>
+                                <p className="small text-muted mb-1">
+                                  + $000 taxes & fees
+                                </p>
+                                <button
+                                  className="btn btn-primary w-100"
+                                  key={room.code}
+                                  onClick={() => handleBookClick(room)}
+                                  disabled={isAuthenticating}
+                                >
+                                  {isAuthenticating
+                                    ? "Checking..."
+                                    : "Book Now"}
+                                </button>
                               </div>
-                             
                             </div>
                           </div>
                         </div>
                       ))
                     ) : (
                       <div className="col-12">
-                        <div className="alert alert-warning">No rates available for this room</div>
+                        <div className="alert alert-warning">
+                          No rates available for this room
+                        </div>
                       </div>
                     )}
                   </div>

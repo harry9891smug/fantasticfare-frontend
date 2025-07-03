@@ -14,7 +14,10 @@ import SubHeader from "./sub-header";
 import AuthPopup from "./apppopup";
 import { FaPhoneAlt } from "react-icons/fa";
 const Header: React.FC = () => {
-  const [user, setUser] = useState<{ name: string; profileImage?: string } | null>(null);
+  const [user, setUser] = useState<{
+    name: string;
+    profileImage?: string;
+  } | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
@@ -28,28 +31,27 @@ const Header: React.FC = () => {
   }, []);
 
   useEffect(() => {
-  const loadUser = () => {
-    try {
-      const userData = localStorage.getItem("user");
-      if (userData) {
-        setUser(JSON.parse(userData));
-      } else {
+    const loadUser = () => {
+      try {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+          setUser(JSON.parse(userData));
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error("Error parsing user data:", error);
         setUser(null);
       }
-    } catch (error) {
-      console.error("Error parsing user data:", error);
-      setUser(null);
-    }
-  };
+    };
 
-  loadUser(); 
-  window.addEventListener("userUpdated", loadUser);
+    loadUser();
+    window.addEventListener("userUpdated", loadUser);
 
-  return () => {
-    window.removeEventListener("userUpdated", loadUser);
-  };
-}, []);
-
+    return () => {
+      window.removeEventListener("userUpdated", loadUser);
+    };
+  }, []);
 
   const handleNavToggle = () => {
     setIsNavCollapsed(!isNavCollapsed);
@@ -66,19 +68,24 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light navbar-custom">
+      <nav className="navbar navbar-expand-lg navbar-light navbar-custom sticky-top">
         <div className="container">
           <Link href="/" className="navbar-brand">
-            <Image src={logo} alt="Fantastic Fare Logo" width={170} height={50} priority />
+            <Image
+              src={logo}
+              alt="Fantastic Fare Logo"
+              width={170}
+              height={50}
+              priority
+            />
           </Link>
 
-         
           <div className="floating-call-button">
-  <a href="tel:+18334227770" aria-label="Call Us">
-  <FaPhoneAlt />
-  <span className="tooltip-text">Call Us</span>
-  </a>
-</div>
+            <a href="tel:+18334227770" aria-label="Call Us">
+              <FaPhoneAlt />
+              <span className="tooltip-text">Call Us</span>
+            </a>
+          </div>
           <button
             className="navbar-custom"
             type="button"
@@ -88,56 +95,82 @@ const Header: React.FC = () => {
             aria-expanded={!isNavCollapsed}
             aria-label="Toggle navigation"
             onClick={handleNavToggle}
+            style={{
+              borderRadius: "5px",
+              background: "#0389c6",
+              border: "1px solid #0389c6",
+              padding: "5px 2px",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.4)" /* soft white glow */,
+            }}
           >
             <span className="navbar-toggler-iconct"></span>
           </button>
 
-          <div className={`collapse navbar-collapse ${!isNavCollapsed ? 'show' : ''}`} id="navbarNav">
+          <div
+            className={`collapse navbar-collapse ${
+              !isNavCollapsed ? "show" : ""
+            }`}
+            id="navbarNav"
+          >
             <div className="d-flex flex-grow-1 align-items-center flex-lg-row">
               <form className="form-inline d-flex align-items-center flex-column my-lg-0 w-100 mx-lg-3">
                 <div className="search-box">
-                  <input type="text" placeholder="Search Country" />
+                  <input
+                    type="text"
+                    id="search_country"
+                    placeholder="Search Country"
+                  />
                 </div>
               </form>
 
-
               {user ? (
-         <div className="userMenu">
-  <span className="greeting">Hi, {user.name.split(" ")[0]}</span>
+                <div className="userMenu">
+                  <span className="greeting">
+                    Hi, {user.name.split(" ")[0]}
+                  </span>
 
-  <button className="notificationBtn">
-    <Image src={bell} alt="Notifications" width={16} height={16} />
-  </button>
+                  <button className="notificationBtn">
+                    <Image
+                      src={bell}
+                      alt="Notifications"
+                      width={16}
+                      height={16}
+                    />
+                  </button>
 
-  <div 
-    className="profileActionsWrapper" // New wrapper
-    onMouseEnter={() => setShowDropdown(true)}
-    onMouseLeave={() => setShowDropdown(false)}
-  >
-    <div className="profileWrapper">
-      <Link href="/my-account">
-        <Image
-          src={user.profileImage || userIcon}
-          alt="User Profile"
-          width={40}
-          height={40}
-          className="userIcon"
-        />
-      </Link>
-    </div>
+                  <div
+                    className="profileActionsWrapper" // New wrapper
+                    onMouseEnter={() => setShowDropdown(true)}
+                    onMouseLeave={() => setShowDropdown(false)}
+                  >
+                    <div className="profileWrapper">
+                      <Link href="/my-account">
+                        <Image
+                          src={user.profileImage || userIcon}
+                          alt="User Profile"
+                          width={40}
+                          height={40}
+                          className="userIcon"
+                        />
+                      </Link>
+                    </div>
 
-    {showDropdown && (
-      <div className="dropdownMenu">
-        <button className="logoutBtn" onClick={handleLogout}>
-          Logout
-          <Image src={logoutIcon} className="logoutIcon" alt="Logout" width={20} height={20} />
-        </button>
-      </div>
-    )}
-  </div>
-</div>
-
-
+                    {showDropdown && (
+                      <div className="dropdownMenu">
+                        <button className="logoutBtn" onClick={handleLogout}>
+                          Logout
+                          <Image
+                            src={logoutIcon}
+                            className="logoutIcon"
+                            alt="Logout"
+                            width={20}
+                            height={20}
+                          />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
               ) : (
                 <a
                   href="#"
@@ -147,13 +180,23 @@ const Header: React.FC = () => {
                     setShowPopup(true);
                   }}
                 >
-                  <Image src={loginIcon} alt="User Icon" width={20} height={20} />
+                  <Image
+                    src={loginIcon}
+                    alt="User Icon"
+                    width={20}
+                    height={20}
+                  />
                   <span className="btn">Sign In</span>
                 </a>
               )}
             </div>
           </div>
-          {showPopup && <AuthPopup onClose={() => setShowPopup(false)} onSuccess={() => {}}/>}
+          {showPopup && (
+            <AuthPopup
+              onClose={() => setShowPopup(false)}
+              onSuccess={() => {}}
+            />
+          )}
         </div>
       </nav>
 

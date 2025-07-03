@@ -12,13 +12,14 @@ import Img3 from "../assets/images/destinations/4.svg";
 import Img4 from "../assets/images/destinations/4.svg";
 import Img5 from "../assets/images/destinations/5.svg";
 import Img6 from "../assets/images/destinations/3.svg";
+import Link from "next/link";
 const featuredDestinations = [
   { id: 1, img: Img1, title: "Switzerland" },
   { id: 2, img: Img2, title: "France" },
   { id: 3, img: Img3, title: "Italy" },
   { id: 4, img: Img4, title: "Netherlands" },
-  { id: 4, img: Img5, title: "Paris" },
-  { id: 4, img: Img6, title: "China" },
+  { id: 5, img: Img5, title: "Paris" },
+  { id: 6, img: Img6, title: "China" },
 ];
 
 const FeaturedSection = () => {
@@ -54,7 +55,7 @@ const FeaturedSection = () => {
         </Swiper>
 
         <div className="explore-container">
-          <button className="explore-btn">Explore More</button>
+          <Link href="/hotels" className="explore-btn">Explore More</Link>
         </div>
       </div>
     </div>

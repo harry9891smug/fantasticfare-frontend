@@ -2,14 +2,18 @@
 .navbar-custom {
   background: #ffffff;
   padding: 10px 0;
-  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: sticky;
+  z-index: 1030;
 }
 .navbar-toggler-iconct {
   display: inline-block;
   width: 2em;
   height: 1.5em;
   vertical-align: middle;
-  background-image: var(--bs-navbar-toggler-icon-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
@@ -38,7 +42,7 @@
   width: auto;
   max-width: 192px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   transition: all 0.3s ease;
 }
 
@@ -51,8 +55,6 @@
   cursor: pointer;
   z-index: 1021;
 }
-
-
 
 /* Phone button in header - Restored */
 .floating-call-button {
@@ -179,16 +181,16 @@
 }
 
 .dropdownMenu {
-    position: absolute;
-    top: 59px;
-    right: 72px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 8px 16px #00000014;
-    padding: 5px;
-    min-width: 103px;
-    z-index: 1022;
+  position: absolute;
+  top: 59px;
+  right: 72px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px #00000014;
+  padding: 5px;
+  min-width: 103px;
+  z-index: 1022;
 }
 
 .logoutBtn {
@@ -219,14 +221,14 @@
 
 /* Sign In Box */
 .navbar-custom .sign-in-box {
-  border: 1px solid #000000;
-  border-radius: 16px;
+  background-color: #0389c6;
+  border-radius: 6px;
   padding: 8px 15px;
   display: flex;
   align-items: center;
   margin-left: auto;
   text-decoration: none;
-  color: #000000;
+  color: #ffffff;
   white-space: nowrap;
 }
 
@@ -235,11 +237,11 @@
 }
 
 .navbar-custom .sign-in-box:hover {
-  background-color: #f8f9fa;
+  background-color: #cf8701;
 }
 
 .navbar-custom .sign-in-box .btn {
-  color: #000000;
+  color: #ffffff;
   font-size: 13px;
   padding: 0;
   background: none;
@@ -254,17 +256,17 @@
     width: auto;
     order: 1;
   }
-  
+
   .navbar-custom .search-box {
     margin: 0 20px;
   }
-  
+
   .userMenu {
     margin-left: auto;
   }
   .navbar-custom {
-  display: none;
-}
+    display: none;
+  }
   .floating-call-button {
     display: none; /* Hide on desktop */
   }
@@ -274,15 +276,15 @@
   .navbar-custom .navbar-collapse {
     padding-top: 15px;
   }
-  
+
   .navbar-custom .sign-in-box {
-    margin: 10px 0;
+    margin: 0px 10px;
   }
-  
+
   .navbar-custom .search-box {
     margin: 10px 0;
   }
-  
+
   .userMenu {
     margin: 10px 0 0;
     justify-content: flex-start;
@@ -296,31 +298,27 @@
     padding-left: 10px;
     margin-left: auto;
   }
-  
+
   .navbar-custom {
     padding: 4px 0;
   }
-  
+
   .navbar-custom .container {
     padding: 0 10px;
   }
-  
- 
-  
+
   .navbar-custom .navbar-toggler {
     order: 2;
   }
 }
 
 @media (max-width: 480px) {
- 
-  
   .greeting {
     font-size: 0.9rem;
   }
-  
+
   .floating-call-button {
-    padding-right:9px;
+    padding-right: 9px;
   }
 }
 @media (max-width: 768px) {

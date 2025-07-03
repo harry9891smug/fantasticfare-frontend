@@ -8,6 +8,7 @@ interface Article {
     image: string;
     title: string;
     description: string;
+    article_slug:string;
   }
 // const travelTips: TravelTip[] = [
 //   { id: 1, image: "/assets/images/img101.png", title: "How to Save Money on Flights", description: "Learn the best ways to book affordable flights without compromising on comfort." },
@@ -42,7 +43,8 @@ const TipsSection: React.FC = () => {
             _id: "1",
             article_heading: "Travel Safety Tips",
             article_description: "Keep a copy of your passport and know emergency contacts.",
-            article_image: ["/placeholder-image.jpg"]
+            article_image: ["/placeholder-image.jpg"],
+            article_slug:'testing'
           }
         ];
         setArticles(fallback);
@@ -86,7 +88,7 @@ const TipsSection: React.FC = () => {
                         .split(" ")
                         .slice(0, 25)
                         .join(" ")}...</p>
-                <Link className="title-links" href={`/tips-and-article/${article._id}`}> <button className="btn-color btn btn-primary btn-sm custom-btn">Read More</button></Link> 
+                <Link className="title-links" href={`/tips-and-article/${article.article_slug}`}> <button className="btn-color btn btn-primary btn-sm custom-btn">Read More</button></Link> 
                 </div>
               ))}
             </div>

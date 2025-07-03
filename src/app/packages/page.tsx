@@ -14,7 +14,7 @@ import { usePathname } from "next/navigation";
 import EnquiryModal from "../components/EnquiryModal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ads from '../assets/images/ads.jpeg';
+import ads from "../assets/images/ads.jpeg";
 
 interface Package {
   _id: string;
@@ -26,6 +26,10 @@ interface Package {
   total_price: string;
   discounted_price: string;
   days?: string;
+  country_name: string;
+  region_name: string;
+  continent_name: string;
+  package_url: string;
 }
 
 interface TravelTip {
@@ -117,6 +121,11 @@ const Packages: React.FC = () => {
   const [displayCount, setDisplayCount] = useState(6);
   const [showAll, setShowAll] = useState(false);
 
+  const sanitize = (str) => {
+    if (str.includes("-")) return str;
+    return str.replace(/ /g, "-");
+  };
+
   const fetchPackages = async () => {
     try {
       setLoading(true);
@@ -198,22 +207,20 @@ const Packages: React.FC = () => {
       </div>
     );
 
-    const groupPackagesByCountry = (packages: Package[]) => {
-  return packages.reduce((acc, pkg) => {
-    let rawCountry = (pkg as any).country_name || "Unknown Country";
+  const groupPackagesByCountry = (packages: Package[]) => {
+    return packages.reduce((acc, pkg) => {
+      let rawCountry = (pkg as any).country_name || "Unknown Country";
 
-    // Normalize: trim, lowercase, capitalize
-    let country =
-      rawCountry.trim().toLowerCase().replace(/\s+/g, " "); // remove extra spaces
-    country = country.charAt(0).toUpperCase() + country.slice(1);
+      // Normalize: trim, lowercase, capitalize
+      let country = rawCountry.trim().toLowerCase().replace(/\s+/g, " "); // remove extra spaces
+      country = country.charAt(0).toUpperCase() + country.slice(1);
 
-    if (!acc[country]) acc[country] = [];
-    acc[country].push(pkg);
-    return acc;
-  }, {} as Record<string, Package[]>);
-};
-const groupedPackages = groupPackagesByCountry(packages);
-
+      if (!acc[country]) acc[country] = [];
+      acc[country].push(pkg);
+      return acc;
+    }, {} as Record<string, Package[]>);
+  };
+  const groupedPackages = groupPackagesByCountry(packages);
 
   if (error)
     return (
@@ -240,7 +247,11 @@ const groupedPackages = groupPackagesByCountry(packages);
           </p>
         </div>
         <div>
-          <a target="_blank" href="/all-packages" className="btn btn-primary custom-btn-main">
+          <a
+            target="_blank"
+            href="/all-packages"
+            className="btn btn-primary custom-btn-main"
+          >
             Discover More
           </a>
         </div>
@@ -248,94 +259,133 @@ const groupedPackages = groupPackagesByCountry(packages);
 
       {/* Packages */}
       {Object.entries(groupedPackages).map(([countryName, countryPackages]) => (
-  <div key={countryName} className="mb-5">
-    {/* Country Header with View All Button */}
-    <div className="d-flex justify-content-between align-items-center mb-3">
-      <h3 className="fw-bold">{countryName}</h3>
-      <Link href={`/country/${countryName.toLowerCase().replace(/\s+/g, '-')}`}>
-        <button className="btn btn-outline-primary btn-sm">View All</button>
-      </Link>
-    </div>
-
-    {/* Country's Packages */}
-    <div className="row">
-      {countryPackages.slice(0, 3).map((pkg) => (
-        <div className="col-12 col-sm-6 col-md-4 mb-4" key={pkg._id}>
-          {/* Your existing card UI for individual package here */}
-          <div className="card shadow-sm h-100 package-card">
-            <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
-              <div className="card-img-container">
-                {pkg.package_image?.length > 0 ? (
-                  <Swiper
-                    modules={[Pagination, Autoplay]}
-                    pagination={{ clickable: true }}
-                    spaceBetween={10}
-                    slidesPerView={1}
-                    autoplay={{ delay: 2500, disableOnInteraction: false }}
-                    observer={true}
-                    observeParents={true}
-                    key={pkg._id}
-                  >
-                    {pkg.package_image.map((img, idx) => (
-                      <SwiperSlide key={idx}>
-                        <Image
-                          src={img}
-                          alt={`${pkg.package_name}-${idx}`}
-                          width={400}
-                          height={250}
-                          className="card-img-top"
-                          style={{
-                            objectFit: "cover",
-                            borderRadius: "8px",
-                            width: "100%",
-                            height: "auto",
-                          }}
-                          priority={idx === 0}
-                          onLoadingComplete={() => window.dispatchEvent(new Event("resize"))}
-                        />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                ) : (
-                  <div className="placeholder-image">No Image Available</div>
-                )}
-              </div>
+        <div key={countryName} className="mb-5">
+          {/* Country Header with View All Button */}
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h3 className="fw-bold">{countryName}</h3>
+            <Link
+              href={`/country/${countryName
+                .toLowerCase()
+                .replace(/\s+/g, "-")}`}
+            >
+              <button className="btn btn-outline-primary btn-sm">
+                View All
+              </button>
             </Link>
-            <div className="card-body d-flex flex-column">
-              <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
-                <h5 className="card-title">{pkg.package_name}</h5>
-              </Link>
-              <p className="card-text text-muted mb-2">{pkg.package_heading}</p>
-              <div className="price-container mb-3 mt-auto">
-                {pkg.discounted_price ? (
-                  <>
-                    <span className="text-decoration-line-through text-muted me-2">
-                      ${pkg.total_price}
-                    </span>
-                    <span className="text-danger fw-bold">${pkg.discounted_price}</span>
-                    <div className="savings-badge">
-                      Save ${calculateSavings(pkg.total_price, pkg.discounted_price)}
+          </div>
+
+          {/* Country's Packages */}
+          <div className="row">
+            {countryPackages.slice(0, 3).map((pkg) => (
+              <div className="col-12 col-sm-6 col-md-4 mb-4" key={pkg._id}>
+                {/* Your existing card UI for individual package here */}
+                <div className="card shadow-sm h-100 package-card">
+                  {/* <Link href={`/packages/${pkg._id}`} className="text-decoration-none"> */}
+                  <Link
+                    href={`/package/${sanitize(pkg.continent_name)}/${sanitize(
+                      pkg.region_name
+                    )}/${sanitize(pkg.country_name)}/${pkg.package_url}`}
+                    className="text-decoration-none"
+                  >
+                    <div className="card-img-container">
+                      {pkg.package_image?.length > 0 ? (
+                        <Swiper
+                          modules={[Pagination, Autoplay]}
+                          pagination={{ clickable: true }}
+                          spaceBetween={10}
+                          slidesPerView={1}
+                          autoplay={{
+                            delay: 2500,
+                            disableOnInteraction: false,
+                          }}
+                          observer={true}
+                          observeParents={true}
+                          key={pkg._id}
+                        >
+                          {pkg.package_image.map((img, idx) => (
+                            <SwiperSlide key={idx}>
+                              <Image
+                                src={img}
+                                alt={`${pkg.package_name}-${idx}`}
+                                width={400}
+                                height={250}
+                                className="card-img-top"
+                                style={{
+                                  objectFit: "cover",
+                                  borderRadius: "8px",
+                                  width: "100%",
+                                  height: "auto",
+                                }}
+                                priority={idx === 0}
+                                onLoad={() =>
+                                  window.dispatchEvent(new Event("resize"))
+                                }
+                              />
+                            </SwiperSlide>
+                          ))}
+                        </Swiper>
+                      ) : (
+                        <div className="placeholder-image">
+                          No Image Available
+                        </div>
+                      )}
                     </div>
-                  </>
-                ) : (
-                  <span className="fw-bold">${pkg.total_price}</span>
-                )}
+                  </Link>
+                  <div className="card-body d-flex flex-column">
+                    {/* <Link href={`/packages/${pkg._id}`} className="text-decoration-none"> */}
+                    <Link
+                      href={`/package/${sanitize(
+                        pkg.continent_name
+                      )}/${sanitize(pkg.region_name)}/${sanitize(
+                        pkg.country_name
+                      )}/${pkg.package_url}`}
+                      className="text-decoration-none"
+                    >
+                      <h5 className="card-title">{pkg.package_name}</h5>
+                    </Link>
+                    {/* </Link> */}
+                    <p className="card-text text-muted mb-2">
+                      {pkg.package_heading}
+                    </p>
+                    <div className="price-container mb-3 mt-auto">
+                      {pkg.discounted_price ? (
+                        <>
+                          <span className="text-decoration-line-through text-muted me-2">
+                            ${pkg.total_price}
+                          </span>
+                          <span className="text-danger fw-bold">
+                            ${pkg.discounted_price}
+                          </span>
+                          <div className="savings-badge">
+                            Save $
+                            {calculateSavings(
+                              pkg.total_price,
+                              pkg.discounted_price
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <span className="fw-bold">${pkg.total_price}</span>
+                      )}
+                    </div>
+                    <div className="buttons">
+                      <a href="tel:+18334227770">
+                        <button className="phone-button">📞</button>
+                      </a>
+                      <button
+                        className="callback-button"
+                        onClick={() => openEnquiryModal(pkg)}
+                      >
+                        Request Callback
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="buttons">
-                <a href="tel:+18334227770">
-                  <button className="phone-button">📞</button>
-                </a>
-                <button className="callback-button" onClick={() => openEnquiryModal(pkg)}>
-                  Request Callback
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       ))}
-    </div>
-  </div>
-))}
 
       {packages.length > 6 && (
         <div className="text-center mt-4">

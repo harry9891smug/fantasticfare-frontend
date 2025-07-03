@@ -1,51 +1,56 @@
 /* sub-header.css */
+.fs-7 {
+  font-size: 0.75rem !important;
+}
 .sub-header {
-    background-color: #fff;
-    border-top: 1px solid #ddd;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 5px 0;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 5px 0;
+  position: relative;
+  z-index: 1000;
 }
 
 .sub-header .container {
-    max-width: 1200px;
-    margin: auto;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .sub-header ul {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .sub-header li {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    font-size: 14px;
-    color: #333;
-    position: relative;
-    transition: transform 0.4s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  position: relative;
+  transition: transform 0.4s ease-in-out;
 }
 
 /* Icon Styling */
 .sub-header li img {
-    width: 25px;
-    height: 25px;
-    margin-bottom: 0px;
-    transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
+  width: 25px;
+  height: 25px;
+  margin-bottom: 0px;
+  transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
 }
 
 /* Text Styling */
 .sub-header li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 600;
-    transition: color 0.4s ease-in-out;
-    display: contents;
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  transition: color 0.4s ease-in-out;
+  display: contents;
 }
 
 /* Hover Effects */
@@ -53,57 +58,56 @@
     transform: translateY(-8px);
 } */
 
-
-
 .sub-header li:hover a {
-    color: #ff4500; /* Bright orange for strong impact */
+  color: #cf8701; /* Bright orange for strong impact */
 }
 
 /* Additional bounce effect */
 
 /* Phone Button Styles */
 .phone-button-container {
-    margin-left: auto; /* Pushes to the right */
+  margin-left: auto; /* Pushes to the right */
+}
+
+.phone-button {
+  background-color: #e07a0a;
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid #dee2e6;
+}
+
+.phone-button:hover {
+  background-color: #e9ecef;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+}
+
+.phone-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.phone-button svg {
+  transition: transform 0.3s ease;
+}
+
+.phone-button:hover svg {
+  transform: scale(1.1) rotate(10deg);
+}
+@media (max-width: 768px) {
+  .phone-button-container {
+    opacity: 0;
+    pointer-events: none;
   }
-  
-  .phone-button {
-    background-color: #f8f9fa;
-    color: #333;
-    padding: 8px 16px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    border: 1px solid #dee2e6;
-  }
-  
-  .phone-button:hover {
-    background-color: #e9ecef;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    color: #000;
-  }
-  
-  .phone-button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .phone-button svg {
-    transition: transform 0.3s ease;
-  }
-  
-  .phone-button:hover svg {
-    transform: scale(1.1) rotate(10deg);
-  }
-  @media (max-width: 768px) {
-    .phone-button-container {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
-  
-  /* Mega Menu Wrapper */
+}
+
+/* Mega Menu Wrapper */
 .view-dropdown-item {
   position: relative;
 }
@@ -149,13 +153,13 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   border-radius: 0 0 8px 8px;
   padding: 12px;
-  z-index: 1050;
+  z-index: 1100 !important;
 }
 
 /* Scrollable Flex Container for Continents */
 .continent-container {
   display: flex;
-  
+
   gap: 12px;
   padding-bottom: 15px;
   scrollbar-width: thin;
@@ -239,10 +243,8 @@
   text-align: left;
 }
 .mega-dropdown .country-item:hover {
-  
   color: #0389ca !important;
 }
-
 
 /* Responsive Adjustments */
 @media (max-width: 1200px) {
@@ -294,7 +296,8 @@
     margin-top: 10px;
   }
 }
-.phone-buttonN, .callback-button {
+.phone-buttonN,
+.callback-button {
   padding: 8px 12px;
   border: none;
   cursor: pointer;
@@ -306,17 +309,30 @@
 
 /* Call Button */
 .phone-buttonN {
-  background: transparent; 
-  color: #0389c6; 
-  border: 2px solid #0389c6; 
+  background: #0389c6;
+  color: #ffffff;
+  border: 1px solid #0389c6;
   padding: 8px 16px;
-  border-radius: 5px; 
-  cursor: pointer; 
+  border-radius: 5px;
+  cursor: pointer;
   text-decoration: none;
   transition: all 0.3s ease-in-out;
 }
 
 .phone-buttonN:hover {
-  background: #0389c6; 
+  background: #cf8701;
+  border: 1px solid #cf8701;
   color: white;
+}
+.view-dropdown-item a {
+  width: 70px;
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+}
+
+@media (max-width: 576px) {
+  .sub-header ul {
+    gap: 10px;
+  }
 }

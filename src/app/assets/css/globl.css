@@ -246,9 +246,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 1200px;
   margin: auto;
-  padding: 14px 20px;
+  padding: 14px 10px;
   position: relative;
   flex-wrap: wrap;
   flex-direction: row-reverse;

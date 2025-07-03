@@ -4,9 +4,10 @@
 }
 
 @keyframes fadeIn {
-  to { opacity: 1; }
+  to {
+    opacity: 1;
+  }
 }
-
 
 /* Base Styles */
 .packages-container {
@@ -28,12 +29,11 @@
   border-radius: 10px;
   overflow: hidden;
 }
-.card-title{
-  color : #0389c6;
+.card-title {
+  color: #0389c6;
 }
 .package-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
 .card-img-container {
@@ -80,11 +80,13 @@
 .buttons {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 5px;
+  padding: 2px;
 }
 
 /* Button Styles */
-.phone-button, .callback-button {
+.phone-button,
+.callback-button {
   padding: 8px 12px;
   border: none;
   cursor: pointer;
@@ -96,18 +98,21 @@
 
 /* Call Button */
 .phone-button {
-  background: transparent; 
-  color: #0389c6; 
-  border: 2px solid #0389c6; 
+  background: transparent;
+  color: #0389c6;
+  border: 1px solid #0389c6;
   padding: 8px 16px;
-  border-radius: 5px; 
-  cursor: pointer; 
+  border-radius: 7px;
+  cursor: pointer;
   transition: all 0.3s ease-in-out;
+}
+.rotate-call-icons {
+  transform: rotate(90deg);
 }
 
 .phone-button:hover {
-  background: #0389c6; 
-  color: white;
+  background: none;
+  color: #0389c6;
 }
 
 /* Request Callback Button */
@@ -120,8 +125,6 @@
 .callback-button:hover {
   background: #d68005;
 }
-
-
 
 /* Buttons */
 .custom-btn-main {
@@ -157,16 +160,16 @@
 /* Advertisement */
 .ads-container {
   width: 100%;
-  max-width: 100%; 
+  max-width: 100%;
   margin: 0 auto;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .ads-container img {
   width: 100%;
   height: auto;
-  max-height: 583px; 
-  object-fit: cover;  
+  max-height: 583px;
+  object-fit: cover;
   display: block;
 }
 
@@ -199,7 +202,8 @@
   background-color: #f8f9fa;
 }
 
-.article-box:hover, .article-box.active {
+.article-box:hover,
+.article-box.active {
   background-color: #e7f5ff;
   border-left: 4px solid #0389c6;
 }
@@ -218,7 +222,7 @@
 .article-image-box {
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .article-image-box img {
@@ -253,20 +257,20 @@
   .packages-container {
     margin-top: 60px;
   }
-  
+
   .card-img-container {
     height: 180px;
   }
-  
+
   .article-image-box img {
     height: 200px;
   }
-  
+
   .scrollable-tips {
     max-height: 300px;
     margin-bottom: 20px;
   }
-  
+
   .price-container {
     flex-direction: column;
     align-items: flex-start;
@@ -278,16 +282,17 @@
   .card-img-container {
     height: 150px;
   }
-  
+
   .article-title {
     font-size: 16px;
   }
-  
+
   .article-description {
     font-size: 13px;
   }
-  
-  .custom-btn, .custom-btn-main {
+
+  .custom-btn,
+  .custom-btn-main {
     padding: 5px 15px;
     font-size: 13px;
   }

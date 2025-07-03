@@ -11,6 +11,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import EnquiryModal from "./EnquiryModal";
 import "../assets/css/packages.css";
+import { FaPhone } from "react-icons/fa";
 type Package = {
   _id: string;
   package_heading: string;
@@ -26,7 +27,7 @@ const PackageSection = () => {
   const [error, setError] = useState<string | null>(null);
   const [showEnquiryModal, setShowEnquiryModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
-  const [visiblePackages, setVisiblePackages] = useState(6);
+  const [visiblePackages, setVisiblePackages] = useState(3);
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
 
   const [tabs, setTabs] = useState<string[]>([]);
@@ -118,24 +119,26 @@ const PackageSection = () => {
                     >
                       {pkg.package_image.map((img, idx) => (
                         <SwiperSlide key={idx}>
-                          <Image
-                            src={img}
-                            alt={`${pkg.package_heading}-${idx}`}
-                            width={400}
-                            height={250}
-                            className="card-img-top"
-                            style={{
-                              objectFit: "cover",
-                              borderRadius: "8px",
-                              width: "100%",
-                              minHeight: "250px",
-                              maxHeight: "250px",
-                            }}
-                            priority={idx === 0}
-                            onLoad={() =>
-                              window.dispatchEvent(new Event("resize"))
-                            }
-                          />
+                          <div
+                            className="position-relative w-100"
+                            style={{ height: "250px" }}
+                          >
+                            <Image
+                              src={img}
+                              alt={`${pkg.package_heading}-${idx}`}
+                              width={400}
+                              height={250}
+                              className="card-img-top"
+                              style={{
+                                objectFit: "cover",
+                                borderRadius: "8px",
+                              }}
+                              priority={idx === 0}
+                              onLoad={() =>
+                                window.dispatchEvent(new Event("resize"))
+                              }
+                            />
+                          </div>
                         </SwiperSlide>
                       ))}
                     </Swiper>
@@ -150,14 +153,15 @@ const PackageSection = () => {
                       <h3 className="package-name">{pkg.package_heading}</h3>
                     </Link>
                     <div className="price-container">
+                      <span className="offer-price">
+                        USD {pkg?.discounted_price}
+                      </span>
                       <span className="main-price">
                         <s>USD {pkg.total_price}</s>
                       </span>
-                      <span className="offer-price">
-                        USD {pkg.discounted_price}
-                      </span>
+
                       <span className="saved-price">
-                        You Save $
+                        Save $
                         {(
                           Number(pkg.total_price) - Number(pkg.discounted_price)
                         ).toFixed(2)}
@@ -165,7 +169,9 @@ const PackageSection = () => {
                     </div>
                     <div className="buttons">
                       <a href="tel:+18334227770">
-                        <button className="phone-button">📞</button>
+                        <button className="phone-button">
+                          <FaPhone className="rotate-call-icons" />
+                        </button>
                       </a>
                       <button
                         className="callback-button"

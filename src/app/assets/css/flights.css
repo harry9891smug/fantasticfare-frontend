@@ -338,7 +338,7 @@
 
 .flight-card {
   width: 100%;
-  width: 250px;
+  height: 250px;
   border-radius: 14px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;

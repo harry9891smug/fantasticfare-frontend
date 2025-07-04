@@ -69,9 +69,9 @@ const TipsSection: React.FC = () => {
   return (
     <div className="tips-section">
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end p-4 rounded">
-        <div>
+        <div className="col-12 col-md-4  mb-md-0">
           <h2 className="mb-2">Tips & Articles</h2>
-          <p className="mb-0">
+          <p className="mb-0 tips-subtitle">
             Discover essential travel insights, money-saving strategies, and
             expert tips to enhance your journey.
           </p>

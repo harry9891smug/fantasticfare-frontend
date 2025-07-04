@@ -9,17 +9,17 @@ import fbIcon from "../assets/images/fb.svg";
 import xIcon from "../assets/images/x.svg";
 import instaIcon from "../assets/images/insta.svg";
 import ytIcon from "../assets/images/yt.svg";
-import thailand from "../assets/images/footer_images/Thailand.png";
-import ladakh from "../assets/images/footer_images/Ladakh.png";
-import hongkong from "../assets/images/footer_images/Hongkong.png";
-import dubai from "../assets/images/footer_images/Dubai.png";
-import singapore from "../assets/images/footer_images/Singapore.png";
-import andaman from "../assets/images/footer_images/Andaman.png";
-import bali from "../assets/images/footer_images/Bali.png";
+import thailand from "../assets/images/footer_images/thailand.png";
+import ladakh from "../assets/images/footer_images/ladakh.png";
+import hongkong from "../assets/images/footer_images/hongkong.png";
+import dubai from "../assets/images/footer_images/dubai.png";
+import singapore from "../assets/images/footer_images/singapore.png";
+import andaman from "../assets/images/footer_images/andaman.png";
+import bali from "../assets/images/footer_images/bali.png";
 import NewYork from "../assets/images/footer_images/new-york.png";
-import SriLanka from "../assets/images/footer_images/Sri Lanka.png";
+import SriLanka from "../assets/images/footer_images/sri-lanka.png";
 import CanadaFlag from "../assets/images/canada.png";
-import WatiWidget from './WatiWidget';
+import WatiWidget from "./WatiWidget";
 import axios from "axios";
 interface Countries {
   country_name: string;
@@ -180,19 +180,22 @@ const Footer: React.FC = () => {
                   </a>
                 </li>
               </ul>
-            
             </div>
-              <div className="flag-container">
-    <a href="https://fantasticfare.ca" target="_blank" rel="noopener noreferrer">
-      <Image 
-        src={CanadaFlag} // Update with your actual image path
-        alt="Canada" 
-        width={40} // Slightly larger than social icons
-        height={35} // Standard flag aspect ratio
-        className="flag-image"
-      />
-    </a>
-  </div>
+            <div className="flag-container">
+              <a
+                href="https://fantasticfare.ca"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src={CanadaFlag} // Update with your actual image path
+                  alt="Canada"
+                  width={40} // Slightly larger than social icons
+                  height={35} // Standard flag aspect ratio
+                  className="flag-image"
+                />
+              </a>
+            </div>
           </div>
 
           {/* <div className="background-border-shadow-1">

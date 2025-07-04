@@ -192,35 +192,41 @@
   background: #ccc;
   border-radius: 10px;
 }
+.tips-subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 30px;
+  color: #878787;
+}
 
 .article-box {
   transition: all 0.3s;
   cursor: pointer;
-  border-radius: 8px;
   padding: 15px;
-  margin-bottom: 15px;
-  background-color: #f8f9fa;
+  margin: 5px;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border: none;
 }
 
 .article-box:hover,
 .article-box.active {
-  background-color: #e7f5ff;
-  border-left: 4px solid #0389c6;
+  background-color: white;
 }
 
 .article-box.active {
-  background-color: #0389c6;
   color: white;
 }
 
 .article-box.active .article-title,
 .article-box.active .article-description,
 .article-box.active .tip-label {
-  color: white;
+  color: black;
 }
 
 .article-image-box {
-  border-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -233,8 +239,8 @@
 
 .tip-label {
   font-size: 12px;
-  font-weight: bold;
-  color: #0389c6;
+  font-weight: 400;
+  color: black;
   text-transform: uppercase;
   margin-bottom: 5px;
   letter-spacing: 1px;
@@ -242,13 +248,15 @@
 
 .article-title {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
+  color: black;
   margin-bottom: 10px;
 }
 
 .article-description {
-  font-size: 14px;
-  color: #666;
+  font-size: 12px;
+  font-weight: 300;
+  color: #343434;
   margin-bottom: 15px;
 }
 
@@ -262,6 +270,13 @@
     height: 180px;
   }
 
+  .tips-subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #878787;
+  }
+
   .article-image-box img {
     height: 200px;
   }
@@ -272,7 +287,6 @@
   }
 
   .price-container {
-    flex-direction: column;
     align-items: flex-start;
     gap: 5px;
   }
@@ -288,7 +302,7 @@
   }
 
   .article-description {
-    font-size: 13px;
+    font-size: 10px;
   }
 
   .custom-btn,

@@ -111,6 +111,13 @@
   color: #202020;
   text-align: start;
   line-height: 1.3;
+  height: calc(1.3em * 2); /* Ensures consistent height even with 1 line */
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .price-container {
@@ -242,6 +249,13 @@
 
   .package-name {
     font-size: 15px;
+    height: calc(1.3em * 2); /* Ensures consistent height even with 1 line */
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .main-price {

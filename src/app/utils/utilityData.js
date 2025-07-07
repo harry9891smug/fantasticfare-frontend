@@ -5,13 +5,26 @@ import Img4 from "../assets/images/destinations/4.svg";
 import Img5 from "../assets/images/destinations/5.svg";
 import Img6 from "../assets/images/destinations/3.svg";
 
-export const priceDislayInComma = function (price) {
-  return price.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-  });
-};
+export const packageMetaData = [
+  {
+    id: 11,
+    title: "Fantastic Fare",
+    destinations:
+      "About Us, Investor Relations, Careers, Sustainability, MMT Foundation, Legal Notices, CSR Policy, myPartner - Travel Agent Portal, List your hotel",
+  },
+  {
+    id: 12,
+    title: "About the Site",
+    destinations:
+      "Customer Support,  Black Loyalty Program, Payment Security, Privacy Policy, Cookie Policy, User Agreement, Terms of Service, Franchise Offices ",
+  },
+  {
+    id: 13,
+    title: "Product Offering",
+    destinations:
+      "Flights, International Flights, Charter Flights, Hotels, International Hotels, Homestays and Villas, Activities, Holidays In India, International Holidays, Book Hotels From UAE, myBiz for Corporate Travel, Book Online Cabs, Book Bus Tickets, Book Train Tickets, Cheap Tickets to India, Book Flights From US, Book Flights From UAE, Trip Planner, Forex Card, Buy Foreign Currency, Travel Insurance, Travel Insurance for Schengen Visa, Travel Insurance for Asia, Travel Insurance Thailand, Travel Insurance For UAE, Travel Insurance For Indonesia, Travel Insurance For Vietnam, Travel Insurance For Europe, Travel Insurance For USA, Travel Insurance for Singapore, Travel Insurance for Malaysia, Travel Insurance for Sri Lanka, Travel Insurance for United Kingdom, Travel Insurance for Canada, Gift Cards, Gift, Wedding Gift, Anniversary Gift, Birthday Gift, Diwali Gift, Valentines Gift, Farewell Gift, Christmas Gift, New Year Gift, Trip Ideas, Travel Blog, PNR Status, MakeMyTrip Advertising Solutions, One Way Cab",
+  },
+];
 
 export const cabinOptions = [
   { value: "Economy", label: "Economy" },

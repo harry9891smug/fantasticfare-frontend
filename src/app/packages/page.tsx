@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+import user1 from "../../app/assets/images/user.svg";
+import cornerImage from "../../app/assets/images/revimg.svg";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
@@ -16,6 +19,12 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ads from "../assets/images/ads.jpeg";
 import SubHeaderSlider from "../components/SubHeaderSlider";
+import { FaPhone } from "react-icons/fa";
+import { faqList, metaData, packageMetaData } from "../utils/utilityData";
+import { Accordion, Button } from "react-bootstrap";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import Testimonial from "../components/testimonial";
+
 interface Package {
   _id: string;
   package_name: string;
@@ -305,7 +314,7 @@ const Packages: React.FC = () => {
             {countryPackages.slice(0, 3).map((pkg) => (
               <div className="col-12 col-sm-6 col-md-4 mb-4" key={pkg._id}>
                 {/* Your existing card UI for individual package here */}
-                <div className="card shadow-sm h-100 package-card">
+                <div className="package-card">
                   {/* <Link href={`/packages/${pkg._id}`} className="text-decoration-none"> */}
                   <Link
                     href={`/package/${sanitize(pkg.continent_name)}/${sanitize(
@@ -339,8 +348,6 @@ const Packages: React.FC = () => {
                                 style={{
                                   objectFit: "cover",
                                   borderRadius: "8px",
-                                  width: "100%",
-                                  height: "auto",
                                 }}
                                 priority={idx === 0}
                                 onLoad={() =>
@@ -370,19 +377,15 @@ const Packages: React.FC = () => {
                       <h5 className="card-title">{pkg.package_name}</h5>
                     </Link>
                     {/* </Link> */}
-                    <p className="card-text text-muted mb-2">
-                      {pkg.package_heading}
-                    </p>
-                    <div className="price-container mb-3 mt-auto">
+
+                    <div className="price-container mt-auto">
                       {pkg.discounted_price ? (
                         <>
-                          <span className="text-decoration-line-through text-muted me-2">
-                            ${pkg.total_price}
-                          </span>
-                          <span className="text-danger fw-bold">
+                          <span className="offer-price">
                             ${pkg.discounted_price}
                           </span>
-                          <div className="savings-badge">
+                          <span className="main-price">${pkg.total_price}</span>
+                          <div className="saved-price">
                             Save $
                             {calculateSavings(
                               pkg.total_price,
@@ -396,7 +399,9 @@ const Packages: React.FC = () => {
                     </div>
                     <div className="buttons">
                       <a href="tel:+18334227770">
-                        <button className="phone-button">📞</button>
+                        <button className="phone-button">
+                          <FaPhone className="rotate-call-icons" />
+                        </button>
                       </a>
                       <button
                         className="callback-button"
@@ -454,6 +459,83 @@ const Packages: React.FC = () => {
 
       {/* Tips Section */}
       <TipsSection />
+
+      <Testimonial />
+      <div className=" container mt-5">
+        <h1 className="d-flex justify-content-center mt-5 fw-bolder">
+          Frequently Asked Question
+        </h1>
+        <div className="row mt-5">
+          <div className="col-12 col-md-8">
+            {faqList.map((faq, index) => (
+              <Accordion key={index}>
+                <Accordion.Item eventKey={index.toString()}>
+                  <Accordion.Header>
+                    <div className="d-flex align-items-center gap-2">
+                      <span
+                        className="count-badge text-white rounded-circle d-inline-flex justify-content-center align-items-center"
+                        style={{
+                          width: 30,
+                          height: 30,
+                          fontSize: "0.75rem",
+                          padding: "0.25rem 0.6rem",
+                          background: "#0089C6",
+                        }}
+                      >
+                        {index + 1}
+                      </span>
+                      <span>{faq.question}</span>
+                    </div>
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    <div dangerouslySetInnerHTML={{ __html: faq.ans }} />
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+            ))}
+          </div>
+          <div
+            className="col-12 col-md-4  d-flex flex-column justify-content-evenly py-4 px-3"
+            style={{
+              border: "1px solid #dee2e6",
+              borderRadius: "8px",
+              marginTop: "10px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                height: "20%",
+              }}
+            >
+              <ChatBubbleIcon style={{ fontSize: 40, color: "#212529" }} />
+            </div>
+
+            <h5 className="fw-bold">
+              Anything Unclear about your trip or stay?
+            </h5>
+            <p className="text-body mb-4">
+              Got any questions about your trip plan, stay or activities? Feel
+              free to ask - we are here to help! Make your travel experience
+              seamless and enjoyable.
+            </p>
+            <Button variant="primary" className="btn-lg custom-btn" size="lg">
+              Further Question
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className="container mt-5 d-flex flex-column">
+        {packageMetaData.concat(metaData).map((item, index) => (
+          <div key={index}>
+            <h6 className="fw-bold mt-2 mb-0">{item.title}</h6>
+            <p className="text-dark" style={{ fontSize: "x-small" }}>
+              {item.destinations}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
     </>
   );

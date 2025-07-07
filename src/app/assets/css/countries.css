@@ -19,17 +19,16 @@
 
 /* Title & Subtitle */
 .tour-title {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 36px;
+  font-weight: 600;
   line-height: 40px;
   color: #202020;
   margin-bottom: 5px;
 }
 
 .tour-subtitle {
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 600;
-  line-height: 40px;
   color: #f37002;
   margin-bottom: 20px;
 }

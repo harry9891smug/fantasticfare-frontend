@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Head from "next/head";
@@ -214,7 +214,23 @@ const PackageDetails: React.FC = () => {
       fetchPackage();
     }
   }, [id]);
+   const pathname = usePathname();
+  useEffect(() => {
+  // Apply only on package detail pages
+  if (pathname.startsWith("/package/")) {
+    const hasReloaded = sessionStorage.getItem("reloadedPackageDetail");
 
+    if (!hasReloaded) {
+      sessionStorage.setItem("reloadedPackageDetail", "true");
+      window.location.reload();
+    }
+  }
+
+  // Clean up so it can reload again next session
+  return () => {
+    sessionStorage.removeItem("reloadedPackageDetail");
+  };
+}, [pathname]);
   const toggleAccordion = (dayName: string) => {
     setExpandedDay(expandedDay === dayName ? null : dayName);
   };
@@ -309,6 +325,7 @@ const PackageDetails: React.FC = () => {
     setShowEnquiryModal(false);
     setSelectedPackage(null);
   };
+  
   return (
     <>
       <Head>

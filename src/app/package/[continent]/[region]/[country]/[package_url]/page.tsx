@@ -1,7 +1,8 @@
 
 
 "use client";
-import { useParams } from "next/navigation";
+
+import { useParams} from "next/navigation";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Head from "next/head";
@@ -11,7 +12,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import "../../assets/css/package_details.css";
 import "../../../../../assets/css/package_details.css";
-
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
@@ -26,7 +26,8 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import he from "he";
 import { FaMapMarkedAlt, FaLightbulb, FaBed } from "react-icons/fa";
 import EnquiryModal from "../../../../../components/EnquiryModal";
-
+import ClientWrapper from "../../../../../components/ClientWrapper";
+import SubHeaderSlider from "../../../../../components/SubHeaderSlider";
 interface Packages {
   _id: string;
   package_name: string;
@@ -184,6 +185,29 @@ const PackageDetails: React.FC = () => {
   if (str.includes(' ')) return str;
     return str.replace(/-/g, ' ');
 };
+const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/countries-with-icon`);
+        const data = await res.json();
+        if (data.status && Array.isArray(data.data)) {
+          // Optional: Add slug generation
+          const formatted = data.data.map((item) => ({
+            name: item.country_name,
+            icon: item.country_icon,
+            slug: item.country_name.toLowerCase().replace(/\s+/g, "-"),
+          }));
+          setCountries(formatted);
+        }
+      } catch (err) {
+        console.error("Failed to fetch countries:", err);
+      }
+    };
+
+    fetchCountries();
+  }, []);
   useEffect(() => {
     const fetchPackage = async () => {
         const continent_name = sanitize(continent);
@@ -300,6 +324,8 @@ const PackageDetails: React.FC = () => {
   };
   return (
     <>
+      <SubHeaderSlider countries={countries} />
+     <ClientWrapper />
       <Head>
         <title>{packageData.package_name} | Package Details</title>
         <meta name="description" content={packageData.package_heading} />

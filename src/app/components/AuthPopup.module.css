@@ -666,3 +666,19 @@
   margin-top: 10px;
 }
 /* You can reuse many of the existing styles from AuthPopup.module.css */
+.guestLoginButton {
+ margin-top: 7px;
+    background: #019ee2;
+    color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 6px;
+    width: 79%;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.guestLoginButton:hover {
+  background: #019ee2;
+}

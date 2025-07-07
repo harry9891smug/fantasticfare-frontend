@@ -15,7 +15,7 @@ import EnquiryModal from "../components/EnquiryModal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ads from "../assets/images/ads.jpeg";
-
+import SubHeaderSlider from "../components/SubHeaderSlider";
 interface Package {
   _id: string;
   package_name: string;
@@ -85,6 +85,29 @@ const Packages: React.FC = () => {
   const [showEnquiryModal, setShowEnquiryModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
+ const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/countries-with-icon`);
+        const data = await res.json();
+        if (data.status && Array.isArray(data.data)) {
+          // Optional: Add slug generation
+          const formatted = data.data.map((item) => ({
+            name: item.country_name,
+            icon: item.country_icon,
+            slug: item.country_name.toLowerCase().replace(/\s+/g, "-"),
+          }));
+          setCountries(formatted);
+        }
+      } catch (err) {
+        console.error("Failed to fetch countries:", err);
+      }
+    };
+
+    fetchCountries();
+  }, []);
   useEffect(() => {
     const fetchCountryCodes = async () => {
       try {
@@ -236,7 +259,10 @@ const Packages: React.FC = () => {
     );
 
   return (
+    <>
+       <SubHeaderSlider countries={countries} />
     <div className="container mt-5 packages-container">
+       
       <ToastContainer position="top-right" autoClose={5000} />
       {/* Header */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end p-4 rounded">
@@ -429,6 +455,7 @@ const Packages: React.FC = () => {
       {/* Tips Section */}
       <TipsSection />
     </div>
+    </>
   );
 };
 

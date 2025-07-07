@@ -183,7 +183,7 @@ const SubHeader = () => {
           </li>
           {/* New View Dropdown */}
 
-          {pathname === "/packages" && (
+          {/* {pathname === "/packages" && (
             <li className="position-relative view-dropdown-item">
               <div
                 className="dropdown-hover-wrapper"
@@ -250,7 +250,7 @@ const SubHeader = () => {
                 )}
               </div>
             </li>
-          )}
+          )} */}
         </ul>
 
         {/* Phone Button - Right Side */}

@@ -162,13 +162,18 @@ const HotelSearchComponent = ({
       alert("Please select check-in and check-out dates");
       return;
     }
-
+    const formatDate = (date: Date) => {
+      const year = date.getFullYear();
+      const month = `${date.getMonth() + 1}`.padStart(2, "0");
+      const day = `${date.getDate()}`.padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
     const params = new URLSearchParams();
     params.set("locationId", selectedLocation.id);
     params.set("locationType", selectedLocation.type);
     params.set("locationName", selectedLocation.city);
-    params.set("checkIn", dateRange[0].toISOString().split("T")[0]);
-    params.set("checkOut", dateRange[1].toISOString().split("T")[0]);
+    params.set("checkIn", formatDate(dateRange[0]));
+    params.set("checkOut", formatDate(dateRange[1]));
     params.set("adults", travelers.adults.toString());
     params.set("children", travelers.children.toString());
 

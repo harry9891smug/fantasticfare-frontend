@@ -186,7 +186,7 @@ const TipsArticlesSection = () => {
                     <h4>
                       <Link
                         className="title-links"
-                        href={`/tips-and-article/${articles[0]._id}`}
+                        href={`/tips-and-article/${articles[0].article_slug}`}
                       >
                         {article.article_heading}
                       </Link>

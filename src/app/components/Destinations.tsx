@@ -6,19 +6,19 @@ import Image from "next/image";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "../assets/css/destinations.css";
-import Img1 from "../assets/images/destinations/1.svg";
-import Img2 from "../assets/images/destinations/2.svg";
-import Img3 from "../assets/images/destinations/4.svg";
-import Img4 from "../assets/images/destinations/4.svg";
-import Img5 from "../assets/images/destinations/5.svg";
-import Img6 from "../assets/images/destinations/3.svg";
+import Img1 from "../assets/images/destinations/Switzerland.png";
+import Img2 from "../assets/images/destinations/France.png";
+import Img3 from "../assets/images/destinations/Italy.png";
+import Img4 from "../assets/images/destinations/Netherlands.png";
+import Img5 from "../assets/images/destinations/4.svg";
+import Img6 from "../assets/images/destinations/china.png";
 import Link from "next/link";
 const featuredDestinations = [
   { id: 1, img: Img1, title: "Switzerland" },
   { id: 2, img: Img2, title: "France" },
   { id: 3, img: Img3, title: "Italy" },
   { id: 4, img: Img4, title: "Netherlands" },
-  { id: 5, img: Img5, title: "Paris" },
+  { id: 5, img: Img5, title: "Australia" },
   { id: 6, img: Img6, title: "China" },
 ];
 
@@ -26,7 +26,7 @@ const FeaturedSection = () => {
   return (
     <div className="featured-section">
       {/* Section Title */}
-      <h2 className="section-title">Discover your new favourite stay</h2>
+      <h2 className="section-title">Discover Your New Favourite Stay</h2>
 
       {/* Slider */}
       <div className="destination-slider">
@@ -55,7 +55,9 @@ const FeaturedSection = () => {
         </Swiper>
 
         <div className="explore-container">
-          <Link href="/hotels" className="explore-btn">Explore More</Link>
+          <Link href="/hotels" className="explore-btn">
+            Explore More
+          </Link>
         </div>
       </div>
     </div>

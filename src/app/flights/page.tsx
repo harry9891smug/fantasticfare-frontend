@@ -912,7 +912,7 @@ const FlightSearch = () => {
                   <div className="flight-card-container">
                     <div className="flight-card">
                       <Image
-                        className="flight-image "
+                        className="flight-image"
                         src={item.img}
                         alt={item.title}
                       />

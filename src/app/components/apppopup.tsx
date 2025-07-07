@@ -36,6 +36,7 @@ const handleGoogleLogin = () => {
   window.location.href = redirectUri;
 };
 
+
 const handleFacebookLogin = () => {
   const fbAppId = "1194872025612298";
   const redirectUri =
@@ -107,7 +108,23 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose, onSuccess, error }) => {
       return true;
     }
   };
+const handleGuestLogin = () => {
+  const guestUser = {
+    id: "guest",
+    name: "Guest User",
+    email: "guest@fantasticfare.com",
+    isGuest: true,
+  };
 
+  // Store guest user info in localStorage
+  localStorage.setItem("user", JSON.stringify(guestUser));
+  localStorage.setItem("token", "guest-token"); // Or skip token if backend not needed
+
+  window.dispatchEvent(new Event("userUpdated"));
+
+  onSuccess(); // Continue booking flow
+  onClose(); // Close popup
+};
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -265,6 +282,7 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose, onSuccess, error }) => {
                       placeholder="Enter phone number"
                     />
                   </div>
+                  
                 )}
 
                 <div
@@ -332,11 +350,19 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose, onSuccess, error }) => {
 
                 {isLogin && (
                   <div className={styles.divider}>
-                    <span>or</span>
+                    <span>or</span><br></br>
+                                         <button
+  className={styles.guestLoginButton}
+  onClick={handleGuestLogin}
+  type="button"
+>
+  Continue as Guest
+</button>
                   </div>
                 )}
 
                 {isLogin && (
+                    
                   <div className={styles.socialLogin}>
                     <Image
                       src={googleIcon}
@@ -349,8 +375,11 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose, onSuccess, error }) => {
                       alt="Facebook"
                     />
                     <Image src={appleIcon} alt="Apple" />
+ 
                   </div>
+                  
                 )}
+              
               </form>
             </>
           )}

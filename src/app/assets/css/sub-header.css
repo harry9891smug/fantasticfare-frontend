@@ -330,3 +330,9 @@
   color: #000;
   text-decoration: none;
 }
+
+@media (max-width: 576px) {
+  .sub-header ul {
+    gap: 10px;
+  }
+}

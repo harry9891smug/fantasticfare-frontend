@@ -523,7 +523,11 @@ rating: hotel.rating || (Math.random() * 2 + 3).toFixed(1),
         hotel,
         rooms: hotel.rooms,
         checkIn,
-        checkOut,
+        checkOut, 
+        occupancies: {
+                       adults:adults,
+                       children:children
+        }
       }));
       setTimeout(() => {
         router.push(`/hotels/${hotel.code}`);

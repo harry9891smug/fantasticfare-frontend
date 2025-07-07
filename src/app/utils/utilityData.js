@@ -5,6 +5,14 @@ import Img4 from "../assets/images/destinations/4.svg";
 import Img5 from "../assets/images/destinations/5.svg";
 import Img6 from "../assets/images/destinations/3.svg";
 
+export const priceDislayInComma = function (price) {
+  return price.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+  });
+};
+
 export const cabinOptions = [
   { value: "Economy", label: "Economy" },
   { value: "Premium economy", label: "Premium economy" },

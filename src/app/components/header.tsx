@@ -95,6 +95,13 @@ const Header: React.FC = () => {
             aria-expanded={!isNavCollapsed}
             aria-label="Toggle navigation"
             onClick={handleNavToggle}
+            style={{
+              borderRadius: "5px",
+              background: "#0389c6",
+              border: "1px solid #0389c6",
+              padding: "5px 2px",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.4)" /* soft white glow */,
+            }}
           >
             <span className="navbar-toggler-iconct"></span>
           </button>

@@ -249,6 +249,7 @@
 
   .package-name {
     font-size: 15px;
+    font-weight: 400;
     height: calc(1.3em * 2); /* Ensures consistent height even with 1 line */
 
     display: -webkit-box;

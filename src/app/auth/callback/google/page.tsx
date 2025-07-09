@@ -181,8 +181,8 @@ export default function FlightSearch() {
           // Assuming your backend returns a JWT token for your app
           localStorage.setItem('token', response.data.token);
 
-          toast.success('Google login successful!');
-          window.location.href = '/dashboard'; // Or use router.push
+          alert('Google login successful!');
+          // window.location.href = '/'; // Or use router.push
         } catch (err) {
           console.error('Google login error:', err);
           toast.error('Login failed');

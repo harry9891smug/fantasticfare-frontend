@@ -109,7 +109,7 @@ const SubHeader = () => {
               <span>Home</span>
             </Link>
           </li>
-          {crmdata?.data && crmdata.data.length > 0 && (
+          {/* {crmdata?.data && crmdata.data.length > 0 && (
             <li className="position-relative view-dropdown-item">
               <div
                 className="d-flex align-items-center cursor-pointer"
@@ -127,9 +127,7 @@ const SubHeader = () => {
                   <Image src={flights} alt="Flights" width={30} height={30} />
                   <span>Flights</span>
                 </Link>
-                {/* <span className="dropdown-icon">
-                  <FaChevronDown />
-                </span> */}
+               
               </div>
 
               {showDropdown && (
@@ -161,14 +159,14 @@ const SubHeader = () => {
                 </div>
               )}
             </li>
-          )}
-          {/* 
+          )} */}
+          
           <li>
             <Link href="/flights">
               <Image src={flights} alt="Flights" width={20} height={20} />
               Flights
             </Link>
-          </li> */}
+          </li>
           <li>
             <Link href="/hotels" className="flex items-center gap-2">
               <Image src={hotels} alt="Hotels" width={20} height={20} />

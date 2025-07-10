@@ -54,7 +54,7 @@
 .sub-header-slider .country-image {
   font-size: 24px;
   line-height: 1;
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; 
 }
 .sub-header-slider .swiper-wrapper {
   justify-content: center;
@@ -76,10 +76,7 @@
 
 
 
-.swiper-button-prev,
-.swiper-button-next {
-  display: none !important;
-}
+
 /* .sub-header-slider .custom-prev {
   position: absolute;
   top: 50%;

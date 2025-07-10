@@ -108,23 +108,37 @@ const AuthPopup: React.FC<AuthPopupProps> = ({ onClose, onSuccess, error }) => {
       return true;
     }
   };
-const handleGuestLogin = () => {
-  const guestUser = {
-    id: "guest",
-    name: "Guest User",
-    email: "guest@fantasticfare.com",
-    isGuest: true,
-  };
+    const handleGuestLogin = async () => {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/continue-as-guest`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        });
 
-  // Store guest user info in localStorage
-  localStorage.setItem("user", JSON.stringify(guestUser));
-  localStorage.setItem("token", "guest-token"); // Or skip token if backend not needed
+        const data = await response.json();
 
-  window.dispatchEvent(new Event("userUpdated"));
+        if (data.status && data.token) {
+        const guestUser = {
+            id: "guest",
+            name: "Guest User",
+            email: "guest@fantasticfare.com",
+            isGuest: true,
+        };
 
-  onSuccess(); // Continue booking flow
-  onClose(); // Close popup
-};
+        localStorage.setItem("user", JSON.stringify(guestUser));
+        localStorage.setItem("token", data.token);
+
+         onSuccess(); 
+         onClose(); 
+        } 
+    } catch (error) {
+        console.error("Error during guest login:", error);
+        alert("Something went wrong. Please try again.");
+    }
+    };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -351,13 +365,13 @@ const handleGuestLogin = () => {
                 {isLogin && (
                   <div className={styles.divider}>
                     <span>or</span><br></br>
-                                         <button
-  className={styles.guestLoginButton}
-  onClick={handleGuestLogin}
-  type="button"
->
-  Continue as Guest
-</button>
+                  <button
+                        className={styles.guestLoginButton}
+                        onClick={handleGuestLogin}
+                        type="button"
+                        >
+                        Continue as Guest
+                    </button>
                   </div>
                 )}
 

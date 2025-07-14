@@ -1,0 +1,34 @@
+/* Make Swiper navigation arrows visible and styled */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #000; /* Set arrow color */
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+}
+
+.ReactModal__Content .swiper-button-prev {
+  left: 10px;
+}
+
+.ReactModal__Content .swiper-button-next {
+  right: 10px;
+}
+@media (max-width: 768px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none;
+  }
+}

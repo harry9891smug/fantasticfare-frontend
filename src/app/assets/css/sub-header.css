@@ -309,9 +309,9 @@
 
 /* Call Button */
 .phone-buttonN {
-  background: #0389c6;
-  color: #ffffff;
-  border: 1px solid #0389c6;
+  /* background: #0389c6; */
+  color: #cf8701;
+  border: 1px solid #cf8701;
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;

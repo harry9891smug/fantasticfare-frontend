@@ -14,7 +14,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "../../../../../assets/css/package_details.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from 'swiper/modules';
+import { Pagination, Autoplay, Navigation } from 'swiper/modules';
+import Modal from "react-modal";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -28,6 +29,8 @@ import { FaMapMarkedAlt, FaLightbulb, FaBed } from "react-icons/fa";
 import EnquiryModal from "../../../../../components/EnquiryModal";
 import ClientWrapper from "../../../../../components/ClientWrapper";
 import SubHeaderSlider from "../../../../../components/SubHeaderSlider";
+import '../../../../../assets/css/package-swiper-custom.css';
+
 interface Packages {
   _id: string;
   package_name: string;
@@ -143,7 +146,6 @@ const schema = yup.object().shape({
     .required("Traveller count is required"),
   message: yup.string().required("Message is required"),
 });
-
 const PackageDetails: React.FC = () => {
   const params = useParams();
   const { continent,region,country,package_url } = params;
@@ -157,6 +159,14 @@ const PackageDetails: React.FC = () => {
   const [expandedDay, setExpandedDay] = useState<string | null>(null);
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+const [modalImageIndex, setModalImageIndex] = useState(0);
+const openImageModal = (index: number) => {
+  setModalImageIndex(index);
+  setIsModalOpen(true);
+};
+const closeImageModal = () => setIsModalOpen(false);
+
   const {
     register,
     handleSubmit, control,
@@ -186,6 +196,11 @@ const PackageDetails: React.FC = () => {
     return str.replace(/-/g, ' ');
 };
 const [countries, setCountries] = useState([]);
+useEffect(() => {
+  if (typeof window !== "undefined") {
+    Modal.setAppElement(document.body);
+  }
+}, []);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -335,8 +350,9 @@ const [countries, setCountries] = useState([]);
       <div className="paris-package">
         <div className="package-image">
           <Swiper
-            modules={[Pagination, Autoplay]}
+            modules={[Navigation, Pagination, Autoplay]}
             pagination={{ clickable: true }}
+            navigation
             spaceBetween={10}
             slidesPerView={1}
             autoplay={{ delay: 2500 }}
@@ -351,10 +367,59 @@ const [countries, setCountries] = useState([]);
                     height={250}
                     className="card-img-top"
                     style={{ objectFit: "cover" }}
+                     onClick={() => openImageModal(index)}
                   />
                 </SwiperSlide>
               ))}
           </Swiper>
+          <Modal
+  isOpen={isModalOpen}
+  onRequestClose={closeImageModal}
+  contentLabel="Image Slider Modal"
+   style={{
+    content: {
+      maxWidth: '800px',
+      margin: 'auto',
+      padding: 0,
+      inset: '10%',
+      border: '2px solid white',
+      background: '#fff',
+      borderRadius: '10px',
+      zIndex: 1001,
+      overflow: 'hidden'
+    },
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      zIndex: 1090
+    }
+  }}
+>
+  <Swiper
+    modules={[Navigation, Pagination]}
+    navigation
+    pagination={{ clickable: true }}
+    initialSlide={modalImageIndex}
+    style={{ width: '100%', height: '100%' }}
+  >
+    {packageData?.package_image?.map((img, index) => (
+      <SwiperSlide key={index}>
+        <Image
+          src={img}
+          alt={`Modal Image ${index + 1}`}
+          width={800}
+          height={500}
+          style={{
+            width: '100%',
+            height: 'auto',
+            objectFit: 'contain',
+            background: '#fff',
+          }}
+        />
+      </SwiperSlide>
+    ))}
+  </Swiper>
+</Modal>
+
         </div>
         <div className="package-details">
           <h2 className="package-title">{packageData.package_name}</h2>
@@ -443,58 +508,127 @@ const [countries, setCountries] = useState([]);
               {packageData.itineraries?.[0]?.days?.length > 0 ? (
                 <>
                   {/* Carousel Slider */}
-                  <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
-                    <ol className="carousel-indicators">
-                      {packageData.itineraries[0].days.map((_, index) => (
-                        <li
-                          key={index}
-                          data-target="#carouselExampleIndicators"
-                          data-slide-to={index}
-                          className={index === 0 ? "active" : ""}
-                        ></li>
-                      ))}
-                    </ol>
-                    <div className="carousel-inner">
-                      {packageData.itineraries[0].days.map((day, index) => (
-                        <div
-                          key={index}
-                          className={`carousel-item ${index === 0 ? "active" : ""}`}
-                        >
-                          {day.day_images?.length > 0 ? (
-                            <Image
-                              className="d-block w-100"
-                              src={day.day_images[0]}
-                              alt={`Day ${index + 1}`}
-                              width={800}
-                              height={400}
-                            />
-                          ) : (
-                            <div className="d-block w-100 placeholder-image">
-                              No image available
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                    <a
-                      className="carousel-control-prev"
-                      href="#carouselExampleIndicators"
-                      role="button"
-                      data-slide="prev"
-                    >
-                      <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                      <span className="sr-only">Previous</span>
-                    </a>
-                    <a
-                      className="carousel-control-next"
-                      href="#carouselExampleIndicators"
-                      role="button"
-                      data-slide="next"
-                    >
-                      <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                      <span className="sr-only">Next</span>
-                    </a>
-                  </div>
+                <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
+  <div className="carousel-indicators">
+    {packageData.itineraries[0].days.map((_, index) => (
+      <button
+        key={index}
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to={index}
+        className={index === 0 ? "active" : ""}
+        aria-current={index === 0 ? "true" : undefined}
+        aria-label={`Slide ${index + 1}`}
+      ></button>
+    ))}
+  </div>
+
+  <div className="carousel-inner">
+    {packageData.itineraries[0].days.map((day, index) => (
+      <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
+        {day.day_images?.length > 0 ? (
+          <Image
+            className="d-block w-100"
+            src={day.day_images[0]}
+            alt={`Day ${index + 1}`}
+            width={800}
+            height={400}
+            data-bs-toggle="modal"
+            data-bs-target="#carouselModal"
+          />
+        ) : (
+          <div className="d-block w-100 placeholder-image">No image available</div>
+        )}
+      </div>
+    ))}
+  </div>
+
+  <button
+    className="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselExampleIndicators"
+    data-bs-slide="prev"
+  >
+    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span className="visually-hidden">Previous</span>
+  </button>
+
+  <button
+    className="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselExampleIndicators"
+    data-bs-slide="next"
+  >
+    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+    <span className="visually-hidden">Next</span>
+  </button>
+</div>
+
+<div
+  className="modal fade"
+  id="carouselModal"
+  tabIndex={-1}
+  aria-labelledby="carouselModalLabel"
+  aria-hidden="true"
+>
+  <div className="modal-dialog modal-dialog-centered modal-lg">
+    <div className="modal-content">
+     
+      <div className="modal-body">
+        <div id="carouselModalSlider" className="carousel slide" data-bs-ride="carousel">
+          <div className="carousel-indicators">
+            {packageData.itineraries[0].days.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                data-bs-target="#carouselModalSlider"
+                data-bs-slide-to={index}
+                className={index === 0 ? "active" : ""}
+                aria-current={index === 0 ? "true" : undefined}
+                aria-label={`Slide ${index + 1}`}
+              ></button>
+            ))}
+          </div>
+          <div className="carousel-inner">
+            {packageData.itineraries[0].days.map((day, index) => (
+              <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                {day.day_images?.length > 0 ? (
+                  <Image
+                    className="d-block w-100"
+                    src={day.day_images[0]}
+                    alt={`Day ${index + 1}`}
+                    width={800}
+                    height={400}
+                  />
+                ) : (
+                  <div className="d-block w-100 placeholder-image">No image available</div>
+                )}
+              </div>
+            ))}
+          </div>
+          <button
+            className="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselModalSlider"
+            data-bs-slide="prev"
+          >
+            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button
+            className="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselModalSlider"
+            data-bs-slide="next"
+          >
+            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
                   {/* Accordions */}
 
@@ -520,19 +654,85 @@ const [countries, setCountries] = useState([]);
                         >
                           {/* Rest of your accordion content remains the same */}
                           {day.day_images?.length > 0 && (
-                            <div className="image-row">
-                              {day.day_images.slice(0, 3).map((img, imgIndex) => (
+                          <div className="image-row">
+                            {day.day_images.slice(0, 3).map((img, imgIndex) => (
+                              <Image
+                                key={imgIndex}
+                                src={img}
+                                alt={`${day.day_name} Image ${imgIndex + 1}`}
+                                width={200}
+                                height={150}
+                                role="button"
+                                data-bs-toggle="modal"
+                                data-bs-target={`#dayImagesModal_${index}`} // 👈 unique per day
+                                style={{ cursor: 'pointer' }}
+                              />
+                            ))}
 
-                                <Image
-                                  key={imgIndex}
-                                  src={img}
-                                  alt={`${day.day_name} Image ${imgIndex + 1}`}
-                                  width={200}
-                                  height={150}
-                                />
-                              ))}
+                            {/* MODAL FOR THIS DAY ONLY */}
+                            <div
+                              className="modal fade"
+                              id={`dayImagesModal_${index}`} // 👈 same as data-bs-target
+                              tabIndex={-1}
+                              aria-labelledby={`dayImagesModalLabel_${index}`}
+                              aria-hidden="true"
+                            >
+                              <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content" style={{ backgroundColor: "#fff", padding:"10px" }}>
+                                 
+                                  <div className="modal-body p-0">
+                                    <div id={`carouselDayImages_${index}`} className="carousel slide" data-bs-ride="carousel">
+                                      <div className="carousel-inner">
+                                        {day.day_images.slice(0, 3).map((img, imgIdx) => (
+                                          <div
+                                            className={`carousel-item ${imgIdx === 0 ? "active" : ""}`}
+                                            key={imgIdx}
+                                          >
+                                            <Image
+                                              src={img}
+                                              alt={`Day ${index + 1} - Image ${imgIdx + 1}`}
+                                              width={900}
+                                              height={700}
+                                              className="d-block mx-auto"
+                                              style={{
+                                                width: "100%",
+                                                height: "auto",
+                                                maxWidth: "574px",
+                                                maxHeight: "702px",
+                                                objectFit: "contain",
+                                                backgroundColor: "#000",
+                                              }}
+                                            />
+                                          </div>
+                                        ))}
+                                      </div>
+
+                                      <button
+                                        className="carousel-control-prev"
+                                        type="button"
+                                        data-bs-target={`#carouselDayImages_${index}`}
+                                        data-bs-slide="prev"
+                                      >
+                                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span className="visually-hidden">Previous</span>
+                                      </button>
+                                      <button
+                                        className="carousel-control-next"
+                                        type="button"
+                                        data-bs-target={`#carouselDayImages_${index}`}
+                                        data-bs-slide="next"
+                                      >
+                                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span className="visually-hidden">Next</span>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          )}
+                          </div>
+                        )}
+
                           <div className="day-title-section">
                             <div className="day-capsule">{day.day_name}</div>
                             {/* <h3 className="accordion-title">Itinerary Details</h3> */}

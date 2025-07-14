@@ -44,7 +44,8 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [activeTab, setActiveTab] = useState<'coupon' | 'giftCard'>('coupon');
-  const [useHolderAsGuest, setUseHolderAsGuest] = useState(true);
+  const [useHolderAsGuest, setUseHolderAsGuest] = useState(false);
+
 
   const [customers, setCustomers] = useState<Customers>({ adults: 2, children: 0 });
 
@@ -108,6 +109,21 @@ const BookingPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
     fetchBookingData();
   }, [id]);
+  useEffect(() => {
+  if (useHolderAsGuest && formData.holder.name && formData.holder.surname) {
+    const updatedPaxes = [...formData.paxes];
+    updatedPaxes[0] = {
+      ...updatedPaxes[0],
+      name: formData.holder.name,
+      surname: formData.holder.surname,
+    };
+    setFormData(prev => ({
+      ...prev,
+      paxes: updatedPaxes
+    }));
+  }
+}, [useHolderAsGuest]);
+
  useEffect(() => {
   if (!bookingData) return;
 

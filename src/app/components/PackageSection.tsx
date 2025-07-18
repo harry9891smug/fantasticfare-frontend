@@ -12,16 +12,26 @@ import "swiper/css/pagination";
 import EnquiryModal from "./EnquiryModal";
 import "../assets/css/packages.css";
 import { FaPhone } from "react-icons/fa";
-type Package = {
+import PackageContinent from "./PackageContinent";
+
+interface Package {
   _id: string;
-  package_heading: string;
+  package_name: string;
   package_image: string[];
+  package_heading: string;
+  from_country: string;
+  to_country: string;
   total_price: string;
   discounted_price: string;
+  days?: string;
+  country_name: string;
+  region_name: string;
+  continent_name: string;
+  package_url: string;
   package_tags: string[];
-};
+}
 
-const PackageSection = () => {
+const PackageSection: React.FC = () => {
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -73,7 +83,10 @@ const PackageSection = () => {
   };
 
   return (
-    <div className="package-section">
+    <div
+      className="package-section"
+      style={{ maxWidth: "1080px", margin: "0 auto" }}
+    >
       <h2 className="package-title">Our Special Packages</h2>
       <hr className="full-width-line" />
       <div className="tabs">
@@ -105,83 +118,11 @@ const PackageSection = () => {
               .filter((pkg) => pkg.package_tags?.includes(activeTab))
               .slice(0, visiblePackages)
               .map((pkg) => (
-                <div key={pkg._id} className="package-card">
-                  {pkg.package_image?.length > 0 ? (
-                    <Swiper
-                      modules={[Pagination, Autoplay]}
-                      pagination={{ clickable: true }}
-                      spaceBetween={10}
-                      slidesPerView={1}
-                      autoplay={{ delay: 2500, disableOnInteraction: false }}
-                      observer={true}
-                      observeParents={true}
-                      key={pkg._id}
-                    >
-                      {pkg.package_image.map((img, idx) => (
-                        <SwiperSlide key={idx}>
-                          <div
-                            className="position-relative w-100"
-                            style={{ height: "250px" }}
-                          >
-                            <Image
-                              src={img}
-                              alt={`${pkg.package_heading}-${idx}`}
-                              width={400}
-                              height={250}
-                              className="card-img-top"
-                              style={{
-                                objectFit: "cover",
-                                borderRadius: "8px",
-                              }}
-                              priority={idx === 0}
-                              onLoad={() =>
-                                window.dispatchEvent(new Event("resize"))
-                              }
-                            />
-                          </div>
-                        </SwiperSlide>
-                      ))}
-                    </Swiper>
-                  ) : (
-                    <div className="placeholder-image">No Image Available</div>
-                  )}
-                  <div className="package-info">
-                    <Link
-                      href={`/packages/${pkg._id}`}
-                      className="text-decoration-none"
-                    >
-                      <h3 className="package-name">{pkg.package_heading}</h3>
-                    </Link>
-                    <div className="price-container">
-                      <span className="offer-price">
-                        USD {pkg?.discounted_price}
-                      </span>
-                      <span className="main-price">
-                        <s>USD {pkg.total_price}</s>
-                      </span>
-
-                      <span className="saved-price">
-                        Save $
-                        {(
-                          Number(pkg.total_price) - Number(pkg.discounted_price)
-                        ).toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="buttons">
-                      <a href="tel:+18334227770">
-                        <button className="phone-button">
-                          <FaPhone className="rotate-call-icons" />
-                        </button>
-                      </a>
-                      <button
-                        className="callback-button"
-                        onClick={() => openEnquiryModal(pkg)}
-                      >
-                        Request Callback
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <PackageContinent
+                  key={pkg._id}
+                  pkg={pkg}
+                  onEnquiry={openEnquiryModal}
+                />
               ))}
 
             {/* Enquiry Modal */}

@@ -16,6 +16,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import WhyChooseUs from "../../components/WhyChooseUs";
 import Testimonial from "@/app/components/testimonial";
+import PackageContinent from "@/app/components/PackageContinent";
 
 interface Package {
   _id: string;
@@ -27,6 +28,10 @@ interface Package {
   total_price: string;
   discounted_price: string;
   days?: string;
+  country_name: string;
+  region_name: string;
+  continent_name: string;
+  package_url: string;
 }
 
 interface TravelTip {
@@ -214,94 +219,7 @@ const Packages = ({ params }: CountryPageProps) => {
         {packages.length > 0 ? (
           packages.slice(0, showAll ? packages.length : 6).map((pkg) => (
             <div className="col-12 col-sm-6 col-md-4 mb-4" key={pkg._id}>
-              <div className="card shadow-sm h-100 package-card">
-                <Link
-                  href={`/packages/${pkg._id}`}
-                  className="text-decoration-none"
-                >
-                  <div className="card-img-container">
-                    {pkg.package_image?.length > 0 ? (
-                      <Swiper
-                        modules={[Pagination, Autoplay]}
-                        pagination={{ clickable: true }}
-                        spaceBetween={10}
-                        slidesPerView={1}
-                        autoplay={{ delay: 2500, disableOnInteraction: false }}
-                        observer
-                        observeParents
-                        key={pkg._id}
-                      >
-                        {pkg.package_image.map((img, idx) => (
-                          <SwiperSlide key={idx}>
-                            <Image
-                              src={img}
-                              alt={`${pkg.package_name}-${idx}`}
-                              width={400}
-                              height={250}
-                              className="card-img-top"
-                              style={{
-                                objectFit: "cover",
-                                borderRadius: "8px",
-                                width: "100%",
-                                height: "auto",
-                              }}
-                              priority={idx === 0}
-                            />
-                          </SwiperSlide>
-                        ))}
-                      </Swiper>
-                    ) : (
-                      <div className="placeholder-image">
-                        No Image Available
-                      </div>
-                    )}
-                  </div>
-                </Link>
-
-                <div className="card-body d-flex flex-column">
-                  <Link
-                    href={`/packages/${pkg._id}`}
-                    className="text-decoration-none"
-                  >
-                    <h5 className="card-title">{pkg.package_name}</h5>
-                  </Link>
-                  <p className="card-text text-muted mb-2">
-                    {pkg.package_heading}
-                  </p>
-                  <div className="price-container mb-3 mt-auto">
-                    {pkg.discounted_price ? (
-                      <>
-                        <span className="text-decoration-line-through text-muted me-2">
-                          ${pkg.total_price}
-                        </span>
-                        <span className="text-danger fw-bold">
-                          ${pkg.discounted_price}
-                        </span>
-                        <div className="savings-badge">
-                          Save $
-                          {calculateSavings(
-                            pkg.total_price,
-                            pkg.discounted_price
-                          )}
-                        </div>
-                      </>
-                    ) : (
-                      <span className="fw-bold">${pkg.total_price}</span>
-                    )}
-                  </div>
-                  <div className="buttons">
-                    <a href="tel:+18334227770">
-                      <button className="phone-button">📞</button>
-                    </a>
-                    <button
-                      className="callback-button"
-                      onClick={() => openEnquiryModal(pkg)}
-                    >
-                      Request Callback
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <PackageContinent pkg={pkg} onEnquiry={openEnquiryModal} />
             </div>
           ))
         ) : (

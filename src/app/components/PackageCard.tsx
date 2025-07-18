@@ -1,13 +1,13 @@
 // components/PackageCard.tsx
-'use client';
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from 'swiper/modules';
-import Link from 'next/link';
-import 'swiper/css';
-import 'swiper/css/pagination';
+import React from "react";
+import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Autoplay } from "swiper/modules";
+import Link from "next/link";
+import "swiper/css";
+import "swiper/css/pagination";
 import "../assets/css/packages.css";
 
 interface Package {
@@ -29,7 +29,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg, onEnquireClick }) => {
     (parseFloat(total) - parseFloat(discounted)).toFixed(2);
 
   return (
-    <div className="card shadow-sm h-100 package-card">
+    <div className="package-card">
       <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
         <div className="card-img-container">
           {pkg.package_image?.length > 0 ? (
@@ -49,16 +49,16 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg, onEnquireClick }) => {
                     src={img}
                     alt={`${pkg.package_name}-${idx}`}
                     width={400}
-                    height={250}
+                    height={350}
                     className="card-img-top"
                     style={{
                       objectFit: "cover",
                       borderRadius: "8px",
-                      width: '100%',
-                      height: 'auto'
                     }}
                     priority={idx === 0}
-                    onLoadingComplete={() => window.dispatchEvent(new Event('resize'))}
+                    onLoadingComplete={() =>
+                      window.dispatchEvent(new Event("resize"))
+                    }
                   />
                 </SwiperSlide>
               ))}
@@ -68,13 +68,13 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg, onEnquireClick }) => {
           )}
         </div>
       </Link>
-      
+
       <div className="card-body d-flex flex-column">
         <Link href={`/packages/${pkg._id}`} className="text-decoration-none">
-          <h5 className="card-title">{pkg.package_name || 'Package Name'}</h5>
+          <h5 className="card-title">{pkg.package_name || "Package Name"}</h5>
         </Link>
         <p className="card-text text-muted mb-2">
-          {pkg.package_heading || 'Package description'}
+          {pkg.package_heading || "Package description"}
         </p>
         <div className="price-container mb-3 mt-auto">
           {pkg.discounted_price ? (
@@ -97,8 +97,8 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg, onEnquireClick }) => {
           <a href="tel:+18334227770">
             <button className="phone-button">📞</button>
           </a>
-          <button 
-            className="callback-button" 
+          <button
+            className="callback-button"
             onClick={(e) => {
               e.preventDefault();
               onEnquireClick();

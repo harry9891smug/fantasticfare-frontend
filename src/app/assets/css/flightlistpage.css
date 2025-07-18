@@ -1,0 +1,49 @@
+.flight-filter {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.flight-filter-background {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7f7f7;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.sort-airline,
+.sort-departure,
+.sort-arrival,
+.sort-price {
+  font-size: 12px;
+  font-weight: 400;
+  color: #4d4d4d;
+  text-align: center;
+  flex: 1;
+}
+.sort-airline:hover,
+.sort-departure:hover,
+.sort-arrival:hover,
+.sort-price:hover {
+  color: #36c;
+  cursor: pointer;
+}
+
+.active-sort {
+  font-weight: 600;
+  color: #007bff;
+  background-color: #e8f0fe;
+  border-radius: 6px;
+  padding: 6px;
+}
+
+.arrow-icon {
+  margin-left: 5px;
+}
+.arrow-icon :hover {
+  color: #36c;
+  margin-left: 5px;
+}

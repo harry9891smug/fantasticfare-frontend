@@ -217,7 +217,7 @@
 .trip-type button.active {
   border: none;
   border-bottom: 2px solid #0e87c8;
-  border-radius: 0;
+  border-radius: 4px;
 }
 
 /* Cabin Class Dropdown */
@@ -306,7 +306,6 @@
 
   .cabin-dropdown-container {
     margin-left: 0;
-    margin-top: 8px;
   }
 }
 

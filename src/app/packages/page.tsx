@@ -1,16 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
-import user1 from "../../app/assets/images/user.svg";
-import cornerImage from "../../app/assets/images/revimg.svg";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "../assets/css/packages.css";
 import Link from "next/link";
 import TipsSection from "../components/tipsArticle";
 import { usePathname } from "next/navigation";
@@ -19,11 +10,11 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ads from "../assets/images/ads.jpeg";
 import SubHeaderSlider from "../components/SubHeaderSlider";
-import { FaPhone } from "react-icons/fa";
 import { faqList, metaData, packageMetaData } from "../utils/utilityData";
 import { Accordion, Button } from "react-bootstrap";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import Testimonial from "../components/testimonial";
+import PackageContinent from "../components/PackageContinent";
 
 interface Package {
   _id: string;
@@ -94,12 +85,14 @@ const Packages: React.FC = () => {
   const [showEnquiryModal, setShowEnquiryModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
- const [countries, setCountries] = useState([]);
+  const [countries, setCountries] = useState([]);
 
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/countries-with-icon`);
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/countries-with-icon`
+        );
         const data = await res.json();
         if (data.status && Array.isArray(data.data)) {
           // Optional: Add slug generation
@@ -162,13 +155,14 @@ const Packages: React.FC = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/list-package`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/list-package-data`
       );
       if (!response.ok) throw new Error("Failed to fetch packages.");
 
       const data = await response.json();
       if (data.status && data.data) {
-        setPackages(data.data);
+        setPackages(data?.data);
+        setDisplayCount(data?.count);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error occurred");
@@ -269,274 +263,180 @@ const Packages: React.FC = () => {
 
   return (
     <>
-       <SubHeaderSlider countries={countries} />
-    <div className="container mt-5 packages-container">
-       
-      <ToastContainer position="top-right" autoClose={5000} />
-      {/* Header */}
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end p-4 rounded">
-        <div className="mb-3 mb-md-0">
-          <h2 className="mb-2">Popular Travel Packages</h2>
-          <p className="mb-0">
-            Discover amazing holiday packages tailored for you.
-          </p>
-        </div>
-        <div>
-          <a
-            target="_blank"
-            href="/all-packages"
-            className="btn btn-primary custom-btn-main"
-          >
-            Discover More
-          </a>
-        </div>
-      </div>
-
-      {/* Packages */}
-      {Object.entries(groupedPackages).map(([countryName, countryPackages]) => (
-        <div key={countryName} className="mb-5">
-          {/* Country Header with View All Button */}
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h3 className="fw-bold">{countryName}</h3>
-            <Link
-              href={`/country/${countryName
-                .toLowerCase()
-                .replace(/\s+/g, "-")}`}
-            >
-              <button className="btn btn-outline-primary btn-sm">
-                View All
-              </button>
-            </Link>
+      <SubHeaderSlider countries={countries} />
+      <div
+        className="container mt-5 packages-container"
+        style={{ maxWidth: "1080px", margin: "0 auto" }}
+      >
+        <ToastContainer position="top-right" autoClose={5000} />
+        {/* Header */}
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end p-4 rounded">
+          <div className="mb-3 mb-md-0">
+            <h2 className="mb-2">Popular Travel Packages</h2>
+            <p className="mb-0">
+              Discover amazing holiday packages tailored for you.
+            </p>
           </div>
+          <div>
+            <a
+              target="_blank"
+              href="/all-packages"
+              className="btn btn-primary custom-btn-main"
+            >
+              Discover More
+            </a>
+          </div>
+        </div>
 
-          {/* Country's Packages */}
-          <div className="row">
-            {countryPackages.slice(0, 3).map((pkg) => (
-              <div className="col-12 col-sm-6 col-md-4 mb-4" key={pkg._id}>
-                {/* Your existing card UI for individual package here */}
-                <div className="package-card">
-                  {/* <Link href={`/packages/${pkg._id}`} className="text-decoration-none"> */}
-                  <Link
-                    href={`/package/${sanitize(pkg.continent_name)}/${sanitize(
-                      pkg.region_name
-                    )}/${sanitize(pkg.country_name)}/${pkg.package_url}`}
-                    className="text-decoration-none"
-                  >
-                    <div className="card-img-container">
-                      {pkg.package_image?.length > 0 ? (
-                        <Swiper
-                          modules={[Pagination, Autoplay]}
-                          pagination={{ clickable: true }}
-                          spaceBetween={10}
-                          slidesPerView={1}
-                          autoplay={{
-                            delay: 2500,
-                            disableOnInteraction: false,
-                          }}
-                          observer={true}
-                          observeParents={true}
-                          key={pkg._id}
-                        >
-                          {pkg.package_image.map((img, idx) => (
-                            <SwiperSlide key={idx}>
-                              <Image
-                                src={img}
-                                alt={`${pkg.package_name}-${idx}`}
-                                width={400}
-                                height={250}
-                                className="card-img-top"
-                                style={{
-                                  objectFit: "cover",
-                                  borderRadius: "8px",
-                                }}
-                                priority={idx === 0}
-                                onLoad={() =>
-                                  window.dispatchEvent(new Event("resize"))
-                                }
-                              />
-                            </SwiperSlide>
-                          ))}
-                        </Swiper>
-                      ) : (
-                        <div className="placeholder-image">
-                          No Image Available
-                        </div>
-                      )}
-                    </div>
-                  </Link>
-                  <div className="card-body d-flex flex-column">
-                    {/* <Link href={`/packages/${pkg._id}`} className="text-decoration-none"> */}
-                    <Link
-                      href={`/package/${sanitize(
-                        pkg.continent_name
-                      )}/${sanitize(pkg.region_name)}/${sanitize(
-                        pkg.country_name
-                      )}/${pkg.package_url}`}
-                      className="text-decoration-none"
-                    >
-                      <h5 className="card-title">{pkg.package_name}</h5>
-                    </Link>
-                    {/* </Link> */}
-
-                    <div className="price-container mt-auto">
-                      {pkg.discounted_price ? (
-                        <>
-                          <span className="offer-price">
-                            ${pkg.discounted_price}
-                          </span>
-                          <span className="main-price">${pkg.total_price}</span>
-                          <div className="saved-price">
-                            Save $
-                            {calculateSavings(
-                              pkg.total_price,
-                              pkg.discounted_price
-                            )}
-                          </div>
-                        </>
-                      ) : (
-                        <span className="fw-bold">${pkg.total_price}</span>
-                      )}
-                    </div>
-                    <div className="buttons">
-                      <a href="tel:+18334227770">
-                        <button className="phone-button">
-                          <FaPhone className="rotate-call-icons" />
-                        </button>
-                      </a>
-                      <button
-                        className="callback-button"
-                        onClick={() => openEnquiryModal(pkg)}
-                      >
-                        Request Callback
-                      </button>
-                    </div>
-                  </div>
-                </div>
+        {/* Packages */}
+        {Object.entries(groupedPackages).map(
+          ([countryName, countryPackages]) => (
+            <div key={countryName} className="mb-5">
+              {/* Country Header with View All Button */}
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h3 className="fw-bold">{countryName}</h3>
+                <Link
+                  href={`/country/${countryName
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")}`}
+                >
+                  <button className="btn btn-outline-primary btn-sm">
+                    View All
+                  </button>
+                </Link>
               </div>
-            ))}
-          </div>
-        </div>
-      ))}
 
-      {packages.length > 6 && (
-        <div className="text-center mt-4">
-          {!showAll ? (
-            <Link href="/all-packages" passHref>
-              <button className="btn btn-primary custom-btn-main">
-                View All Packages ({packages.length})
+              {/* Country's Packages */}
+              <div className="row">
+                {countryPackages.slice(0, 3).map((pkg) => (
+                  <div className="col-12 col-sm-6 col-md-4 mb-4" key={pkg._id}>
+                    <PackageContinent pkg={pkg} onEnquiry={openEnquiryModal} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        )}
+
+        {packages.length > 6 && (
+          <div className="text-center mt-4">
+            {!showAll ? (
+              <Link href="/all-packages" passHref>
+                <button className="btn btn-primary custom-btn-main">
+                  View All Packages ({packages.length})
+                </button>
+              </Link>
+            ) : (
+              <button
+                className="btn btn-outline-primary"
+                onClick={() => setShowAll(false)}
+              >
+                Show Less
               </button>
-            </Link>
-          ) : (
-            <button
-              className="btn btn-outline-primary"
-              onClick={() => setShowAll(false)}
-            >
-              Show Less
-            </button>
-          )}
-        </div>
-      )}
-      {/* Enquiry Modal */}
-      {selectedPackage && (
-        <EnquiryModal
-          packageData={selectedPackage}
-          show={showEnquiryModal}
-          onClose={closeEnquiryModal}
-          countryOptions={countryOptions}
-        />
-      )}
-      {/* Advertisement */}
-      <div className="ads-container my-5">
-        <Image
-          src={ads}
-          alt="Advertisement"
-          className="img-fluid rounded"
-          width={1200}
-          height={300}
-          priority
-        />
-      </div>
-
-      {/* Tips Section */}
-      <TipsSection />
-
-      <Testimonial />
-      <div className=" container mt-5">
-        <h1 className="d-flex justify-content-center mt-5 fw-bolder">
-          Frequently Asked Question
-        </h1>
-        <div className="row mt-5">
-          <div className="col-12 col-md-8">
-            {faqList.map((faq, index) => (
-              <Accordion key={index}>
-                <Accordion.Item eventKey={index.toString()}>
-                  <Accordion.Header>
-                    <div className="d-flex align-items-center gap-2">
-                      <span
-                        className="count-badge text-white rounded-circle d-inline-flex justify-content-center align-items-center"
-                        style={{
-                          width: 30,
-                          height: 30,
-                          fontSize: "0.75rem",
-                          padding: "0.25rem 0.6rem",
-                          background: "#0089C6",
-                        }}
-                      >
-                        {index + 1}
-                      </span>
-                      <span>{faq.question}</span>
-                    </div>
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <div dangerouslySetInnerHTML={{ __html: faq.ans }} />
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-            ))}
+            )}
           </div>
-          <div
-            className="col-12 col-md-4  d-flex flex-column justify-content-evenly py-4 px-3"
-            style={{
-              border: "1px solid #dee2e6",
-              borderRadius: "8px",
-              marginTop: "10px",
-            }}
-          >
+        )}
+        {/* Enquiry Modal */}
+        {selectedPackage && (
+          <EnquiryModal
+            packageData={selectedPackage}
+            show={showEnquiryModal}
+            onClose={closeEnquiryModal}
+            countryOptions={countryOptions}
+          />
+        )}
+        {/* Advertisement */}
+        <div className="ads-container my-5">
+          <Image
+            src={ads}
+            alt="Advertisement"
+            className="img-fluid rounded"
+            width={1200}
+            height={300}
+            priority
+          />
+        </div>
+
+        {/* Tips Section */}
+        <TipsSection />
+
+        <Testimonial />
+        <div className=" container mt-5">
+          <h1 className="d-flex justify-content-center mt-5 fw-bolder">
+            Frequently Asked Question
+          </h1>
+          <div className="row mt-5">
+            <div className="col-12 col-md-8">
+              {faqList.map((faq, index) => (
+                <Accordion key={index}>
+                  <Accordion.Item eventKey={index.toString()}>
+                    <Accordion.Header>
+                      <div className="d-flex align-items-center gap-2">
+                        <span
+                          className="count-badge text-white rounded-circle d-inline-flex justify-content-center align-items-center"
+                          style={{
+                            width: 30,
+                            height: 30,
+                            fontSize: "0.75rem",
+                            padding: "0.25rem 0.6rem",
+                            background: "#0089C6",
+                          }}
+                        >
+                          {index + 1}
+                        </span>
+                        <span>{faq.question}</span>
+                      </div>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <div dangerouslySetInnerHTML={{ __html: faq.ans }} />
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              ))}
+            </div>
             <div
+              className="col-12 col-md-4  d-flex flex-column justify-content-evenly py-4 px-3"
               style={{
-                display: "flex",
-                justifyContent: "center",
-                height: "20%",
+                border: "1px solid #dee2e6",
+                borderRadius: "8px",
+                marginTop: "10px",
               }}
             >
-              <ChatBubbleIcon style={{ fontSize: 40, color: "#212529" }} />
-            </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  height: "20%",
+                }}
+              >
+                <ChatBubbleIcon style={{ fontSize: 40, color: "#212529" }} />
+              </div>
 
-            <h5 className="fw-bold">
-              Anything Unclear about your trip or stay?
-            </h5>
-            <p className="text-body mb-4">
-              Got any questions about your trip plan, stay or activities? Feel
-              free to ask - we are here to help! Make your travel experience
-              seamless and enjoyable.
-            </p>
-            <Button variant="primary" className="btn-lg custom-btn" size="lg">
-              Further Question
-            </Button>
+              <h5 className="fw-bold">
+                Anything Unclear about your trip or stay?
+              </h5>
+              <p className="text-body mb-4">
+                Got any questions about your trip plan, stay or activities? Feel
+                free to ask - we are here to help! Make your travel experience
+                seamless and enjoyable.
+              </p>
+              <Button variant="primary" className="btn-lg custom-btn" size="lg">
+                Further Question
+              </Button>
+            </div>
           </div>
         </div>
+        <div className="container mt-5 d-flex flex-column">
+          {packageMetaData.concat(metaData).map((item, index) => (
+            <div key={index}>
+              <h6 className="fw-bold mt-2 mb-0">{item.title}</h6>
+              <p className="text-dark" style={{ fontSize: "x-small" }}>
+                {item.destinations}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="container mt-5 d-flex flex-column">
-        {packageMetaData.concat(metaData).map((item, index) => (
-          <div key={index}>
-            <h6 className="fw-bold mt-2 mb-0">{item.title}</h6>
-            <p className="text-dark" style={{ fontSize: "x-small" }}>
-              {item.destinations}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
     </>
   );
 };

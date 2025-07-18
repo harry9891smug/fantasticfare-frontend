@@ -32,7 +32,7 @@
 .card-title {
   font-size: 15px;
   font-weight: 400;
-  margin: 10px 0;
+  margin-bottom: 10px;
   color: #202020;
   text-align: start;
   line-height: 1.3;
@@ -44,12 +44,77 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.package-days {
+  color: #7a7a7a;
+  font-size: 14px;
+  margin-top: 10px;
+  font-weight: 400;
+  line-height: 21px;
+}
+.rating-text {
+  display: flex;
+  align-items: center;
+  margin: 0 5px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+}
+
+.rating-count-text {
+  font-size: 12px;
+  color: #8e8e8e;
+  font-weight: 400;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+}
+
+.small-iternary-box {
+  border-radius: 5px;
+  display: flex;
+  margin-bottom: 2px;
+  background: linear-gradient(180deg, #0388c64b, #ffba0a00);
+}
+
+.small-itenary-list-box {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  gap: 5px;
+  height: 32px;
+  margin: 0 32px 0 7px;
+}
+.small-itenary-list {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 4px;
+}
+.small-itenary-list-day-text {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.small-itenary-list-city-text {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+  color: #515151;
+}
+
 .package-card:hover {
   transform: translateY(-5px);
 }
 
 .card-img-container {
-  height: 200px;
+  height: 280px;
+  min-height: 280px;
+  max-height: 280px;
   position: relative;
   overflow: hidden;
 }
@@ -171,8 +236,7 @@
 
 .ads-container img {
   width: 100%;
-  height: auto;
-  max-height: 583px;
+  height: 350px;
   object-fit: cover;
   display: block;
 }
@@ -294,7 +358,7 @@
   }
 
   .card-img-container {
-    height: 180px;
+    height: 250px;
   }
 
   .tips-subtitle {
@@ -321,7 +385,7 @@
 
 @media (max-width: 576px) {
   .card-img-container {
-    height: 150px;
+    height: 250px;
   }
 
   .article-title {

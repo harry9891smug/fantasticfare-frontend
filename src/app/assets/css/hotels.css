@@ -26,8 +26,7 @@
   display: flex;
   align-items: center;
   background: #fff;
-  border-bottom: 1px solid #0c8ac6;
-  border-radius: 8px;
+  border-bottom: 1px solid #000000;
   padding: 4px;
   width: 100%;
   flex-wrap: nowrap;
@@ -57,7 +56,7 @@
   width: 100%;
   font-size: 16px;
 }
-.react-datepicker-popper{
+.react-datepicker-popper {
   z-index: 100;
 }
 /* Suggestions Dropdown */
